@@ -1,0 +1,8 @@
+.config/
+.cache/
+.upm/
+.replit
+replit.nix
+.prettierrc.json
+.prettierignore
+node_modules/
