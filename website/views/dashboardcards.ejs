@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <%- include("includes/head", { title: "Dashboard" }) %>
+  </head>
+  <body>
+    <%- include("includes/header", { req }) %>
+    <% if(!req.isAuthenticated()) { %>
+      <div class="login-alert">
+        <h1>Not Authenticated!</h1>
+        <br>
+        <p>You must be logged in to view this page!</p>
+        <br>
+        <button class="btn" onclick="location.href='/login'">Login</button>
+      </div>
+    <% } else { %>
+      <h1>Choose A Server</h1>
+      <br>
+      <% for(const guild of req.user.discord.guilds) { %>
+        <%- include("includes/card", { guild }) %>
+      <% } %>
+    <% } %>
+  </body>
+</html>

@@ -14,6 +14,7 @@ const difficulties = ["beginner", "rookie", "pro", "all-star"];
 module.exports = {
   name: "play",
   description: "Start playing a quick game of your choice!",
+  aliases: ["work"],
   usage: "{prefix}play [type] [difficulty]",
   execute: async (message, args) => {
     var type = args[0]?.toLowerCase();

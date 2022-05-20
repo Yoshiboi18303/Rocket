@@ -10,5 +10,12 @@ module.exports = (client, Discord) => {
       throw new Error("All commands need a description!");
 
     client.commands.set(command.name, command);
+    if (command.aliases) {
+      if (!Array.isArray(command.aliases))
+        command.aliases = [`${command.aliases}`];
+      for (var alias of command.aliases) {
+        client.aliases.set(alias, command);
+      }
+    }
   }
 };

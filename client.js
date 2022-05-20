@@ -25,13 +25,39 @@ const ranks = {
   70: "Supersonic Legend",
   ssl: "Supersonic Legend",
 };
+const { SoundCloudPlugin } = require("@distube/soundcloud");
+const { SpotifyPlugin } = require("@distube/spotify");
+const { YtDlpPlugin } = require("@distube/yt-dlp");
+const { DisTube } = require("distube");
+const distube = new DisTube(client, {
+  plugins: [
+    new SoundCloudPlugin(),
+    new SpotifyPlugin({
+      api: {
+        clientId: process.env.SPOTIFY_CLIENT_ID,
+        clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+      },
+    }),
+    new YtDlpPlugin(),
+  ],
+  searchSongs: 15,
+  youtubeDL: false,
+});
 
 global.Discord = require("discord.js");
 global.client = client;
 global.MessageEmbed = require("discord.js").MessageEmbed;
 global.ranks = ranks;
+global.status = (queue) =>
+  `Volume: \`${queue.volume}%\` | Filter: \`${
+    queue.filters.join(", ") || "Off"
+  }\` | Loop: \`${
+    queue.repeatMode ? (queue.repeatMode === 2 ? "Queue" : "This Song") : "Off"
+  }\` | Autoplay: \`${queue.autoplay ? "On" : "Off"}\``;
+global.distube = distube;
 
 client.commands = new Collection();
+client.aliases = new Collection();
 client.events = new Collection();
 
 const handlers = fs

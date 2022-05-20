@@ -1,0 +1,9 @@
+<div class="crd">
+  <img src="<%= guild.icon %>" alt="Guild Icon" class="guild-icon">
+  <h3 class="name"><%= guild.name %></h3>
+  <% if(!client.guilds.cache.has(guild.id)) {
+    <button class="btn" onclick="location.href='https://discord.com/oauth2/authorize?client_id=975450018360229908&permissions=412317244416&scope=bot&guild_id=<%= guild.id %>'">Invite Bot</button>
+  <% } else { %>
+    <button class="btn" onclick="location.href='/dashboard/<%= guild.id %>'">View Dashboard</button>
+  <% } %>
+</div>

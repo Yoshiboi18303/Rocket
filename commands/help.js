@@ -16,16 +16,18 @@ module.exports = {
       .setColor(message.member.displayHexColor)
       .setTitle("Help Command")
       .setDescription("Here are all my commands!")
+      .setURL(`https://${config.origin}`)
       .setFooter({
         text: "Syntax: <> = required, [] = optional",
       });
 
     client.commands.each((command) =>
       help_embed.addField(
-        command.name,
+        command.name.replace(command.name[0], command.name[0].toUpperCase()),
         `**Description:** ${command.description}\n**Usage:** ${
           command.usage?.replace("{prefix}", Guild.prefix) || "Not Provided"
-        }`,
+        }\n**Aliases:** ${command.aliases?.join(", ") || "None"}
+        `,
         true
       )
     );

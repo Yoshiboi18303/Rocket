@@ -13,6 +13,13 @@ const guildSchema = Schema({
     type: Boolean,
     default: false,
   },
+  rr: {
+    type: Object,
+    default: {
+      role: "",
+      emoji: "",
+    },
+  },
 });
 
 module.exports = model("guilds", guildSchema);

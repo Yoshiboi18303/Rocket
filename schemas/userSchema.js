@@ -17,6 +17,10 @@ const userSchema = Schema({
     type: String,
     default: "Bronze",
   },
+  items: {
+    type: Object,
+    default: {},
+  },
 });
 
 module.exports = model("users", userSchema);

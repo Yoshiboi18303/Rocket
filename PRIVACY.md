@@ -1,9 +1,11 @@
 # Rocket-Conomy Privacy Policy
+
 Here's the privacy policy for **`Rocket-Conomy`**!
 
 ---
 
 # Chapters
+
 - 1. What we collect
 - 2. Why we collect this data; How we use the data
 - 3. Is my data safe; Does anybody else see my data?

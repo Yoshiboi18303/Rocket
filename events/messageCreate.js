@@ -27,7 +27,7 @@ module.exports = {
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift();
 
-    const cmd = client.commands.get(command);
+    const cmd = client.commands.get(command) || client.aliases.get(command);
     if (!cmd && Guild.unknownCommandMessage) {
       const unknown_command_embed = new MessageEmbed()
         .setColor(colors.red)
@@ -37,6 +37,38 @@ module.exports = {
         embeds: [unknown_command_embed],
       });
     } else if (!cmd && !Guild.unknownCommandMessage) return;
+    var Testing = cmd.testing;
+    if (!Testing) Testing = false;
+    if (Testing) {
+      if (message.guild.id != config.testServerId)
+        return await message.reply({
+          content: `This command is restricted to the testing server (**\`${
+            client.guilds.cache.get(config.testServerId)?.name
+          }\`**) for the moment!`,
+        });
+    }
+    var OwnerOnly = cmd.ownerOnly;
+    if (OwnerOnly == undefined || OwnerOnly == null) OwnerOnly = false;
+    if (OwnerOnly) {
+      if (message.author.id != config.owner)
+        return await message.reply({
+          content: "You aren't the owner of the bot!",
+        });
+    }
+    if (cmd.userPermissions?.length > 0) {
+      if (!message.member.permissions.has(cmd.userPermissions))
+        return await message.reply({
+          content:
+            "You don't have the required permissions to use this command!",
+        });
+    }
+    if (cmd.clientPermissions?.length > 0) {
+      if (!message.guild.me.permissions.has(cmd.clientPermissions))
+        return await message.reply({
+          content:
+            "I don't have the required permissions to be able to run this command!",
+        });
+    }
     await cmd.execute(message, args);
   },
 };
