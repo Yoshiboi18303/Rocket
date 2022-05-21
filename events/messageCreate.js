@@ -1,4 +1,5 @@
 const Guilds = require("../schemas/guildSchema");
+const Users = require("../schemas/userSchema");
 
 module.exports = {
   name: "messageCreate",
@@ -69,6 +70,22 @@ module.exports = {
             "I don't have the required permissions to be able to run this command!",
         });
     }
+    var User = await Users.findOne({ id: message.author.id })
+    if(!User) {
+      User = new Users({
+        id: message.author.id
+      })
+      User.save()
+    }
+    User = await Users.findOneAndUpdate({
+      id: message.author.id
+    },
+    {
+      $inc: {
+        commandsUsed: 1
+      }
+    })
+    User.save()
     await cmd.execute(message, args);
   },
 };

@@ -54,6 +54,29 @@ header {
   text-align: center;
 }
 
+.crd {
+  float: center;
+  text-align: center;
+  border: 2px solid black;
+  background-color: white;
+  border-radius: 8px;
+  margin: 0 auto;
+  width: 175px;
+  height: 200px;
+}
+
+.guild-icon {
+  width: 52px;
+  height: 52px;
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+.guild-name {
+  font-family: "Radio Canada", sans-serif;
+  color: #5271ff
+}
+
 .btn:hover {
   background-color: #4caf25;
   color: white;

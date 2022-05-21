@@ -2,6 +2,7 @@ const Guilds = require("../schemas/guildSchema");
 const Users = require("../schemas/userSchema");
 const { MessageAttachment } = require("discord.js");
 const util = require("util");
+const utils = require("../utils/");
 
 module.exports = {
   name: "eval",

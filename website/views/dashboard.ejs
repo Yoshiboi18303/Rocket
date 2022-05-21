@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Rocket-Conomy</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
+    <link rel="shortcut icon" href="/static/img/icon.png" type="image/png">
+  </head>
+  <body>
+    <header>
+      <img src="/static/img/icon.png" alt="Rocket-Conomy Icon" class="icon">
+      <br>
+      <h3 class="name">Rocket-Conomy</h3>
+      <% if(!req.isAuthenticated()) { %>
+        <button class="btn login" onclick="location.href='/login'">Login</button>
+      <% } else { %>
+        <img src="https://cdn.discordapp.com/avatars/<%= req.user.id %>/<%= req.user.discord.avatar %>.png" alt="User Avatar" class="user-avatar">
+        <h3 class="user-username"><%= req.user.discord.username %></h3>
+        <button class="logout" onclick="location.href='/logout'">Logout</button>
+      <% } %>
+    </header>
+    <br>
+    <h1>Coming soon!</h1>
+  </body>
+</html>

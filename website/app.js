@@ -5,6 +5,7 @@ const port = process.env.PORT || 3000;
 const passport = require("passport");
 const DiscordStrategy = require("passport-discord").Strategy;
 const Users = require("../schemas/userSchema");
+const bodyParser = require("body-parser");
 
 app.use(
   require("express-session")({
@@ -23,6 +24,8 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }))
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -59,9 +62,12 @@ passport.use(
   )
 );
 
+
 app.use("/static", express.static("website/static"));
 app.use("/login", require("./routes/login"));
 app.use("/logout", require("./routes/logout"));
+app.use("/dashboard", require("./routes/dashboard"));
+app.use("/webhooks", require("./routes/webhooks"));
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -75,13 +81,6 @@ app.get(["/", "/home"], (req, res) => {
 app.get("/features", (req, res) => {
   res.status(200).render("features", {
     req,
-  });
-});
-
-app.get("/dashboard", (req, res) => {
-  res.status(200).render("dashboardcards", {
-    req,
-    client,
   });
 });
 

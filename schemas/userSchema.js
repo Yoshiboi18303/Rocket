@@ -1,5 +1,10 @@
 const { Schema, model } = require("mongoose");
 
+const opBool = {
+  type: Boolean,
+  default: false
+}
+
 const userSchema = Schema({
   id: {
     type: String,
@@ -21,6 +26,12 @@ const userSchema = Schema({
     type: Object,
     default: {},
   },
+  commandsUsed: {
+    type: Number,
+    default: 1,
+  },
+  admin: opBool,
+  owner: opBool,
 });
 
 module.exports = model("users", userSchema);
