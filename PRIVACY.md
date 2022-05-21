@@ -17,5 +17,5 @@ Here's the privacy policy for **`Rocket-Conomy`**!
 - 1. We collect your current guild ID, the prefix for that guild, your user ID.
 - 2. We need the guild ID data for custom prefixes, and your user ID to provide a profile for you on the bot.
 - 3. Yes, your data is safely secured behind a MongoDB database and no one else besides the owner can access it!
-- 4. You can contact the owner in the support server located [here](https://discord.gg/kFVng8zbMT) if you have any concerns.
+- 4. You can contact the owner in the support server located [here](https://discord.gg/RmwyFgkVTv) if you have any concerns.
 - 5. Currently as it stands, we can't delete your data, sorry.
