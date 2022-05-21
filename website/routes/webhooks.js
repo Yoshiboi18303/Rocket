@@ -11,6 +11,10 @@ const mainWebhook = new WebhookClient({
 })
 const { utc } = require("moment");
 
+app.get("/", async (req, res) => {
+  return res.status(400).send({ code: 400, message: "No webhook provider given" })
+})
+
 app.post("/motion", async (req, res) => {
   var secret = req.headers.auth;
   if(secret != process.env.MOTION_SECRET) return res.status(400).send({ code: 400, message: "Incorrect Secret" })
@@ -94,6 +98,7 @@ app.post("/void", async (req, res) => {
         embeds: [vote_embed]
       })
       break;
+    return res.status(200).send({ code: 200, message: "Vote Recieved Successfully" })
   }
 })
 
