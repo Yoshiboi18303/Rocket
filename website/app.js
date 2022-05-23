@@ -25,7 +25,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -37,12 +37,18 @@ passport.deserializeUser(async (user, done) => {
     user = new Users({
       id: user.id,
     });
+  if (!User) {
+    User = new Users({
+      id: user.id,
+    });
+    User.save();
+  }
 
   done(null, {
     id: user.id,
     discord: user,
-    // voted: User.voted,
-    // blacklisted: User.blacklisted,
+    voted: User.voted,
+    blacklisted: User.blacklisted,
   });
 });
 
@@ -61,7 +67,6 @@ passport.use(
     }
   )
 );
-
 
 app.use("/static", express.static("website/static"));
 app.use("/login", require("./routes/login"));
@@ -82,6 +87,10 @@ app.get("/features", (req, res) => {
   res.status(200).render("features", {
     req,
   });
+});
+
+app.get("/owner", (req, res) => {
+  res.redirect("https://yoshiboi18303-website-recoded.yoshiboi18303.repl.co/");
 });
 
 app.listen(port);

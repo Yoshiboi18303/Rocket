@@ -1,9 +1,11 @@
 const Guilds = require("../schemas/guildSchema");
 const Users = require("../schemas/userSchema");
+const { Permissions } = require("discord.js");
 
 module.exports = {
   name: "messageCreate",
   async execute(message) {
+    if (message.author.bot || !message.guild) return;
     var Guild = await Guilds.findOne({ id: message.guild.id });
     if (!Guild) {
       Guild = new Guilds({
@@ -12,7 +14,6 @@ module.exports = {
       Guild.save();
     }
     var prefix = Guild.prefix;
-    if (message.author.bot || !message.guild) return;
     if (message.content == `<@${client.user.id}>`) {
       const pinged_embed = new MessageEmbed()
         .setColor(message.member.displayHexColor)
@@ -27,6 +28,22 @@ module.exports = {
     if (!message.content.startsWith(prefix)) return;
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift();
+
+    if (
+      !message.guild.me.permissions.has([
+        Permissions.FLAGS.VIEW_CHANNEL,
+        Permissions.FLAGS.SEND_MESSAGES,
+      ])
+    ) {
+      try {
+        return await message.author.send({
+          content:
+            "My permissions are too low for me to be able to send messages!",
+        });
+      } catch (e) {
+        return;
+      }
+    }
 
     const cmd = client.commands.get(command) || client.aliases.get(command);
     if (!cmd && Guild.unknownCommandMessage) {
@@ -70,22 +87,24 @@ module.exports = {
             "I don't have the required permissions to be able to run this command!",
         });
     }
-    var User = await Users.findOne({ id: message.author.id })
-    if(!User) {
+    var User = await Users.findOne({ id: message.author.id });
+    if (!User) {
       User = new Users({
-        id: message.author.id
-      })
-      User.save()
+        id: message.author.id,
+      });
+      User.save();
     }
-    User = await Users.findOneAndUpdate({
-      id: message.author.id
-    },
-    {
-      $inc: {
-        commandsUsed: 1
+    var data = await Users.findOneAndUpdate(
+      {
+        id: message.author.id,
+      },
+      {
+        $inc: {
+          commandsUsed: 1,
+        },
       }
-    })
-    User.save()
+    );
+    data.save();
     await cmd.execute(message, args);
   },
 };

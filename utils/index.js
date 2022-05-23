@@ -1,35 +1,35 @@
-const { GuildMember } = require("discord.js")
+const { GuildMember } = require("discord.js");
 
-/** 
+/**
  * Returns the lowercase verion of a string
  * @param {String} string
-*/
+ */
 function convertToLowerCase(string) {
   const lowerCaseString = string.toLowerCase();
   return lowerCaseString;
 }
 
-/** 
+/**
  * Returns the uppercase verion of a string
  * @param {String} string
-*/
+ */
 function convertToUpperCase(string) {
   const upperCaseString = string.toUpperCase();
   return upperCaseString;
 }
 
-/** 
+/**
  * Reverses a string
  * @param {String} string
-*/
+ */
 function reverseString(string) {
   return string.split("").reverse().join("");
 }
 
-/** 
+/**
  * Gets and returns the status of a Discord Guild Member
  * @param {GuildMember} user
-*/
+ */
 function returnUserStatusText(user) {
   var status_text = "";
   if (user.presence.status == "online") {
@@ -44,10 +44,10 @@ function returnUserStatusText(user) {
   return status_text;
 }
 
-/** 
+/**
  * Turns text into Discord emojis
  * @param {String} text
-*/
+ */
 function emojifyText(text) {
   text = text.split("");
   var object = {

@@ -503,7 +503,10 @@ module.exports = {
         }, 5000);
         break;
       case "rumble":
-        if(message.guild.id != config.testServerId) return await message.reply({ content: "This mode is under construction!" })
+        if (message.guild.id != config.testServerId)
+          return await message.reply({
+            content: "This mode is under construction!",
+          });
         var items = [
           `${emojis.haymaker} Haymaker`,
           `${emojis.grappler} Grappling Hook`,
@@ -515,13 +518,13 @@ module.exports = {
           `${emojis.powerhitter} Power Hitter`,
           `${emojis.spikes} Spike`,
           `${emojis.swapper} Swapper`,
-          `${emojis.tornado} Tornado`
-        ]
-        var item = items[Math.floor(Math.random() * items.length)]
-        console.log(item)
+          `${emojis.tornado} Tornado`,
+        ];
+        var item = items[Math.floor(Math.random() * items.length)];
+        console.log(item);
         await message.reply({
-          content: "Check the console!"
-        })
+          content: "Check the console!",
+        });
         break;
     }
   },

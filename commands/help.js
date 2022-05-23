@@ -1,9 +1,16 @@
 const Guilds = require("../schemas/guildSchema");
+const { MessageActionRow, MessageButton, Permissions } = require("discord.js");
 
 module.exports = {
   name: "help",
   description: "Get info on all the commands of the bot!",
   usage: "{prefix}help",
+  userPermissions: [],
+  clientPermissions: [
+    Permissions.FLAGS.VIEW_CHANNEL,
+    Permissions.FLAGS.SEND_MESSAGES,
+    Permissions.FLAGS.EMBED_LINKS,
+  ],
   execute: async (message) => {
     var Guild = await Guilds.findOne({ id: message.guild.id });
     if (!Guild) {
@@ -32,8 +39,20 @@ module.exports = {
       )
     );
 
+    const row = new MessageActionRow().addComponents(
+      new MessageButton()
+        .setStyle("LINK")
+        .setLabel("GitHub")
+        .setURL("https://github.com/Yoshiboi18303/Rocket-Conomy"),
+      new MessageButton()
+        .setStyle("LINK")
+        .setLabel("Website")
+        .setURL(`https://${config.origin}`)
+    );
+
     await message.reply({
       embeds: [help_embed],
+      components: [row],
     });
   },
 };

@@ -6,18 +6,21 @@ app.get("/", (req, res) => {
   res.status(200).render("dashboardcards", {
     req,
     client,
-    Permissions
+    Permissions,
   });
 });
 
 app.get("/:id", (req, res) => {
   var id = req.params.id;
-  if(!client.guilds.cache.has(id)) return res.redirect(`https://discord.com/oauth2/authorize?client_id=975450018360229908&permissions=412317244416&scope=bot&guild_id=${id}`)
+  if (!client.guilds.cache.has(id))
+    return res.redirect(
+      `https://discord.com/oauth2/authorize?client_id=975450018360229908&permissions=412317244416&scope=bot&guild_id=${id}`
+    );
   res.status(200).render("dashboard", {
     req,
     client,
-    id
-  })
-})
+    id,
+  });
+});
 
 module.exports = app;

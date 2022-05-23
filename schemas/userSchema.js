@@ -2,8 +2,8 @@ const { Schema, model } = require("mongoose");
 
 const opBool = {
   type: Boolean,
-  default: false
-}
+  default: false,
+};
 
 const userSchema = Schema({
   id: {
@@ -32,6 +32,12 @@ const userSchema = Schema({
   },
   admin: opBool,
   owner: opBool,
+  voted: opBool,
+  blacklisted: opBool,
+  carColor: {
+    type: String,
+    default: "#136bea",
+  },
 });
 
 module.exports = model("users", userSchema);
