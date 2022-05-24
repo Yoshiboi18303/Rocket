@@ -55,6 +55,7 @@ global.status = (queue) =>
     queue.repeatMode ? (queue.repeatMode === 2 ? "Queue" : "This Song") : "Off"
   }\` | Autoplay: \`${queue.autoplay ? "On" : "Off"}\``;
 global.distube = distube;
+global.ms = require("ms");
 
 client.commands = new Collection();
 client.aliases = new Collection();

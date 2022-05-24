@@ -73,6 +73,7 @@ app.use("/login", require("./routes/login"));
 app.use("/logout", require("./routes/logout"));
 app.use("/dashboard", require("./routes/dashboard"));
 app.use("/webhooks", require("./routes/webhooks"));
+app.use("/report", require("./routes/report"));
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <%- include("includes/head", { title: "Suggest" }) %>
+  </head>
+  <body>
+    <%- include("includes/header", { req }) %>
+    <br>
+    <% if(msg != "") { %>
+      <% if(error == true) { %>
+        <div class="error-message">
+          <br>
+          <br>
+          <h4 class="message"><%= msg %></h4>
+          <a class="remove" href="/report/bug" rel="noreferrer">X</a>
+        </div>
+      <% } else { %>
+        <div class="success-message">
+          <br>
+          <br>
+          <h4 class="message"><%= msg %></h4>
+          <a class="remove" href="/report/bug" rel="noreferrer">X</a>
+        </div>
+      <% } %>
+      <br>
+      <br>
+    <% } %>
+    <% if(!req.isAuthenticated()) { %>
+      <div class="login-alert">
+        <h1>Not Authenticated!</h1>
+        <br>
+        <p>You must be logged in to view this page!</p>
+        <br>
+        <button class="btn login" onclick="location.href='/login'">Login</button>
+      </div>
+    <% } else { %>
+      <h1>Suggest A Feature</h1>
+      <h3 class="description">Got an idea for any about the bot? Let it shine here!</h3>
+      <br>
+      <form id="suggestions">
+        <label for="suggestion">Suggestion:</label>
+        <br>
+        <textarea required placeholder="Please add this and that to the bot..." id="suggestion"></textarea>
+        <br>
+        <br>
+        <label for="type">Type of Suggestion:</label>
+        <br>
+        <select title="Suggestion Type Selection" id="type" required>
+          <option value="shopitem">Shop Item</option>
+          <option value="command">Command</option>
+          <option value="website">Website</option>
+          <option value="other">Other</option>
+        </select>
+        <br>
+        <br>
+        <input type="submit" value="Submit" class="submit">
+      </form>
+    <% } %>
+  </body>
+  <script>
+    var form = $("#suggestions")
+    
+    form.submit((e) => {
+      var type = $("#type").val()
+      var sugg = $("#suggestion").val()
+      
+      e.preventDefault()
+      fetch(`https://rocket-conomy.tk/report/sendsuggestion`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type,
+          suggestion: sugg
+        }) 
+      })
+      location.href = "/report/suggestion?message=Suggestion Sent Successfully&error=false"
+    })
+  </script>
+</html>

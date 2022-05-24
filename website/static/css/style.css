@@ -197,6 +197,11 @@ h3.description:hover {
 .login-alert > p {
   font-family: "Josefin Sans", sans-serif;
   color: white;
+  transition-duration: 0.60s;
+}
+
+.login-alert > p:hover {
+  color: red;
 }
 
 h3.info {
@@ -236,4 +241,92 @@ header {
 
 .login {
   float: center;
+}
+
+label {
+  font-family: "Source Code Pro", monospace;
+  color: white;
+}
+
+form {
+  background-color: #1ac522;
+  width: 50%;
+  border: 2px solid black;
+  border-radius: 8px;
+  margin: 0 auto;
+}
+
+input.submit {
+  background-color: #2c2f33;
+  color: #1aa415;
+  font-family: "Fredoka One", sans-serif;
+  font-size: 15px;
+  border: 2px solid #4caf25;
+  border-radius: 8px;
+  transition-duration: 0.5s;
+}
+
+input.submit:hover {
+  background-color: #4caf25;
+  color: white;
+  cursor: pointer;
+}
+
+.error-message {
+  background-color: #af1414;
+  width: 310px;
+  height: 100px;
+  margin: 0 auto;
+  border: 2px solid #af1414;
+  border-radius: 8px;
+}
+
+.success-message {
+  background-color: #22b013;
+  width: 310px;
+  height: 100px;
+  margin: 0 auto;
+  border: 2px solid #22b013;
+  border-radius: 8px;
+}
+
+.message {
+  font-family: "Fredoka One", sans-serif;
+  font-size: 20px;
+  color: white;
+  transition-duration: 0.58s;
+  position: relative;
+  right: 7px;
+}
+
+.error-message > h4:hover {
+  color: #f20b0b;
+}
+
+.success-message > h4:hover {
+  color: #19e014
+}
+
+.remove {
+  text-decoration: none;
+  color: gray;
+  float: right;
+  font-family: "Josefin Sans", sans-serif;
+  position: relative;
+  bottom: 17px;
+  right: 7px;
+  transition-duration: 0.58s;
+}
+
+.error-message > a:hover {
+  color: #f20b0b;
+}
+
+.success-message > a:hover {
+  color: #19e014;
+}
+
+textarea {
+  height: 125px;
+  width: 200px;
 }

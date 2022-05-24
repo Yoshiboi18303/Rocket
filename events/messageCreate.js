@@ -1,6 +1,6 @@
 const Guilds = require("../schemas/guildSchema");
 const Users = require("../schemas/userSchema");
-const { Permissions } = require("discord.js");
+const { Permissions, MessageEmbed } = require("discord.js");
 
 module.exports = {
   name: "messageCreate",
@@ -93,6 +93,14 @@ module.exports = {
         id: message.author.id,
       });
       User.save();
+    }
+    if (User.blacklisted == true) {
+      const blacklisted_embed = new MessageEmbed()
+        .setColor(colors.red)
+        .setDescription("❌ You are blacklisted from the bot! ❌");
+      return await message.reply({
+        embeds: [blacklisted_embed],
+      });
     }
     var data = await Users.findOneAndUpdate(
       {

@@ -17,6 +17,10 @@ const guildSchema = Schema({
     type: String,
     default: "",
   },
+  memberRole: {
+    type: String,
+    default: "",
+  },
 });
 
 module.exports = model("guilds", guildSchema);

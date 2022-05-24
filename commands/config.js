@@ -1,5 +1,5 @@
 const Guilds = require("../schemas/guildSchema");
-const { Permissions } = require("discord.js");
+const { Permissions, MessageAttachment } = require("discord.js");
 
 module.exports = {
   name: "config",
@@ -33,11 +33,11 @@ module.exports = {
         embeds: [invalid_action_embed],
       });
     }
-    if (!["welcome"].includes(setting)) {
+    if (!["welcome", "member"].includes(setting)) {
       const invalid_setting_embed = new MessageEmbed()
         .setColor(colors.red)
         .setDescription(
-          "❌ Please provide a valid setting! ❌\n\nℹ️ **Valid settings are:** `welcome` ℹ️"
+          "❌ Please provide a valid setting! ❌\n\nℹ️ **Valid settings are:** `welcome` and `member` ℹ️"
         );
       return await message.reply({
         embeds: [invalid_setting_embed],
@@ -70,6 +70,15 @@ module.exports = {
             await message.reply({
               embeds: [current_value_embed],
             });
+            break;
+          case "member":
+            current_value_embed.addField(
+              "Value",
+              `\`\`\`\n${
+                message.guild.roles.cache.get(Guild.memberRole)?.name ||
+                "None/Unknown"
+              }\n\`\`\``
+            );
             break;
         }
         break;
@@ -133,6 +142,81 @@ module.exports = {
                 name: "New Value",
                 value: `\`\`\`\n${channel.name}\n\`\`\``,
                 inline: true,
+              },
+            ]);
+            await message.reply({
+              embeds: [new_value_embed],
+            });
+            break;
+          case "member":
+            var role = message.guild.roles.cache.get(value);
+            if (!role) {
+              const unknown_role_embed = new MessageEmbed()
+                .setColor(colors.red)
+                .setDescription(
+                  "❌ That's an unknown role! ❌\n\nℹ️ **Please make sure you copied the [ID](https://yoshiboi18303-has.bot.style/recording_2.mp4) of the role!** ℹ️"
+                );
+              return await message.reply({
+                embeds: [unknown_role_embed],
+              });
+            }
+            if (
+              !message.guild.me.permissions.has(Permissions.FLAGS.MANAGE_ROLES)
+            ) {
+              const cant_manage_embed = new MessageEmbed()
+                .setColor(colors.red)
+                .setDescription(
+                  "❌ Please make sure I have the `MANAGE_ROLES` permissions! ❌"
+                );
+              return await message.reply({
+                embeds: [cant_manage_embed],
+              });
+            }
+            if (
+              message.guild.roles.comparePositions(
+                message.guild.roles.botRoleFor(client.user),
+                role
+              ) <= 0
+            ) {
+              var attachment = new MessageAttachment(
+                "https://cdn.discordapp.com/attachments/978301144977772596/978308007354048542/hierarchy-update.gif",
+                "hierarchy-update.gif"
+              );
+              const bad_position_embed = new MessageEmbed()
+                .setColor(colors.red)
+                .setDescription(
+                  "❌ My position on the role hierachy is too low for me to manage the role! Please put me a bit higher on the role hierarchy! ❌"
+                )
+                .setImage("attachment://hierarchy-update.gif");
+              return await message.reply({
+                embeds: [bad_position_embed],
+                files: [attachment],
+              });
+            }
+            var data = await Guilds.findOneAndUpdate(
+              {
+                id: message.guild.id,
+              },
+              {
+                $set: {
+                  memberRole: role.id,
+                },
+              }
+            );
+            new_value_embed.addFields([
+              {
+                name: "Old Value",
+                value: `\`\`\`\n${
+                  message.guild.roles.cache.get(Guild.memberRole)?.name ||
+                  "None/Unknown"
+                }\n\`\`\``,
+                inline: true,
+              },
+              {
+                name: "New Value",
+                value: `\`\`\`\n${
+                  message.guild.roles.cache.get(value).name
+                }\n\`\`\``,
               },
             ]);
             await message.reply({

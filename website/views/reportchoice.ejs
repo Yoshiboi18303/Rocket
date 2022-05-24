@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <%- include("includes/head", { title: "Report Selection" }) %>
+  </head>
+  <body>
+    <%- include("includes/header", { req }) %>
+    <br>
+    <h1>Report Selection</h1>
+    <h3 class="description">Select which report you want to send!</h3>
+    <br>
+    <div class="buttons">
+      <button class="btn" onclick="location.href='/report/bug'">Bug</button>
+      <button class="btn" onclick="location.href='/report/suggestion'"">Suggestion</button>
+      <button class="btn" onclick="location.href='/report/user'">User</button>
+    </div>
+  </body>
+</html>

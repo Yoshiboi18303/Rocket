@@ -16,7 +16,16 @@ module.exports = {
       });
       Guild.save();
     }
-    if (member.guild.id != config.testServerId && Guild.welcomeChannel == "")
+    if(Guild.memberRole != "") {
+      if(member.guild.verificationLevel == "HIGH") {
+        setTimeout(async () => {
+          await member.roles.add(Guild.memberRole)
+        }, ms("10m"))
+      } else {
+        await member.roles.add(Guild.memberRole)
+      }
+    }
+    if (Guild.welcomeChannel == "")
       return;
 
     var req = await fetch.default(

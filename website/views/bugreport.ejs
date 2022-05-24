@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <%- include("includes/head", { title: "Report Bug" }) %>
+  </head>
+  <body>
+    <%- include("includes/header", { req }) %>
+    <br>
+    <% if(msg != "") { %>
+      <% if(error == true) { %>
+        <div class="error-message">
+          <br>
+          <br>
+          <h4 class="message"><%= msg %></h4>
+          <a class="remove" href="/report/bug" rel="noreferrer">X</a>
+        </div>
+      <% } else { %>
+        <div class="success-message">
+          <br>
+          <br>
+          <h4 class="message"><%= msg %></h4>
+          <a class="remove" href="/report/bug" rel="noreferrer">X</a>
+        </div>
+      <% } %>
+      <br>
+      <br>
+    <% } %>
+    <% if(!req.isAuthenticated()) { %>
+      <div class="login-alert">
+        <h1>Not Authenticated!</h1>
+        <br>
+        <p>You must be logged in to view this page!</p>
+        <br>
+        <button class="btn login" onclick="location.href='/login'">Login</button>
+      </div>
+    <% } else { %>
+      <h1>Report A Bug</h1>
+      <h3 class="description">Found a bug? Please don't hesitate to report it!</h3>
+      <br>
+      <form class="bug-report-form" id="bugreport">
+        <label for="bug">Bug:</label>
+        <br>
+        <textarea required placeholder="This is the bug I found, and this is how I got it: 1. sdjbjawsbfja, 2. run command, 3. bajkdsadsbj" id="bug" class="bugarea"></textarea>
+        <br>
+        <br>
+        <input type="submit" value="Submit" class="submit">
+      </form>
+    <% } %>
+  </body>
+  <script>
+    var form = $("#bugreport")
+    
+    form.submit((e) => {
+      var bug = $("#bug").val()
+      
+      e.preventDefault()
+      fetch(`https://rocket-conomy.tk/report/submitbug`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bug
+        }) 
+      })
+      location.href = "/report/bug?message=Bug Reported Successfully&error=false"
+    })
+  </script>
+</html>
