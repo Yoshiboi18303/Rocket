@@ -43,6 +43,8 @@ const distube = new DisTube(client, {
   searchSongs: 15,
   youtubeDL: false,
 });
+const Radar = require("radarbots.js")
+const radar = new Radar(client, process.env.RADAR_KEY)
 
 global.Discord = require("discord.js");
 global.client = client;
@@ -60,6 +62,7 @@ global.ms = require("ms");
 client.commands = new Collection();
 client.aliases = new Collection();
 client.events = new Collection();
+client.radar = radar;
 
 const handlers = fs
   .readdirSync("./handlers")

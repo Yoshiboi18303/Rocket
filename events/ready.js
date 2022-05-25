@@ -26,23 +26,6 @@ module.exports = {
     var data = await req.json();
     console.log(data);
     body = {
-      guilds: client.guilds.cache.size,
-      shards: 1,
-    };
-    req = await fetch.default(
-      `https://radarbotdirectory.xyz/api/bot/${client.user.id}/stats`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: process.env.RADAR_KEY,
-        },
-        body: JSON.stringify(body),
-      }
-    );
-    data = await req.json();
-    console.log(data);
-    body = {
       server_count: client.guilds.cache.size,
       shard_count: 1,
     };
@@ -59,6 +42,14 @@ module.exports = {
     );
     data = await req.json();
     console.log(data);
+
+    client.radar.stats(client.guilds.cache.size, 1, true)
+      .then((data) => console.log(data))
+      .catch((e) => console.error(e))
+
+    client.radar.lastVoted(config.owner)
+      .then((data) => console.log(data))
+      .catch((e) => console.error(e))
 
     const activities = [
       "Rocket League",

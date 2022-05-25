@@ -197,7 +197,7 @@ h3.description:hover {
 .login-alert > p {
   font-family: "Josefin Sans", sans-serif;
   color: white;
-  transition-duration: 0.60s;
+  transition-duration: 0.6s;
 }
 
 .login-alert > p:hover {
@@ -304,7 +304,7 @@ input.submit:hover {
 }
 
 .success-message > h4:hover {
-  color: #19e014
+  color: #19e014;
 }
 
 .remove {
@@ -329,4 +329,19 @@ input.submit:hover {
 textarea {
   height: 125px;
   width: 200px;
+}
+
+.stat {
+  font-size: 18px;
+  font-family: "Radio Canada", sans-serif;
+  color: white;
+}
+
+code {
+  font-family: "Source Code Pro", monospace;
+  transition-duration: 0.57s;
+}
+
+code:hover {
+  color: #143bb8;
 }

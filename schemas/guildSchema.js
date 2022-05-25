@@ -21,6 +21,10 @@ const guildSchema = Schema({
     type: String,
     default: "",
   },
+  dmUsersOnJoin: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = model("guilds", guildSchema);

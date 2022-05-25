@@ -73,6 +73,12 @@ module.exports = {
           content: "You aren't the owner of the bot!",
         });
     }
+    if(cmd.nsfw == true) {
+      if(!message.channel.nsfw) 
+        return await message.reply({ 
+          content: "This channel isn't an NSFW channel!" 
+        })
+    }
     if (cmd.userPermissions?.length > 0) {
       if (!message.member.permissions.has(cmd.userPermissions))
         return await message.reply({

@@ -25,7 +25,14 @@ module.exports = {
       var code = dirfile.toString();
       if (code.length > 4096) {
         var buffer = Buffer.from(code);
-        const cmdfile = new MessageAttachment(buffer, "code.js");
+        const cmdfile = new MessageAttachment(
+          buffer,
+          `${
+            path.endsWith(".js") || path.endsWith(".json")
+              ? "code.js"
+              : "code.html"
+          }`
+        );
         return await message.reply({
           content:
             "The code for this file is too long for an embed, so here's a file with the **EXACT SAME** code.",
@@ -35,7 +42,11 @@ module.exports = {
       const code_embed = new MessageEmbed()
         .setColor(colors.cyan)
         .setTitle("File code")
-        .setDescription(`\`\`\`js\n${code}\n\`\`\``)
+        .setDescription(
+          `\`\`\`${
+            path.endsWith(".js") || path.endsWith(".json") ? "js" : "html"
+          }\n${code}\n\`\`\``
+        )
         .setTimestamp();
       await message.reply({
         embeds: [code_embed],

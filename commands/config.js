@@ -33,11 +33,11 @@ module.exports = {
         embeds: [invalid_action_embed],
       });
     }
-    if (!["welcome", "member"].includes(setting)) {
+    if (!["welcome", "member", "memberJoinDms"].includes(setting)) {
       const invalid_setting_embed = new MessageEmbed()
         .setColor(colors.red)
         .setDescription(
-          "❌ Please provide a valid setting! ❌\n\nℹ️ **Valid settings are:** `welcome` and `member` ℹ️"
+          "❌ Please provide a valid setting! ❌\n\nℹ️ **Valid settings are:** `welcome`, `member` and `memberJoinDms` ℹ️"
         );
       return await message.reply({
         embeds: [invalid_setting_embed],
@@ -79,6 +79,18 @@ module.exports = {
                 "None/Unknown"
               }\n\`\`\``
             );
+            await message.reply({
+              embeds: [current_value_embed],
+            });
+            break;
+          case "memberJoinDms":
+            current_value_embed.addField(
+              "Value",
+              `\`\`\`\n${Guild.dmUsersOnJoin ? "On" : "Off"}\n\`\`\``
+            );
+            await message.reply({
+              embeds: [current_value_embed],
+            });
             break;
         }
         break;
@@ -203,6 +215,7 @@ module.exports = {
                 },
               }
             );
+            data.save()
             new_value_embed.addFields([
               {
                 name: "Old Value",
@@ -222,6 +235,48 @@ module.exports = {
             await message.reply({
               embeds: [new_value_embed],
             });
+            break;
+          case "memberJoinDms":
+            if (!["true", "false", "on", "off"].includes(value)) {
+              const invalid_value_embed = new MessageEmbed()
+                .setColor(colors.red)
+                .setDescription(
+                  "❌ That's an invalid value! ❌\n\nℹ️ **Valid values are:** `true`, `false`, `on` and `off` ℹ️"
+                );
+              return await message.reply({
+                embeds: [invalid_value_embed],
+              });
+            }
+            value =
+              value.toLowerCase() == "true" || value.toLowerCase() == "on"
+                ? true
+                : false;
+            var data = await Guilds.findOneAndUpdate(
+              {
+                id: message.guild.id,
+              },
+              {
+                $set: {
+                  dmUsersOnJoin: value,
+                },
+              }
+            );
+            data.save()
+            new_value_embed.addFields([
+              {
+                name: "Old Value",
+                value: `${Guild.dmUsersOnJoin ? "On" : "Off"}`,
+                inline: true,
+              },
+              {
+                name: "New Value",
+                value: `${value ? "On" : "Off"}`,
+                inline: true,
+              },
+            ]);
+            await message.reply({
+              embeds: [new_value_embed]
+            })
             break;
         }
         break;

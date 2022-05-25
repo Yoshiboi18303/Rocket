@@ -6,6 +6,7 @@ const passport = require("passport");
 const DiscordStrategy = require("passport-discord").Strategy;
 const Users = require("../schemas/userSchema");
 const bodyParser = require("body-parser");
+const utc = require("moment").utc;
 
 app.use(
   require("express-session")({
@@ -93,6 +94,16 @@ app.get("/features", (req, res) => {
 app.get("/owner", (req, res) => {
   res.redirect("https://yoshiboi18303-website-recoded.yoshiboi18303.repl.co/");
 });
+
+app.get("/stats", async (req, res) => {
+  res.status(200).render("stats", {
+    req,
+    client,
+    utc,
+    distube,
+    users: await Users.countDocuments()
+  })
+})
 
 app.listen(port);
 console.log(
