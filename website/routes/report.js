@@ -2,13 +2,26 @@ const express = require("express");
 const app = express.Router();
 var channel = client.channels.cache.get(config.reportChannel);
 
+/**
+ * Checks if a user is blacklisted.
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
+const isBlacklisted = async (req, res, next) => {
+  if (!req.isAuthenticated()) return next();
+  if (req.user.blacklisted) return true;
+  else return false;
+};
+
 app.get("/", (req, res) => {
   res.render("reportchoice", {
     req,
   });
 });
 
-app.get("/:type", (req, res) => {
+app.get("/:type", (req, res, next) => {
+  // if(isBlacklisted(req, res, next)) return res.redirect("/blacklisted?referral=report")
   var type = req.params.type;
   if (!["bug", "suggestion", "user"].includes(type))
     return res.redirect("/report");

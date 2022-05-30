@@ -176,7 +176,10 @@ module.exports = {
 
           var filter = async (btnInt) => {
             if (btnInt.user.id != message.author.id)
-              return await btnInt.reply({ content: "Get your own shot noob." });
+              return await btnInt.reply({
+                content: "Get your own shot noob.",
+                ephemeral: true,
+              });
             return true;
           };
 

@@ -29,7 +29,7 @@
     "passport-discord": "^0.1.4",
     "path": "^0.12.7",
     "puppeteer": "^14.1.1",
-    "radarbots.js": "^0.0.7",
+    "radarbots.js": "^0.0.13",
     "shelljs": "^0.8.5",
     "util": "^0.12.4"
   }

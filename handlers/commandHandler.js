@@ -5,9 +5,19 @@ module.exports = (client, Discord) => {
   for (const file of commandFiles) {
     const command = require(`../commands/${file}`);
 
-    if (!command.name) throw new Error("All commands need a name!");
+    if (!command.name)
+      throw new Error(
+        `Command "${file
+          .replace(".js", "")
+          .replace(file[0], file[0].toUpperCase())}" doesn't have a name!`
+      );
     if (!command.description)
-      throw new Error("All commands need a description!");
+      throw new Error(
+        `Command "${command.name.replace(
+          command.name[0],
+          command.name[0].toUpperCase()
+        )}" doesn't have a description!`
+      );
 
     client.commands.set(command.name, command);
     if (command.aliases) {

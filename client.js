@@ -43,8 +43,8 @@ const distube = new DisTube(client, {
   searchSongs: 15,
   youtubeDL: false,
 });
-const Radar = require("radarbots.js")
-const radar = new Radar(client, process.env.RADAR_KEY)
+const Radar = require("radarbots.js");
+const radar = new Radar(client, process.env.RADAR_KEY);
 
 global.Discord = require("discord.js");
 global.client = client;

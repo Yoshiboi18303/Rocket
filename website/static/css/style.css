@@ -20,6 +20,27 @@ header {
   color: #20aec2;
 }
 
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor {
+  position: relative;
+  left: 20px;
+  color: #1353ad;
+  bottom: 3px;
+  animation: blink 2s infinite;
+}
+
+.name::after {
+  content: "Rocket-Conomy";
+}
+
 .user-avatar {
   width: 56px;
   height: 56px;
@@ -344,4 +365,9 @@ code {
 
 code:hover {
   color: #143bb8;
+}
+
+.small-image {
+  width: 56px;
+  height: 56px;
 }

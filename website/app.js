@@ -101,9 +101,16 @@ app.get("/stats", async (req, res) => {
     client,
     utc,
     distube,
-    users: await Users.countDocuments()
-  })
-})
+    users: await Users.countDocuments(),
+  });
+});
+
+app.get("/blacklisted", (req, res) => {
+  if (!req.query.referral || !req.isAuthenticated()) return res.redirect("/");
+  res.status(403).render("blacklisted", {
+    req,
+  });
+});
 
 app.listen(port);
 console.log(

@@ -25,6 +25,14 @@ const guildSchema = Schema({
     type: Boolean,
     default: false,
   },
+  welcomeMessage: {
+    type: String,
+    default: "Hello **{usermention}**, welcome to **{guild}**!",
+  },
+  dmMessage: {
+    type: String,
+    default: "Hello and welcome to **{guild}**!"
+  }
 });
 
 module.exports = model("guilds", guildSchema);

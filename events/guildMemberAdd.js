@@ -1,7 +1,7 @@
 const { GuildMember, MessageAttachment } = require("discord.js");
 const Guilds = require("../schemas/guildSchema");
 const fetch = require("node-fetch");
-const { isHexColor } = require("ishex");
+// const { isHexColor } = require("ishex");
 
 module.exports = {
   name: "guildMemberAdd",
@@ -46,9 +46,27 @@ module.exports = {
     var buffer = Buffer.from(await req.arrayBuffer());
     var attachment = new MessageAttachment(buffer, "welcome.png");
 
+    var welcomeMessage = Guild.welcomeMessage
+      .replace("{usermention}", `<@${member.user.id}>`)
+      .replace("{guild}", `${member.guild.name}`)
+      .replace("{usertag}", `${member.user.tag}`)
+      .replace("{membercount}", `${member.guild.members.cache.size}`)
+      .replace("{username}", `${member.user.username}`);
+
     var channel = client.channels.cache.get(Guild.welcomeChannel);
     await channel.send({
+      content: `${welcomeMessage}`,
       files: [attachment],
     });
+
+    if(Guild.dmUsersOnJoin == false) return;
+
+    var dmMessage = Guild.dmMessage
+      .replace("{guild}", `${member.guild.name}`)
+    member.user.send({
+      content: `${dmMessage}`
+    }).catch(() => {
+      return;
+    })
   },
 };

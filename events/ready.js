@@ -43,15 +43,17 @@ module.exports = {
     data = await req.json();
     console.log(data);
 
-    client.radar.stats(client.guilds.cache.size, 1)
-      .then((data) => console.log(data))
-      .catch((e) => console.error(e))
+    setInterval(() => {
+      client.radar
+        .stats(client.guilds.cache.size, 1)
+        .then((data) => console.log(data))
+        .catch((e) => console.error(e));
+    }, ms("2m"));
 
-    /*
-    client.radar.lastVoted(config.owner)
+    client.radar
+      .lastVoted(config.owner)
       .then((data) => console.log(data))
-      .catch((e) => console.error(e))
-    */
+      .catch((e) => console.error(e));
 
     const activities = [
       "Rocket League",

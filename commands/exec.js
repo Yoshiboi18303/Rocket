@@ -1,3 +1,4 @@
+const { MessageAttachment } = require("discord.js");
 const shell = require("shelljs");
 
 module.exports = {
@@ -58,8 +59,9 @@ module.exports = {
     } else if (output.length > 4096 || output.stderr.length > 4096) {
       var buffer = Buffer.from(output);
       var attachment = new MessageAttachment(buffer, "output.txt");
-      return await message.reply({
+      return await msg.edit({
         content: `The output wanting to be shown for \`${cmd}\` is too long to be shown on Discord, so here's a file.`,
+        embeds: [],
         files: [attachment],
       });
     }

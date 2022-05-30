@@ -29,6 +29,7 @@ module.exports = {
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift();
 
+    /*
     if (
       !message.guild.me.permissions.has([
         Permissions.FLAGS.VIEW_CHANNEL,
@@ -44,6 +45,7 @@ module.exports = {
         return;
       }
     }
+    */
 
     const cmd = client.commands.get(command) || client.aliases.get(command);
     if (!cmd && Guild.unknownCommandMessage) {
@@ -73,11 +75,11 @@ module.exports = {
           content: "You aren't the owner of the bot!",
         });
     }
-    if(cmd.nsfw == true) {
-      if(!message.channel.nsfw) 
-        return await message.reply({ 
-          content: "This channel isn't an NSFW channel!" 
-        })
+    if (cmd.nsfw == true) {
+      if (!message.channel.nsfw)
+        return await message.reply({
+          content: "This channel isn't an NSFW channel!",
+        });
     }
     if (cmd.userPermissions?.length > 0) {
       if (!message.member.permissions.has(cmd.userPermissions))

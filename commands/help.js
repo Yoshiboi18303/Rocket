@@ -9,7 +9,6 @@ module.exports = {
   clientPermissions: [
     Permissions.FLAGS.VIEW_CHANNEL,
     Permissions.FLAGS.SEND_MESSAGES,
-    Permissions.FLAGS.EMBED_LINKS,
   ],
   execute: async (message) => {
     var Guild = await Guilds.findOne({ id: message.guild.id });

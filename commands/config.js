@@ -33,11 +33,11 @@ module.exports = {
         embeds: [invalid_action_embed],
       });
     }
-    if (!["welcome", "member", "memberJoinDms"].includes(setting)) {
+    if (!["welcome", "member", "memberJoinDms", "wmessage"].includes(setting)) {
       const invalid_setting_embed = new MessageEmbed()
         .setColor(colors.red)
         .setDescription(
-          "❌ Please provide a valid setting! ❌\n\nℹ️ **Valid settings are:** `welcome`, `member` and `memberJoinDms` ℹ️"
+          "❌ Please provide a valid setting! ❌\n\nℹ️ **Valid settings are:** `welcome`, `member`, `memberJoinDms` and `wmessage` ℹ️"
         );
       return await message.reply({
         embeds: [invalid_setting_embed],
@@ -92,6 +92,15 @@ module.exports = {
               embeds: [current_value_embed],
             });
             break;
+          case "wmessage":
+            current_value_embed.addField(
+              "Value",
+              `\`\`\`\n${Guild.welcomeMessage || "Unknown"}\n\`\`\``
+            );
+            await message.reply({
+              embeds: [current_value_embed],
+            });
+            break;
         }
         break;
       case "set":
@@ -130,7 +139,7 @@ module.exports = {
                 embeds: [bad_permissions_embed],
               });
             }
-            var data = await Guilds.findOneAndUpdate(
+            data = await Guilds.findOneAndUpdate(
               {
                 id: message.guild.id,
               },
@@ -205,7 +214,7 @@ module.exports = {
                 files: [attachment],
               });
             }
-            var data = await Guilds.findOneAndUpdate(
+            data = await Guilds.findOneAndUpdate(
               {
                 id: message.guild.id,
               },
@@ -215,7 +224,7 @@ module.exports = {
                 },
               }
             );
-            data.save()
+            data.save();
             new_value_embed.addFields([
               {
                 name: "Old Value",
@@ -251,7 +260,7 @@ module.exports = {
               value.toLowerCase() == "true" || value.toLowerCase() == "on"
                 ? true
                 : false;
-            var data = await Guilds.findOneAndUpdate(
+            data = await Guilds.findOneAndUpdate(
               {
                 id: message.guild.id,
               },
@@ -261,7 +270,7 @@ module.exports = {
                 },
               }
             );
-            data.save()
+            data.save();
             new_value_embed.addFields([
               {
                 name: "Old Value",
@@ -275,8 +284,36 @@ module.exports = {
               },
             ]);
             await message.reply({
-              embeds: [new_value_embed]
-            })
+              embeds: [new_value_embed],
+            });
+            break;
+          case "wmessage":
+            data = await Guilds.findOneAndUpdate(
+              {
+                id: message.guild.id,
+              },
+              {
+                $set: {
+                  welcomeMessage: value,
+                },
+              }
+            );
+            data.save();
+            new_value_embed.addFields([
+              {
+                name: "Old Value",
+                value: `\`\`\`\n${Guild.welcomeMessage}\n\`\`\``,
+                inline: true,
+              },
+              {
+                name: "New Value",
+                value: `\`\`\`\n${value}\n\`\`\``,
+                inline: true,
+              },
+            ]);
+            await message.reply({
+              embeds: [new_value_embed],
+            });
             break;
         }
         break;
