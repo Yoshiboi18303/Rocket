@@ -405,7 +405,10 @@ module.exports = {
                 providedWarnRole
               ) <= 0
             ) {
-              var coolAttachment = new MessageAttachment("https://cdn.discordapp.com/attachments/978301144977772596/981323250242035782/help.gif", "help.gif")
+              var coolAttachment = new MessageAttachment(
+                "https://cdn.discordapp.com/attachments/978301144977772596/981323250242035782/help.gif",
+                "help.gif"
+              );
               const fix_hierarchy_embed = new MessageEmbed()
                 .setColor(colors.red)
                 .setDescription(
@@ -481,7 +484,10 @@ module.exports = {
                 providedWarnRole
               ) <= 0
             ) {
-              var coolAttachment = new MessageAttachment("https://cdn.discordapp.com/attachments/978301144977772596/981323250242035782/help.gif", "help.gif")
+              var coolAttachment = new MessageAttachment(
+                "https://cdn.discordapp.com/attachments/978301144977772596/981323250242035782/help.gif",
+                "help.gif"
+              );
               const fix_hierarchy_embed = new MessageEmbed()
                 .setColor(colors.red)
                 .setDescription(
@@ -557,7 +563,10 @@ module.exports = {
                 providedWarnRole
               ) <= 0
             ) {
-              var coolAttachment = new MessageAttachment("https://cdn.discordapp.com/attachments/978301144977772596/981323250242035782/help.gif", "help.gif")
+              var coolAttachment = new MessageAttachment(
+                "https://cdn.discordapp.com/attachments/978301144977772596/981323250242035782/help.gif",
+                "help.gif"
+              );
               const fix_hierarchy_embed = new MessageEmbed()
                 .setColor(colors.red)
                 .setDescription(

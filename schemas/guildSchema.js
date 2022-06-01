@@ -43,8 +43,8 @@ const guildSchema = Schema({
   },
   logChannel: {
     type: String,
-    default: ""
-  }
+    default: "",
+  },
 });
 
 module.exports = model("guilds", guildSchema);

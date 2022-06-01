@@ -44,8 +44,8 @@ const userSchema = Schema({
   },
   globalWarnings: {
     type: Number,
-    default: 0
-  }
+    default: 0,
+  },
 });
 
 module.exports = model("users", userSchema);
