@@ -1,0 +1,34 @@
+{
+  "mechanics": [
+    {
+      "number": 1,
+      "question": "What mechanic involves carrying the ball through the air?",
+      "answer": "Air Dribble"
+    },
+    {
+      "number": 2,
+      "question": "What mechanic involves carrying the ball on the top of your car?",
+      "answer": "Dribble"
+    },
+    {
+      "number": 3,
+      "question": "What mechanic involves flinging the ball over the opponent(s)?",
+      "answer": "Flick"
+    },
+    {
+      "number": 4,
+      "question": "What mechanic was made by Musty?",
+      "answer": "Musty Flick"
+    },
+    {
+      "number": 5,
+      "question": "What mechanic involves crushing the ball against anything besides the ground?",
+      "answer": "Pinch"
+    },
+    {
+      "number": 6,
+      "question": "What mechanic involves crushing the ball against the ground?",
+      "answer": "Ground Pinch"
+    }
+  ]
+}

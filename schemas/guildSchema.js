@@ -31,7 +31,19 @@ const guildSchema = Schema({
   },
   dmMessage: {
     type: String,
-    default: "Hello and welcome to **{guild}**!"
+    default: "Hello and welcome to **{guild}**!",
+  },
+  warnRoles: {
+    type: Object,
+    default: {
+      warn1: "",
+      warn2: "",
+      warn3: "",
+    },
+  },
+  logChannel: {
+    type: String,
+    default: ""
   }
 });
 

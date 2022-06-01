@@ -60,10 +60,18 @@ module.exports = {
     var Testing = cmd.testing;
     if (!Testing) Testing = false;
     if (Testing) {
-      if (message.guild.id != config.testServerId)
+      if (
+        message.guild.id != config.testServerId &&
+        message.guild.id != config.secondTestServer &&
+        message.guild.id != config.thirdTestServer
+      )
         return await message.reply({
-          content: `This command is restricted to the testing server (**\`${
+          content: `This command is restricted to the testing server(s) (**\`${
             client.guilds.cache.get(config.testServerId)?.name
+          }\`, \`${
+            client.guilds.cache.get(config.secondTestServer)?.name
+          }\` & \`${
+            client.guilds.cache.get(config.thirdTestServer)?.name
           }\`**) for the moment!`,
         });
     }

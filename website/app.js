@@ -4,9 +4,11 @@ const path = require("path");
 const port = process.env.PORT || 3000;
 const passport = require("passport");
 const DiscordStrategy = require("passport-discord").Strategy;
+// const TwitterStrategy = require("passport-twitter").Strategy;
 const Users = require("../schemas/userSchema");
 const bodyParser = require("body-parser");
 const utc = require("moment").utc;
+// const Twitter = require("../schemas/twitterSchema");
 
 app.use(
   require("express-session")({

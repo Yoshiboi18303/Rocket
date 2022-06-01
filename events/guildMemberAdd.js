@@ -51,7 +51,8 @@ module.exports = {
       .replace("{guild}", `${member.guild.name}`)
       .replace("{usertag}", `${member.user.tag}`)
       .replace("{membercount}", `${member.guild.members.cache.size}`)
-      .replace("{username}", `${member.user.username}`);
+      .replace("{username}", `${member.user.username}`)
+      .replace("{userid}", `${member.user.id}`);
 
     var channel = client.channels.cache.get(Guild.welcomeChannel);
     await channel.send({
@@ -59,14 +60,15 @@ module.exports = {
       files: [attachment],
     });
 
-    if(Guild.dmUsersOnJoin == false) return;
+    if (Guild.dmUsersOnJoin == false) return;
 
-    var dmMessage = Guild.dmMessage
-      .replace("{guild}", `${member.guild.name}`)
-    member.user.send({
-      content: `${dmMessage}`
-    }).catch(() => {
-      return;
-    })
+    var dmMessage = Guild.dmMessage.replace("{guild}", `${member.guild.name}`);
+    member.user
+      .send({
+        content: `${dmMessage}`,
+      })
+      .catch(() => {
+        return;
+      });
   },
 };

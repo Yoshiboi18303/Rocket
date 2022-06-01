@@ -38,6 +38,14 @@ const userSchema = Schema({
     type: String,
     default: "#136bea",
   },
+  reminders: {
+    type: Array,
+    default: [],
+  },
+  globalWarnings: {
+    type: Number,
+    default: 0
+  }
 });
 
 module.exports = model("users", userSchema);
