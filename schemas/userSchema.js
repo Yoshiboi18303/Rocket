@@ -46,6 +46,10 @@ const userSchema = Schema({
     type: Number,
     default: 0,
   },
+  bugHunterLevel: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = model("users", userSchema);

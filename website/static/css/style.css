@@ -20,27 +20,6 @@ header {
   color: #20aec2;
 }
 
-@keyframes blink {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-.cursor {
-  position: relative;
-  left: 20px;
-  color: #1353ad;
-  bottom: 3px;
-  animation: blink 2s infinite;
-}
-
-.name::after {
-  content: "Rocket-Conomy";
-}
-
 .user-avatar {
   width: 56px;
   height: 56px;
@@ -261,7 +240,9 @@ header {
 }
 
 .login {
-  float: center;
+  float: right;
+  position: relative;
+  bottom: 12px;
 }
 
 label {
@@ -370,4 +351,48 @@ code:hover {
 .small-image {
   width: 56px;
   height: 56px;
+}
+
+.fade-red:hover {
+  color: red;
+}
+
+.fade-green:hover {
+  color: #a8ee33;
+}
+
+.fade-blue:hover {
+  color: #5271ff;
+}
+
+.fade-red,
+.fade-green,
+.fade-blue {
+  transition-duration: 0.56s;
+}
+
+footer {
+  background-color: #1068dd;
+}
+
+.link {
+  text-decoration: none;
+  color: white;
+  transition-duration: 0.5s;
+  font-family: "Radio Canada", sans-serif;
+  margin: 3.8px;
+}
+
+.link:hover {
+  color: #1027de;
+  cursor: pointer;
+}
+
+.copyright-info {
+  font-size: 25px;
+  font-family: "Orbitron", monospace;
+}
+
+.black {
+  color: black;
 }

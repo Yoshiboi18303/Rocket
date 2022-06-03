@@ -58,6 +58,17 @@ global.status = (queue) =>
   }\` | Autoplay: \`${queue.autoplay ? "On" : "Off"}\``;
 global.distube = distube;
 global.ms = require("ms");
+global.Enum = {
+  Log: {
+    Info: 0,
+    Error: 1,
+    Kick: 2,
+    Ban: 3,
+    Mute: 4,
+    Softban: 5,
+    Tempban: 6,
+  },
+};
 
 client.commands = new Collection();
 client.aliases = new Collection();

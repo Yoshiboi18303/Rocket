@@ -43,6 +43,46 @@ module.exports = {
     data = await req.json();
     console.log(data);
 
+    body = {
+      servers: client.guilds.cache.size,
+      shards: 1,
+    };
+    req = await fetch.default(
+      `https://api.discordservices.net/bot/${client.user.id}/stats`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: process.env.SERVICES_KEY,
+        },
+        body: JSON.stringify(body),
+      }
+    );
+    data = await req.json();
+    console.log(data);
+
+    var cmds = [];
+    client.commands.each((cmd) => {
+      var object = {
+        command: cmd.name,
+        desc: cmd.description,
+      };
+      cmds.push(object);
+    });
+
+    req = await fetch.default(
+      `https://api.discordservices.net/bot/${client.user.id}/commands`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: process.env.SERVICES_KEY,
+        },
+        body: cmds,
+      }
+    );
+    data = await req.json();
+    console.log(data);
+
     setInterval(() => {
       client.radar
         .stats(client.guilds.cache.size, 1)

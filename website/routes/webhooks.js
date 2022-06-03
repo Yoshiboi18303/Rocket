@@ -184,4 +184,39 @@ app.post("/fates", async (req, res) => {
   }
 });
 
+app.post("/services", async (req, res) => {
+  var secret = req.headers.authorization;
+  if (secret != process.env.SERVICES_SECRET)
+    return res
+      .status(400)
+      .send({ code: 400, message: "Incorrect Authorization" });
+  var botData = req.body.bot;
+  var userData = req.body.user;
+
+  const servicesVoteEmbed = new MessageEmbed()
+    .setColor(colors.green)
+    .setTitle("New Vote!")
+    .setDescription(
+      `Someone from **\`Discord Services\`** blessed **\`${botData.name}\`** with a vote!`
+    )
+    .addFields([
+      {
+        name: "Voter",
+        value: `${userData.name} (${userData.id})`,
+        inline: true,
+      },
+      {
+        name: "Voted At",
+        value: `${utc(Date.now()).format("HH:MM:SS - MM/DD/YYYY")}`,
+        inline: true,
+      },
+    ]);
+  await mainWebhook.send({
+    embeds: [servicesVoteEmbed],
+  });
+  return res
+    .status(200)
+    .send({ code: 200, message: "Vote Successfully Recieved" });
+});
+
 module.exports = app;

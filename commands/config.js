@@ -47,12 +47,13 @@ module.exports = {
         "warn1",
         "warn2",
         "warn3",
+        "logs",
       ].includes(setting)
     ) {
       const invalid_setting_embed = new MessageEmbed()
         .setColor(colors.red)
         .setDescription(
-          "❌ Please provide a valid setting! ❌\n\nℹ️ **Valid settings are:** `welcome`, `member`, `memberJoinDms`, `wmessage`, `warn1`, `warn2` and `warn3` ℹ️"
+          "❌ Please provide a valid setting! ❌\n\nℹ️ **Valid settings are:** `welcome`, `member`, `memberJoinDms`, `wmessage`, `warn1`, `warn2`, `warn3` and `logs` ℹ️"
         );
       return await message.reply({
         embeds: [invalid_setting_embed],
@@ -154,6 +155,18 @@ module.exports = {
               "Value",
               `\`\`\`\n${
                 message.guild.roles.cache.get(Guild.warnRoles.warn3)?.name ||
+                "None/Unknown"
+              }\n\`\`\``
+            );
+            await message.reply({
+              embeds: [current_value_embed],
+            });
+            break;
+          case "logs":
+            current_value_embed.addField(
+              "Value",
+              `\`\`\`\n${
+                message.guild.channels.cache.get(Guild.logChannel)?.name ||
                 "None/Unknown"
               }\n\`\`\``
             );
@@ -605,6 +618,64 @@ module.exports = {
               {
                 name: "New Value",
                 value: `\`\`\`\n${providedWarnRole.name}\n\`\`\``,
+                inline: true,
+              },
+            ]);
+            await message.reply({
+              embeds: [new_value_embed],
+            });
+            break;
+          case "logs":
+            var channel = message.guild.channels.cache.get(value);
+            if (!channel) {
+              const invalid_channel_embed = new MessageEmbed()
+                .setColor(colors.red)
+                .setDescription(
+                  "❌ Couldn't find that channel, did you specify a channel outside this guild? ❌"
+                );
+              return await message.reply({
+                embeds: [invalid_channel_embed],
+              });
+            }
+            if (
+              !message.guild.me
+                .permissionsIn(channel)
+                .has([
+                  Permissions.FLAGS.VIEW_CHANNEL,
+                  Permissions.FLAGS.SEND_MESSAGES,
+                ])
+            ) {
+              const bad_permissions_embed = new MessageEmbed()
+                .setColor(colors.red)
+                .setDescription(
+                  "❌ I can't send messages in/view that channel! Please review my permissions in that channel! ❌"
+                );
+              return await message.reply({
+                embeds: [bad_permissions_embed],
+              });
+            }
+            var newLogChannelData = await Guilds.findOneAndUpdate(
+              {
+                id: message.guild.id,
+              },
+              {
+                $set: {
+                  logChannel: value,
+                },
+              }
+            );
+            new_value_embed.addFields([
+              {
+                name: "Old Value",
+                value: `\`\`\`\n${
+                  message.guild.channels.cache.get(Guild.logChannel)?.name ||
+                  "None/Unknown"
+                }\n\`\`\``,
+                inline: true,
+              },
+              {
+                name: "New Value",
+                value: `\`\`\`\n${channel.name}\n\`\`\``,
                 inline: true,
               },
             ]);

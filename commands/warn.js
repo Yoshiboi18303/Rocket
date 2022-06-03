@@ -4,6 +4,7 @@ const Guilds = require("../schemas/guildSchema");
 const { Permissions, Message } = require("discord.js");
 const { convertToUpperCase } = require("../utils/");
 const wait = require("util").promisify(setTimeout);
+const Log = require("../utils/logger");
 
 module.exports = {
   name: "warn",
@@ -69,11 +70,11 @@ module.exports = {
       User.save();
     }
     var Guild = await Guilds.findOne({ id: message.guild.id });
-    if(!Guild) {
+    if (!Guild) {
       Guild = new Guilds({
-        id: message.guild.id
-      })
-      Guild.save()
+        id: message.guild.id,
+      });
+      Guild.save();
     }
     var warningData = await Warnings.findOne({
       user: user.id,
@@ -91,14 +92,18 @@ module.exports = {
           },
         ],
       });
-      var warnRole1 = message.guild.roles.cache.get(Guild.warnRoles.warn1)
-      if(warnRole1) {
-        if(message.guild.me.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) {
-          if(message.guild.roles.comparePositions(message.guild.roles.botRoleFor(client.user), warnRole1) > 0) {
-            member.roles.add(warnRole1)
-              .catch(() => {
-                return;
-              })
+      var warnRole1 = message.guild.roles.cache.get(Guild.warnRoles.warn1);
+      if (warnRole1) {
+        if (message.guild.me.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) {
+          if (
+            message.guild.roles.comparePositions(
+              message.guild.roles.botRoleFor(client.user),
+              warnRole1
+            ) > 0
+          ) {
+            member.roles.add(warnRole1).catch(() => {
+              return;
+            });
           }
         }
       }
@@ -110,27 +115,39 @@ module.exports = {
       };
       warningData.context.push(nextWarningData);
       var currentWarningNumber = warningData.context.length + 1;
-      console.log(currentWarningNumber)
-      switch(currentWarningNumber) {
-        case 1:
-          var warnRole2 = message.guild.roles.cache.get(Guild.warnRoles.warn2)
-          if(!warnRole2) break;
-          if(!message.guild.me.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) break;
-          if(message.guild.roles.comparePositions(message.guild.roles.botRoleFor(client.user), warnRole2) <= 0) break;
-          member.roles.add(warnRole2)
-            .catch(() => {
-              return;
-            })
-          break;
+      // console.log(currentWarningNumber)
+      switch (currentWarningNumber) {
         case 2:
-          var warnRole3 = message.guild.roles.cache.get(Guild.warnRoles.warn2)
-          if(!warnRole3) break;
-          if(!message.guild.me.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) break;
-          if(message.guild.roles.comparePositions(message.guild.roles.botRoleFor(client.user), warnRole3) <= 0) break;
-          member.roles.add(warnRole3)
-            .catch(() => {
-              return;
-            })
+          var warnRole2 = message.guild.roles.cache.get(Guild.warnRoles.warn2);
+          if (!warnRole2) break;
+          if (!message.guild.me.permissions.has(Permissions.FLAGS.MANAGE_ROLES))
+            break;
+          if (
+            message.guild.roles.comparePositions(
+              message.guild.roles.botRoleFor(client.user),
+              warnRole2
+            ) <= 0
+          )
+            break;
+          member.roles.add(warnRole2).catch(() => {
+            return;
+          });
+          break;
+        case 3:
+          var warnRole3 = message.guild.roles.cache.get(Guild.warnRoles.warn2);
+          if (!warnRole3) break;
+          if (!message.guild.me.permissions.has(Permissions.FLAGS.MANAGE_ROLES))
+            break;
+          if (
+            message.guild.roles.comparePositions(
+              message.guild.roles.botRoleFor(client.user),
+              warnRole3
+            ) <= 0
+          )
+            break;
+          member.roles.add(warnRole3).catch(() => {
+            return;
+          });
           break;
       }
     }
@@ -148,18 +165,39 @@ module.exports = {
     newUserData.save();
     const doneEmbed = new MessageEmbed()
       .setColor(colors.green)
-      .setDescription(`✅ **${user.tag}** successfully warned for reason \`${reason}\` with \`${severity}\` severity! ✅\n\n**ℹ️ This user now has \`${User.globalWarnings + 1}\` ${User.globalWarnings + 1 == 1 ? "warning" : "warnings"} on the bot altogether. ℹ️**`);
+      .setDescription(
+        `✅ **${
+          user.tag
+        }** successfully warned for reason \`${reason}\` with \`${severity}\` severity! ✅\n\n**ℹ️ This user now has \`${
+          User.globalWarnings + 1
+        }\` ${
+          User.globalWarnings + 1 == 1 ? "warning" : "warnings"
+        } on the bot altogether. ℹ️**`
+      );
     await message.reply({
-      embeds: [doneEmbed]
-    })
-    if(!user.bot) {
-      var extraText = (User.globalWarnings + 1) >= 5 ? `‼️ This is warning number \`${User.globalWarnings + 1}\` on this bot, you might be subject to a blacklist from the bot! ‼️` : `❗ This is warning number \`${User.globalWarnings + 1}\` on this bot, you might be subject to a blacklist from the bot if this continues! ❗`
-      user.send({
-        content: `⚠️ You were warned in **${message.guild.name}** by **${message.author.tag}** with the provided reason: \`${reason}\` ⚠️\n\n**${extraText}**`
-      })
+      embeds: [doneEmbed],
+    });
+    if (!user.bot) {
+      var extraText =
+        User.globalWarnings + 1 >= 5
+          ? `‼️ This is warning number \`${
+              User.globalWarnings + 1
+            }\` on this bot, you might be subject to a blacklist from the bot! ‼️`
+          : `❗ This is warning number \`${
+              User.globalWarnings + 1
+            }\` on this bot, you might be subject to a blacklist from the bot if this continues! ❗`;
+      user
+        .send({
+          content: `⚠️ You were warned in **${message.guild.name}** by **${message.author.tag}** with the provided reason: \`${reason}\` ⚠️\n\n**${extraText}**`,
+        })
         .catch(() => {
           return;
-        })
+        });
     }
+    Log(client, message.guild, Enum.Log.Warn, {
+      moderator: message.member,
+      member,
+      reason,
+    });
   },
 };
