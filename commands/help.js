@@ -46,7 +46,11 @@ module.exports = {
       new MessageButton()
         .setStyle("LINK")
         .setLabel("Website")
-        .setURL(`https://${config.origin}`)
+        .setURL(`https://${config.origin}`),
+      new MessageButton()
+        .setStyle("LINK")
+        .setLabel("Support")
+        .setURL(`${config.supportServerURL}`)
     );
 
     await message.reply({

@@ -114,8 +114,7 @@ module.exports = {
         severity,
       };
       warningData.context.push(nextWarningData);
-      var currentWarningNumber = warningData.context.length + 1;
-      // console.log(currentWarningNumber)
+      var currentWarningNumber = warningData.context.length;
       switch (currentWarningNumber) {
         case 2:
           var warnRole2 = message.guild.roles.cache.get(Guild.warnRoles.warn2);

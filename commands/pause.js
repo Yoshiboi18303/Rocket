@@ -2,9 +2,10 @@ module.exports = {
   name: "pause",
   description: "Pause the music",
   aliases: [],
+  usage: "{prefix}pause",
   testing: false,
   ownerOnly: false,
-  execute: async (message, args) => {
+  execute: async (message) => {
     const vc = message.member.voice.channel;
     if (!vc) {
       const no_vc_embed = new MessageEmbed()

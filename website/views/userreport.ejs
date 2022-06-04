@@ -84,12 +84,12 @@
   <script>
     var form = $("#userreports")
     
-    form.submit((e) => {
+    form.submit(async (e) => {
       var user = $("#user").val()
       var desc = $("#description").val()
       
       e.preventDefault()
-      fetch(`https://rocket-conomy.tk/report/sendreport`, {
+      var req = await fetch(`https://rocket-conomy.tk/report/sendreport`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -97,7 +97,8 @@
           description: desc
         }) 
       })
-      location.href = "/report/user?message=Report Sent Successfully&error=false"
+      if(req.status != 200) location.href = `/report/user?message=Report Failed To Send&error=true`
+      else location.href = "/report/user?message=Report Sent Successfully&error=false"
     })
   </script>
 </html>

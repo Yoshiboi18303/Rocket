@@ -1,5 +1,7 @@
 const fetch = require("node-fetch");
 const { Client } = require("discord.js");
+const Guilds = require("../schemas/guildSchema");
+const Users = require("../schemas/userSchema");
 
 module.exports = {
   name: "ready",
@@ -90,10 +92,29 @@ module.exports = {
         .catch((e) => console.error(e));
     }, ms("2m"));
 
+    /*
     client.radar
       .lastVoted(config.owner)
       .then((data) => console.log(data))
       .catch((e) => console.error(e));
+    */
+
+    var originVc = client.channels.cache.get("982507708634763294");
+
+    originVc.setName(
+      `https://${config.origin}`,
+      "Ensuring the origin is up-to-date."
+    );
+
+    const cachedGuilds = await Guilds.countDocuments();
+    const cachedUsers = await Users.countDocuments();
+
+    var cachedVc = client.channels.cache.get("982508373595553823");
+
+    cachedVc.setName(
+      `Cached: ${cachedGuilds + cachedUsers}`,
+      "Ensuring the cached count is up-to-date."
+    );
 
     const activities = [
       "Rocket League",

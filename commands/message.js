@@ -35,7 +35,7 @@ module.exports = {
     const doneEmbed = new MessageEmbed()
       .setColor(colors.green)
       .setDescription(
-        `✅ Successfully logged your message to ${count} ${
+        `✅ Successfully logged your message to **\`${count}\`** ${
           count == 1 ? "guild" : "guilds"
         }! ✅`
       );

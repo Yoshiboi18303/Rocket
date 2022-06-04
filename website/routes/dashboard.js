@@ -5,10 +5,9 @@ const { Permissions } = require("discord.js");
 /**
  * Checks if a user is blacklisted.
  * @param {express.Request} req
- * @param {express.Response} res
  * @param {express.NextFunction} next
  */
-const isBlacklisted = async (req, res, next) => {
+const isBlacklisted = async (req, next) => {
   if (!req.isAuthenticated()) return next();
   if (req.user.blacklisted) return true;
   else return false;
