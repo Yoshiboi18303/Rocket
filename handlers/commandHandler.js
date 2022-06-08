@@ -1,4 +1,4 @@
-module.exports = (client, Discord) => {
+module.exports = (client) => {
   const commandFiles = fs
     .readdirSync("./commands/")
     .filter((file) => file.endsWith(".js"));
@@ -7,20 +7,22 @@ module.exports = (client, Discord) => {
 
     if (!command.name)
       throw new Error(
-        `Command "${file
-          .replace(".js", "")
-          .replace(file[0], file[0].toUpperCase())}" doesn't have a name!`
+        `Command ${
+          file.replace(".js", "").replace(file[0], file[0].toUpperCase()).blue
+        } `.red + "doesn't have a name!".red
       );
     if (!command.description)
       throw new Error(
-        `Command "${command.name.replace(
-          command.name[0],
-          command.name[0].toUpperCase()
-        )}" doesn't have a description!`
+        `Command ${
+          command.name.replace(command.name[0], command.name[0].toUpperCase())
+            .blue
+        } `.red + "doesn't have a description!".red
       );
 
     client.commands.set(command.name, command);
     if (command.aliases) {
+      if (typeof command.aliases == "string" && command.aliases.includes(","))
+        command.aliases = command.aliases.split(",");
       if (!Array.isArray(command.aliases))
         command.aliases = [`${command.aliases}`];
       for (var alias of command.aliases) {

@@ -4,6 +4,7 @@ const { MessageAttachment } = require("discord.js");
 const util = require("util");
 const utils = require("../utils/");
 const Warnings = require("../schemas/warningSchema");
+const Reviews = require("../schemas/reviewSchema");
 
 module.exports = {
   name: "eval",

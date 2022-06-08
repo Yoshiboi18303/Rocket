@@ -8,8 +8,14 @@ module.exports = (client, Discord) => {
 
     if (!event.name) throw new Error("All events need a name!");
 
-    distube.on(event.name, (...args) =>
-      event.execute(...args, client, Discord)
-    );
+    if (event.once) {
+      distube.once(event.name, (...args) =>
+        event.execute(...args, client, Discord)
+      );
+    } else {
+      distube.on(event.name, (...args) =>
+        event.execute(...args, client, Discord)
+      );
+    }
   }
 };

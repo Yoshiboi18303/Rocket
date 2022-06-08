@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review - Rocket-Conomy</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= key %>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', "G-NXL9764MWW");
+    </script>
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
+    <link rel="shortcut icon" href="/static/img/icon.png" type="image/png">
+  </head>
+  <body>
+    <header>
+      <img src="/static/img/icon.png" alt="Rocket-Conomy Icon" class="icon">
+      <br>
+      <h3 class="name">Rocket-Conomy</h3>
+      <% if(!req.isAuthenticated()) { %>
+        <button class="btn login-btn" onclick="location.href='/login'"><img src="/static/img/discord.png" alt="Discord Icon" class="login-image"><p class="login-text">Login</p></button>
+      <% } else { %>
+        <img src="https://cdn.discordapp.com/avatars/<%= req.user.id %>/<%= req.user.discord.avatar %>.png" alt="User Avatar" class="user-avatar">
+        <h3 class="user-username"><%= req.user.discord.username %></h3>
+        <button class="btn" onclick="alert('Coming soon!')">Dashboard</button>
+        <button class="logout" onclick="location.href='/logout'">Logout</button>
+      <% } %>
+    </header>
+    <br>
+    <% if(msg != "") { %>
+      <% if(error == true) { %>
+        <div class="error-message">
+          <br>
+          <br>
+          <h4 class="message"><%= msg %></h4>
+          <a class="remove" href="/report/review" rel="noreferrer">X</a>
+        </div>
+      <% } else { %>
+        <div class="success-message">
+          <br>
+          <br>
+          <h4 class="message"><%= msg %></h4>
+          <a class="remove" href="/report/review" rel="noreferrer">X</a>
+        </div>
+      <% } %>
+      <br>
+      <br>
+    <% } %>
+    <% if(!req.isAuthenticated()) { %>
+      <div class="login-alert">
+        <h1>Not Authenticated!</h1>
+        <br>
+        <p>You must be logged in to view this page!</p>
+        <br>
+        <button class="btn login" onclick="location.href='/login'">Login</button>
+      </div>
+    <% } else { %>
+      <h1>Review The Bot</h1>
+      <h3 class="description">Do you have a review for the bot? You can send your review of <%= client.user.username %> here!</h3>
+      <br>
+      <form id="reviews">
+        <label for="star-count">Stars</label>
+        <input type="range" min="1" max="5" defaultValue="3" id="stars" required>
+        <br>
+        <label for="text">Review Text</label>
+        <% if(placeholder != "") { %>
+          <textarea required placeholder="This bot has these good features, but could be fixed with this..." id="review"><%= placeholder %></textarea>
+        <% } else { %>
+          <textarea required placeholder="This bot has these good features, but could be fixed with this..." id="review"></textarea>
+        <% } %>
+        <br>
+        <input type="submit" value="Submit" class="submit">
+      </form>
+    <% } %>
+    <br>
+    <footer>
+      <h2 class="copyright-info">
+        <small>
+          © 2022 <span class="fade-green">Yoshiboi18303</span> - <span class="fade-blue">Rocket-Conomy</span>, and everything else has no affiliation with Psyonix Inc. <span class="black">|</span> <span class="fade-blue">Rocket-Conomy</span> is licensed under the <a href="https://github.com/Yoshiboi18303/Rocket-Conomy/blob/main/LICENSE" class="link black">GNU General Public License</a>.
+        </small>
+      </h2>
+      <br>
+      <h5 class="referral">
+        <small>
+          Go get Rocket League <a href="https://www.rocketleague.com/" class="referral-link" rel="noreferrer" target="_blank">here</a> if you like this bot!
+        </small>
+      </h5>
+      <br>
+      <div class="links">
+        <a href="/" class="link" rel="noreferrer">Back To Home</a>
+        <a href="https://github.com/Yoshiboi18303/Rocket-Conomy" class="link" target="_blank" rel="noreferrer">Source Code</a>
+        <a href="https://discord.gg/AC9FfKAxAa" class="link" target="_blank" rel="noreferrer">Support Server</a>
+      </div>
+    </footer>
+  </body>
+  <script>
+    var form = $("#reviews")
+    
+    form.submit(async (e) => {
+      var stars = $("#stars").val()
+      var review = $("#review").val()
+      
+      e.preventDefault()
+      var req = await fetch(`https://rocket-conomy.tk/report/sendreview`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          stars,
+          review,
+        }) 
+      })
+      if(req.status != 200) location.href = "/report/review?message=Review Failed To Send&error=true"
+      else location.href = "/report/review?message=Review Sent Successfully&error=false"
+    })
+  </script>
+</html>

@@ -129,6 +129,7 @@ module.exports = {
       }
     );
     data.save();
+    statcord.postCommand(cmd.name, message.author.id);
     await cmd.execute(message, args);
   },
 };

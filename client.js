@@ -45,6 +45,14 @@ const distube = new DisTube(client, {
 });
 const Radar = require("radarbots.js");
 const radar = new Radar(client, process.env.RADAR_KEY);
+const { Client: StatcordClient } = require("statcord.js");
+const statcord = new StatcordClient({
+  client,
+  key: process.env.STATCORD_KEY,
+  postCpuStatistics: true,
+  postMemStatistics: true,
+  postNetworkStatistics: true,
+});
 
 global.Discord = require("discord.js");
 global.client = client;
@@ -67,8 +75,19 @@ global.Enum = {
     Mute: 4,
     Softban: 5,
     Tempban: 6,
+    MessageEdit: 7,
+    MessageDelete: 8,
+  },
+  Actions: {
+    None: 0,
+    Delete: 1,
+    DeleteWarn: 2,
+    0: "None",
+    1: "Delete Message",
+    2: "Delete Message & Warn Member",
   },
 };
+global.statcord = statcord;
 
 client.commands = new Collection();
 client.aliases = new Collection();

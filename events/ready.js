@@ -92,6 +92,8 @@ module.exports = {
         .catch((e) => console.error(e));
     }, ms("2m"));
 
+    statcord.autopost();
+
     /*
     client.radar
       .lastVoted(config.owner)
@@ -117,7 +119,9 @@ module.exports = {
     );
 
     const activities = [
-      "Rocket League",
+      "The Galaxy",
+      "In Servers",
+      "With Food",
       `${client.users.cache.size} users`,
       `${client.guilds.cache.size} ${
         client.guilds.cache.size > 1 ? "servers" : "server"

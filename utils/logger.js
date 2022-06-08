@@ -10,16 +10,14 @@ const { Client, Guild, MessageEmbed, GuildMember } = require("discord.js");
  * @param {Guild} guild - The Guild to use.
  * @param {Number} action - The action that was taken.
  * @param {Object} data - The extra data.
- * @param {GuildMember} data.member - Guild member hit by this moderation action.
+ * @param {GuildMember} data.member - Guild member.
  * @param {String} data.reason - The reason for this action.
  * @param {GuildMember} data.moderator - The moderator for the action.
- * @param {String} data.message - The message from the developer (if the action is right).
+ * @param {String} data.message - A message.
+ * @param {String} data.oldMessage - The old message from the author
+ * @param {String} data.newMessage - The new message from the author
  */
 module.exports = async (client, guild, action, data) => {
-  var Guild = await Guilds.findOne({ id: guild.id });
-
-  // var channel = guild.channels.cache.get(Guild.channels.modlog);
-
   const em = new MessageEmbed()
     .setTitle(`${client.user.username} Logger`)
     .setAuthor({
@@ -40,7 +38,7 @@ module.exports = async (client, guild, action, data) => {
         `An error has occurred while using ${
           client.user.username != undefined && client.user.username != null
             ? client.user.username
-            : "Rocket-Conomy"
+            : "Rocket"
         } in **${guild.name}**.`
       )
         .addField(`Error`, `**${data.message}**`)
@@ -108,13 +106,63 @@ module.exports = async (client, guild, action, data) => {
         ])
         .setColor(colors.yellow);
       break;
+    case Enum.Log.MessageEdit:
+      em.setDescription(`A message from <@${data.member.user.id}> was edited.`)
+        .addFields([
+          {
+            name: "Old Message",
+            value: `${data.oldMessage || "Undefined/Unknown Message"}`,
+            inline: true,
+          },
+          {
+            name: "New Message",
+            value: `${data.newMessage}`,
+            inline: true,
+          },
+        ])
+        .setColor(colors.yellow);
+      break;
+    case Enum.Log.MessageDelete:
+      em.setDescription(`A message from <@${data.member.user.id}> was deleted`)
+        .addField("Message", `${data.message}`, true)
+        .setColor(colors.red);
+      break;
   }
 
-  var channel = client.channels.cache.get(Guild.logChannel);
+  var queue = [];
 
-  if (!channel) return;
-
-  channel?.send({
+  if (action != Enum.Log.Info) {
+    var Guild = await Guilds.findOne({ id: guild.id });
+    if (!Guild) {
+      Guild = new Guilds({
+        id: guild.id,
+      });
+      Guild.save();
+    }
+    var logChannel = client.channels.cache.get(Guild.logChannel);
+    if (!logChannel) return;
+    await logChannel.send({
+      embeds: [em],
+    });
+    return console.log("Guild-specific log sent!".green);
+  }
+  var guilds = await Guilds.find({});
+  guilds = guilds.filter((guild) => guild.logChannel != "");
+  for (var guild of guilds) {
+    var newLength = queue.push(client.channels.cache.get(guild.logChannel));
+    console.log(`Item number ${newLength} added to the array.`.blue);
+  }
+  console.log("Sending first message...".yellow);
+  await queue[0].send({
     embeds: [em],
   });
+  queue.shift();
+  setInterval(async () => {
+    if (queue.length <= 0) return;
+    console.log("Sending next message...".yellow);
+    await queue[0].send({
+      embeds: [em],
+    });
+    queue.shift();
+  }, 5000);
 };

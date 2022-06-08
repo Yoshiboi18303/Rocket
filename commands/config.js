@@ -8,7 +8,7 @@ module.exports = {
     "{prefix}config <action> <setting> [value (required for changing an option)]",
   testing: false,
   ownerOnly: false,
-  userPermissions: [Permissions.FLAGS.MANAGE_SERVER],
+  userPermissions: [Permissions.FLAGS.MANAGE_GUILD],
   clientPermissions: [],
   /**
    * @param {Message} message
@@ -48,12 +48,13 @@ module.exports = {
         "warn2",
         "warn3",
         "logs",
+        "lmessage",
       ].includes(setting)
     ) {
       const invalid_setting_embed = new MessageEmbed()
         .setColor(colors.red)
         .setDescription(
-          "❌ Please provide a valid setting! ❌\n\nℹ️ **Valid settings are:** `welcome`, `member`, `memberJoinDms`, `wmessage`, `warn1`, `warn2`, `warn3` and `logs` ℹ️"
+          "❌ Please provide a valid setting! ❌\n\nℹ️ **Valid settings are:** `welcome`, `member`, `memberJoinDms`, `wmessage`, `warn1`, `warn2`, `warn3`, `logs` and `lmessage` ℹ️"
         );
       return await message.reply({
         embeds: [invalid_setting_embed],
@@ -169,6 +170,15 @@ module.exports = {
                 message.guild.channels.cache.get(Guild.logChannel)?.name ||
                 "None/Unknown"
               }\n\`\`\``
+            );
+            await message.reply({
+              embeds: [current_value_embed],
+            });
+            break;
+          case "lmessage":
+            current_value_embed.addField(
+              "Value",
+              `\`\`\`\n${Guild.leaveMessage}\n\`\`\``
             );
             await message.reply({
               embeds: [current_value_embed],
@@ -676,6 +686,34 @@ module.exports = {
               {
                 name: "New Value",
                 value: `\`\`\`\n${channel.name}\n\`\`\``,
+                inline: true,
+              },
+            ]);
+            await message.reply({
+              embeds: [new_value_embed],
+            });
+            break;
+          case "lmessage":
+            var newLeaveMessageData = await Guilds.findOneAndUpdate(
+              {
+                id: message.guild.id,
+              },
+              {
+                $set: {
+                  leaveMessage: value,
+                },
+              }
+            );
+            newLeaveMessageData.save();
+            new_value_embed.addFields([
+              {
+                name: "Old Value",
+                value: `\`\`\`\n${Guild.leaveMessage}\n\`\`\``,
+                inline: true,
+              },
+              {
+                name: "New Value",
+                value: `\`\`\`\n${value}\n\`\`\``,
                 inline: true,
               },
             ]);

@@ -219,4 +219,8 @@ app.post("/services", async (req, res) => {
     .send({ code: 200, message: "Vote Successfully Recieved" });
 });
 
+app.post("/radar", async (req, res) => {
+  console.log(req.body);
+});
+
 module.exports = app;

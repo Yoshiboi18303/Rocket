@@ -9,6 +9,8 @@ const Users = require("../schemas/userSchema");
 const bodyParser = require("body-parser");
 const utc = require("moment").utc;
 // const Twitter = require("../schemas/twitterSchema");
+const key = process.env.GOOGLE_ANALYTICS_ID;
+const Reviews = require("../schemas/reviewSchema");
 
 app.use(
   require("express-session")({
@@ -81,15 +83,24 @@ app.use("/report", require("./routes/report"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-app.get(["/", "/home"], (req, res) => {
+app.get(["/", "/home"], async (req, res) => {
+  var reviews = await Reviews.find({});
+  var count = await Reviews.countDocuments();
+  // console.log(count)
+  if (!Array.isArray(reviews)) reviews = [reviews];
   res.status(200).render("index", {
     req,
+    key,
+    reviews,
+    count,
+    client,
   });
 });
 
 app.get("/features", (req, res) => {
   res.status(200).render("features", {
     req,
+    key,
   });
 });
 
@@ -104,6 +115,7 @@ app.get("/stats", async (req, res) => {
     utc,
     distube,
     users: await Users.countDocuments(),
+    key,
   });
 });
 
@@ -111,12 +123,13 @@ app.get("/blacklisted", (req, res) => {
   if (!req.query.referral || !req.isAuthenticated()) return res.redirect("/");
   res.status(403).render("blacklisted", {
     req,
+    key,
   });
 });
 
 app.listen(port);
 console.log(
-  `The website for ${"Rocket-Conomy".blue}`.green +
+  `The website for ${"Rocket".blue}`.green +
     ` is now listening on port ${`${port}`.blue}`.green +
     "!".green
 );

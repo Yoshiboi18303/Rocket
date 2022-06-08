@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <%- include("includes/head", { title: "Suggest" }) %>
+    <%- include("includes/head", { title: "Suggest", key }) %>
   </head>
   <body>
     <%- include("includes/header", { req }) %>
@@ -12,7 +12,7 @@
           <br>
           <br>
           <h4 class="message"><%= msg %></h4>
-          <a class="remove" href="/report/bug" rel="noreferrer">X</a>
+          <a class="remove" href="/report/suggestion" rel="noreferrer">X</a>
         </div>
       <% } else { %>
         <div class="success-message">

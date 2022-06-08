@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <%- include("includes/head", { title: "Report Selection" }) %>
+    <%- include("includes/head", { title: "Report Selection", key }) %>
   </head>
   <body>
     <%- include("includes/header", { req }) %>
@@ -13,6 +13,7 @@
       <button class="btn" onclick="location.href='/report/bug'">Bug</button>
       <button class="btn" onclick="location.href='/report/suggestion'"">Suggestion</button>
       <button class="btn" onclick="location.href='/report/user'">User</button>
+      <button class="btn" onclick="location.href='/report/review'">Review</button>
     </div>
     <br>
     <%- include("includes/footer") %>

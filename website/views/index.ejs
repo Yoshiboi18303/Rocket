@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <%- include("includes/head", { title: "Home" }) %>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Rocket</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= key %>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments)}
+      gtag('js', new Date());
+    
+      gtag('config', "G-NXL9764MWW");
+    </script>
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
+    <link rel="shortcut icon" href="/static/img/icon.png" type="image/png">
   </head>
   <body>
-    <%- include("includes/header", { req }) %>
+    <header>
+      <img src="/static/img/icon.png" alt="Rocket Icon" class="icon">
+      <br>
+      <h3 class="name">Rocket</h3>
+      <% if(!req.isAuthenticated()) { %>
+        <button class="btn login-btn" onclick="location.href='/login'"><img src="/static/img/discord.png" alt="Discord Icon" class="login-image"><p class="login-text">Login</p></button>
+      <% } else { %>
+        <img src="https://cdn.discordapp.com/avatars/<%= req.user.id %>/<%= req.user.discord.avatar %>.png" alt="User Avatar" class="user-avatar">
+        <h3 class="user-username"><%= req.user.discord.username %></h3>
+        <button class="btn" onclick="alert('Coming soon!')">Dashboard</button>
+        <button class="logout" onclick="location.href='/logout'">Logout</button>
+      <% } %>
+    </header>
     <br>
-    <img src="/static/img/icon.png" alt="Rocket-Conomy's Avatar" class="avatar">
-    <h1>Rocket-Conomy</h1>
-    <h3 class="description">An Economy bot with a Rocket League twist!</h3>
+    <img src="/static/img/icon.png" alt="Rocket's Avatar" class="avatar">
+    <h1>Rocket</h1>
+    <h3 class="description">A multipurpose bot for servers beyond the galaxy!</h3>
     <br>
     <div class="buttons">
       <button class="btn" onclick="location.href='https://bit.ly/3lbKv8l'"><img src="/static/img/discord.png" alt="Discord Icon" class="dc-icon"><h5>Invite</h5></button>
@@ -17,6 +44,47 @@
       <button class="btn" onclick="location.href='/report'"><h5>Report</h5></button>
     </div>
     <br>
-    <%- include("includes/footer") %>
+    <br>
+    <h2>Our Reviews</h2>
+    <br>
+    <% var callbackRuns = 1; %>
+    <% if(count > 0) { %>
+      <div class="reviews">
+        <% while(callbackRuns < 3) { %>
+          <% reviews.forEach((review) => { %>
+            <div class="review">
+              <% var reviewUser = review.user %>
+              <% var user = client.users.cache.get(reviewUser) %>
+              
+              <img class="reviewer-avatar" src="<%= user.displayAvatarURL({ size: 512 }) %>">
+              <br>
+              <h3 class="reviewer-username"><%= user.username %></h3>
+              <br>
+              <%= review.formattedStars %>
+              <br>
+              <br>
+              <p class="review">"<%= review.review.slice(0, 200) %>"</p>
+            </div>
+          <% }) %>
+          <% callbackRuns++ %>
+        <% } %>
+      </div>
+    <% } else { %>
+      <h3 class="no-reviews fade-red"><span>No Reviews Yet... <img src="/static/img/failure.png" class="failure-image"></span></h3>
+    <% } %>
+    <br>
+    <footer>
+      <h2 class="copyright-info">
+        <small>
+          © 2022 <span class="fade-green">Yoshiboi18303</span> <span class="black">|</span> <span class="fade-blue">Rocket</span> is licensed under the <a href="https://github.com/Yoshiboi18303/Rocket/blob/main/LICENSE" class="link black">GNU General Public License</a>.
+        </small>
+      </h2>
+      <br>
+      <div class="links">
+        <a href="/" class="link" rel="noreferrer">Back To Home</a>
+        <a href="https://github.com/Yoshiboi18303/Rocket" class="link" target="_blank" rel="noreferrer">Source Code</a>
+        <a href="https://discord.gg/AC9FfKAxAa" class="link" target="_blank" rel="noreferrer">Support Server</a>
+      </div>
+    </footer>
   </body>
 </html>

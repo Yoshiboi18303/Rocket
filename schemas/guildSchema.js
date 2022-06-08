@@ -29,6 +29,10 @@ const guildSchema = Schema({
     type: String,
     default: "Hello **{usermention}**, welcome to **{guild}**!",
   },
+  leaveMessage: {
+    type: String,
+    default: "Goodbye **{usertag}**, we will miss you...",
+  },
   dmMessage: {
     type: String,
     default: "Hello and welcome to **{guild}**!",
@@ -42,6 +46,31 @@ const guildSchema = Schema({
     },
   },
   logChannel: {
+    type: String,
+    default: "",
+  },
+  filters: {
+    type: Object,
+    default: {
+      language: {
+        on: false,
+        action: 0,
+      },
+      links: {
+        on: false,
+        action: 0,
+      },
+      mentions: {
+        on: false,
+        action: 0,
+      },
+      ghostPings: {
+        on: false,
+        action: 0,
+      },
+    },
+  },
+  starboard: {
     type: String,
     default: "",
   },

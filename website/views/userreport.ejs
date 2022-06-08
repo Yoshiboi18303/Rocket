@@ -4,16 +4,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Report - Rocket-Conomy</title>
+    <title>User Report - Rocket</title>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= key %>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', "G-NXL9764MWW");
+    </script>
     <link rel="stylesheet" href="/static/css/style.css" type="text/css">
     <link rel="shortcut icon" href="/static/img/icon.png" type="image/png">
   </head>
   <body>
     <header>
-      <img src="/static/img/icon.png" alt="Rocket-Conomy Icon" class="icon">
+      <img src="/static/img/icon.png" alt="Rocket Icon" class="icon">
       <br>
-      <h3 class="name">Rocket-Conomy</h3>
+      <h3 class="name">Rocket</h3>
       <% if(!req.isAuthenticated()) { %>
         <button class="btn login" onclick="location.href='/login'">Login</button>
       <% } else { %>
