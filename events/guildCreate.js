@@ -127,7 +127,7 @@ module.exports = {
     const cachedVc = supportServer.channels.cache.get("982508373595553823");
 
     const cachedGuilds = await Guilds.countDocuments();
-    const cachedUsers = await Guilds.countDocuments();
+    const cachedUsers = await Users.countDocuments();
 
     cachedVc.setName(
       `Cached: ${cachedGuilds + cachedUsers}`,
