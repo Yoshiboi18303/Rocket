@@ -15,7 +15,7 @@ module.exports = {
   type: "Utility",
   userPermissions: [Permissions.FLAGS.MANAGE_CHANNELS],
   clientPermissions: [Permissions.FLAGS.MANAGE_CHANNELS],
-  testing: true,
+  testing: false,
   ownerOnly: false,
   nsfw: false,
   /**

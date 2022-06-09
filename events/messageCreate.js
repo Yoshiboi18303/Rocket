@@ -1,11 +1,23 @@
 const Guilds = require("../schemas/guildSchema");
 const Users = require("../schemas/userSchema");
-const { Permissions, MessageEmbed } = require("discord.js");
+const { Permissions, MessageEmbed, Message } = require("discord.js");
+const fs = require("fs/promises");
 
 module.exports = {
   name: "messageCreate",
+  /**
+   * @param {Message} message
+   */
   async execute(message) {
-    if (message.author.bot || !message.guild) return;
+    if (!message.guild) return;
+    if (message.channel.name.includes(`ticket-${message.guild.id}-`)) {
+      if (message.author.id == client.user.id) return;
+      fs.appendFile(
+        `tickets/${message.guild.id}/${message.channel.id}.txt`,
+        `${message.author.username}: ${message.content}\n`
+      );
+    }
+    if (message.author.bot) return;
     var Guild = await Guilds.findOne({ id: message.guild.id });
     if (!Guild) {
       Guild = new Guilds({

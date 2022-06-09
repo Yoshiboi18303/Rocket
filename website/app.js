@@ -38,10 +38,12 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (user, done) => {
   var User = await Users.findOne({ id: user.id });
-  if (!user)
+  if (!user) {
     user = new Users({
       id: user.id,
     });
+    user.save();
+  }
   if (!User) {
     User = new Users({
       id: user.id,
@@ -79,6 +81,7 @@ app.use("/logout", require("./routes/logout"));
 app.use("/dashboard", require("./routes/dashboard"));
 app.use("/webhooks", require("./routes/webhooks"));
 app.use("/report", require("./routes/report"));
+app.use("/tickets", require("./routes/tickets"));
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));

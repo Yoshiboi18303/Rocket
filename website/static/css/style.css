@@ -518,3 +518,10 @@ p.review {
   font-family: "Josefin Sans", sans-serif;
   color: #150578;
 }
+
+code.transcript {
+  background-color: #2a2a2a;
+  font-family: "Source Code Pro", monospace;
+  font-size: 15.5px;
+  color: #234894;
+}

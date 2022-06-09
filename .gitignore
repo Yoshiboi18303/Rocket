@@ -6,3 +6,4 @@ replit.nix
 .prettierrc.json
 .prettierignore
 node_modules/
+tickets/
