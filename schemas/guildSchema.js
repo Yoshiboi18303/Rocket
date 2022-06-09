@@ -74,6 +74,18 @@ const guildSchema = Schema({
     type: String,
     default: "",
   },
+  ticketSettings: {
+    type: Object,
+    default: {
+      modRole: "",
+      msgChannel: "",
+      message: "",
+    },
+  },
+  ticketsOpened: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = model("guilds", guildSchema);

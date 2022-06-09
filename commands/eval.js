@@ -10,6 +10,7 @@ module.exports = {
   name: "eval",
   description: "Evaluates JavaScript code (dangerous)",
   usage: "{prefix}eval <code>",
+  type: "Owner",
   testing: false,
   ownerOnly: true,
   execute: async (message, args) => {

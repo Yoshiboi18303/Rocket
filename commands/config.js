@@ -6,6 +6,7 @@ module.exports = {
   description: "View or change some data!",
   usage:
     "{prefix}config <action> <setting> [value (required for changing an option)]",
+  type: "Utility",
   testing: false,
   ownerOnly: false,
   userPermissions: [Permissions.FLAGS.MANAGE_GUILD],

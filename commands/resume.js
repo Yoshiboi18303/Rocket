@@ -3,9 +3,10 @@ module.exports = {
   description: "Resume the music!",
   aliases: [],
   usage: "{prefix}resume",
+  type: "Music",
   testing: false,
   ownerOnly: false,
-  execute: async (message, args) => {
+  execute: async (message) => {
     const vc = message.member.voice.channel;
     if (!vc) {
       const no_vc_embed = new MessageEmbed()

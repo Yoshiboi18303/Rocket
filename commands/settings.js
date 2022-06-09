@@ -8,6 +8,7 @@ module.exports = {
   usage:
     "{prefix}settings <action> <setting> [value (required for changing a setting)]",
   aliases: [],
+  type: "Utility",
   userPermissions: [],
   clientPermissions: [],
   testing: true,

@@ -14,6 +14,7 @@ module.exports = {
   description: "View or set your moderation filters!",
   usage: "{prefix}filters",
   aliases: ["modfilters"],
+  type: "Moderation",
   userPermissions: [Permissions.FLAGS.MANAGE_GUILD],
   clientPermissions: [],
   testing: false,

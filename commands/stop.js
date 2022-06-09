@@ -3,6 +3,7 @@ module.exports = {
   description: "Stop the music!",
   aliases: ["end"],
   usage: "{prefix}stop",
+  type: "Music",
   testing: false,
   ownerOnly: false,
   execute: async (message, args) => {

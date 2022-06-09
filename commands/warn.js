@@ -11,6 +11,7 @@ module.exports = {
   description: "Warn someone!",
   aliases: [],
   usage: "{prefix}warn <@user | userid> <severity> [reason]",
+  type: "Moderation",
   userPermissions: [Permissions.FLAGS.MANAGE_MESSAGES],
   clientPermissions: [],
   testing: false,

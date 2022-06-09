@@ -6,6 +6,7 @@ module.exports = {
   description: "View your warnings (or of someone else)",
   aliases: ["warns"],
   usage: "{prefix}warnings [@user | userid]",
+  type: "Moderation",
   userPermissions: [],
   clientPermissions: [],
   testing: false,

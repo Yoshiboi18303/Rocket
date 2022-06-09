@@ -5,6 +5,7 @@ module.exports = {
   description: "Start playing a song!",
   aliases: [],
   usage: "{prefix}playsong <song/query/file>",
+  type: "Music",
   userPermissions: [],
   clientPermissions: [Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK],
   testing: false,

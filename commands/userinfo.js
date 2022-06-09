@@ -22,8 +22,9 @@ const flags = {
 module.exports = {
   name: "userinfo",
   description: "View info on a user (or yourself)!",
-  aliases: ["ui"],
+  aliases: ["ui", "user"],
   usage: "{prefix}userinfo [@user/user id]",
+  type: "Information",
   testing: false,
   ownerOnly: false,
   userPermissions: [],

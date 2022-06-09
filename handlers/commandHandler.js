@@ -18,6 +18,13 @@ module.exports = (client) => {
             .blue
         } `.red + "doesn't have a description!".red
       );
+    if (!command.type)
+      throw new Error(
+        `Command ${
+          command.name.replace(command.name[0], command.name[0].toUpperCase())
+            .blue
+        } `.red + "doesn't have a type!".red
+      );
 
     client.commands.set(command.name, command);
     if (command.aliases) {

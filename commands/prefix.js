@@ -5,6 +5,7 @@ module.exports = {
   name: "prefix",
   description: "View or change the prefix of the bot!",
   usage: "{prefix}prefix [new prefix]",
+  type: "Utility",
   execute: async (message, args) => {
     var Guild = await Guilds.findOne({
       id: message.guild.id,

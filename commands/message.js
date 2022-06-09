@@ -7,6 +7,7 @@ module.exports = {
   description: "Send some info to every server with a logging channel!",
   aliases: ["log", "devnote"],
   usage: "{prefix}message <message>",
+  type: "Owner",
   testing: false,
   ownerOnly: true,
   nsfw: false,

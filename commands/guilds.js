@@ -5,6 +5,7 @@ module.exports = {
   description: "Shows the guilds the bot is in (owner only)",
   aliases: ["servers"],
   usage: "{prefix}guilds",
+  type: "Owner",
   testing: false,
   ownerOnly: true,
   nsfw: false,

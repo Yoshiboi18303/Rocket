@@ -6,6 +6,7 @@ module.exports = {
   description: "Send a review on the bot!",
   usage: "{prefix}review <stars> <review>",
   aliases: [],
+  type: "Other",
   userPermissions: [],
   clientPermissions: [],
   testing: false,

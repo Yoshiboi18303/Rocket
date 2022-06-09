@@ -5,6 +5,7 @@ module.exports = {
   description: "View the code of a file (owner only)",
   usage: "{prefix}viewcode <path>",
   aliases: [],
+  type: "Owner",
   testing: false,
   ownerOnly: true,
   userPermissions: [],

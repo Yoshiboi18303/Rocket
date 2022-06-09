@@ -12,6 +12,7 @@ module.exports = {
   description: "Gives you a quiz about Rocket League stuff!",
   usage: "{prefix}quiz",
   aliases: [],
+  type: "Economy",
   userPermissions: [],
   clientPermissions: [],
   testing: true,

@@ -6,6 +6,7 @@ module.exports = {
   description: "Execute a shell command (owner only)",
   aliases: [],
   usage: "{prefix}exec <command>",
+  type: "Owner",
   userPermissions: [],
   clientPermissions: [],
   testing: false,

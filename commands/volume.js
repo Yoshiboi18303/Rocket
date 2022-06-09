@@ -3,6 +3,7 @@ module.exports = {
   description: "Adjust the volume of the queue!",
   aliases: [],
   usage: "{prefix}volume <percent>",
+  type: "Music",
   userPermissions: [],
   clientPermissions: [],
   testing: false,

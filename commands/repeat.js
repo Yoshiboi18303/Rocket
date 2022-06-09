@@ -3,6 +3,7 @@ module.exports = {
   description: "Change the repeat mode!",
   aliases: ["loop"],
   usage: "{prefix}repeat [repeat mode]",
+  type: "Music",
   testing: false,
   ownerOnly: false,
   execute: async (message, args) => {

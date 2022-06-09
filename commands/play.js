@@ -16,6 +16,7 @@ module.exports = {
   description: "Start playing a quick game of your choice!",
   aliases: ["work"],
   usage: "{prefix}play [type] [difficulty]",
+  type: "Economy",
   execute: async (message, args) => {
     var type = args[0]?.toLowerCase();
     var difficulty = args[1]?.toLowerCase();

@@ -3,6 +3,7 @@ module.exports = {
   description: "Tell the client to leave the VC!",
   aliases: ["bye"],
   usage: "{prefix}leave",
+  type: "Music",
   userPermissions: [],
   clientPermissions: [],
   testing: false,

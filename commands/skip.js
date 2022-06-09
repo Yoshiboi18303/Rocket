@@ -3,6 +3,7 @@ module.exports = {
   description: "Skip the current song!",
   aliases: [],
   usage: "{prefix}skip",
+  type: "Music",
   userPermissions: [],
   clientPermissions: [],
   testing: false,
