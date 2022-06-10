@@ -118,6 +118,18 @@ module.exports = {
       "Ensuring the cached count is up-to-date."
     );
 
+    statcord.registerCustomFieldHandler(1, async () => {
+      var count = 0;
+      client.channels.cache.each((channel) => {
+        if (
+          channel.type == "GUILD_TEXT" &&
+          channel.name.includes(`ticket-${channel.guild.id}-`)
+        )
+          count++;
+      });
+      return `${count}`;
+    });
+
     const activities = [
       "The Galaxy",
       "In Servers",
@@ -131,7 +143,10 @@ module.exports = {
     setInterval(() => {
       var activity = activities[Math.floor(Math.random() * activities.length)];
       var type = types[Math.floor(Math.random() * types.length)];
-      activity += " - rlc!help";
+      if (type == "LISTENING" && activity == activities[1])
+        activity = "Servers";
+      if (type == "LISTENING" && activity == activities[2]) activity = "Food";
+      activity += " - r!help";
       client.user.setActivity({
         name: activity,
         type,

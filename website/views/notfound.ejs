@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <%- include("includes/head", { title: "Not Found", key }) %>
+  </head>
+  <body>
+    <%- include("includes/header", { req }) %>
+    <br>
+    <br>
+    <h1 class="fade-red">404 - Invalid Galaxy</h1>
+    <br>
+    <h3 class="path-text fade-red">Galaxy <code><%= route %></code> not found in the universe.</h3>
+    <br>
+    <p class="button-text fade-red">Maybe try out these buttons for some help.</p>
+    <br>
+    <div class="buttons">
+      <button class="btn" onclick="location.href='/'">Back To Home</button>
+      <button class="btn" onclick="window.history.back()">Go Back</button>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <%- include("includes/footer") %>
+  </body>
+</html>

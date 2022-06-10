@@ -130,6 +130,14 @@ app.get("/blacklisted", (req, res) => {
   });
 });
 
+app.all("*", (req, res) => {
+  res.status(404).render("notfound", {
+    req,
+    key,
+    route: req._parsedOriginalUrl.path.replace("/", ""),
+  });
+});
+
 app.listen(port);
 console.log(
   `The website for ${"Rocket".blue}`.green +

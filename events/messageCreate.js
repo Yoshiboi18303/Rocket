@@ -14,7 +14,9 @@ module.exports = {
       if (message.author.id == client.user.id) return;
       fs.appendFile(
         `tickets/${message.guild.id}/${message.channel.id}.txt`,
-        `${message.author.username}: ${message.content}\n`
+        `${message.author.username}: ${
+          message.content != "" ? message.content : "Empty Message"
+        }\n`
       );
     }
     if (message.author.bot) return;
@@ -41,7 +43,6 @@ module.exports = {
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift();
 
-    /*
     if (
       !message.guild.me.permissions.has([
         Permissions.FLAGS.VIEW_CHANNEL,
@@ -57,7 +58,6 @@ module.exports = {
         return;
       }
     }
-    */
 
     const cmd = client.commands.get(command) || client.aliases.get(command);
     if (!cmd && Guild.unknownCommandMessage) {
@@ -129,6 +129,18 @@ module.exports = {
       return await message.reply({
         embeds: [blacklisted_embed],
       });
+    }
+    if (cmd.voteOnly) {
+      if (!User.voted) {
+        const voteBotEmbed = new MessageEmbed()
+          .setColor(colors.red)
+          .setDescription(
+            `❌ You haven't voted for the bot yet! Try running \`${prefix}vote\` to get some links! ❌`
+          );
+        return await message.reply({
+          embeds: [voteBotEmbed],
+        });
+      }
     }
     var data = await Users.findOneAndUpdate(
       {

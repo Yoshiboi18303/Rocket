@@ -33,6 +33,10 @@ const userSchema = Schema({
   admin: opBool,
   owner: opBool,
   voted: opBool,
+  voteExpiration: {
+    type: Number,
+    default: 0,
+  },
   blacklisted: opBool,
   carColor: {
     type: String,

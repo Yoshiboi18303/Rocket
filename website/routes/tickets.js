@@ -4,6 +4,10 @@ const fs = require("fs");
 const ticketFolders = fs.readdirSync("./tickets/");
 const key = process.env.GOOGLE_ANALYTICS_KEY;
 
+app.get("/", (req, res) => {
+  res.status(200).send("This would be for a transcript, don't be peeking now!");
+});
+
 app.get("/:guild", (req, res) => {
   var guild = client.guilds.cache.get(req.params.guild);
   if (!guild) return res.redirect("/");
@@ -25,10 +29,9 @@ app.get("/:guild", (req, res) => {
 app.get("/:guild/:channel", (req, res) => {
   var guild = client.guilds.cache.get(req.params.guild);
   if (!guild) return res.redirect("/");
-  var channel = guild.channels.cache.get(req.params.channel);
-  if (!channel) return res.redirect("/");
+  var channel = req.params.channel;
   try {
-    var buffer = fs.readFileSync(`tickets/${guild.id}/${channel.id}.txt`);
+    var buffer = fs.readFileSync(`tickets/${guild.id}/${channel}.txt`);
     var array = buffer.toString().split("\n");
     res.status(200).render("transcript", {
       req,

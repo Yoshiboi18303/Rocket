@@ -4,6 +4,8 @@ const {
   Permissions,
   MessageActionRow,
   MessageButton,
+  TextChannel,
+  User,
 } = require("discord.js");
 const moment = require("moment");
 const fs = require("fs/promises");
@@ -45,47 +47,92 @@ module.exports = {
           }
         }
         var modRole = guild.roles.cache.get(settings.modRole);
-        ticketChannel = await guild.channels.create(
-          `ticket-${guild.id}-${Guild.ticketsOpened + 1}`,
-          {
-            topic: `Opened by **${interaction.user.username}**. Powered by ${client.user.username}!`,
-            permissionOverwrites: [
-              {
-                id: guild.roles.everyone,
-                deny: [
-                  Permissions.FLAGS.VIEW_CHANNEL,
-                  Permissions.FLAGS.SEND_MESSAGES,
-                  Permissions.FLAGS.READ_MESSAGE_HISTORY,
-                ],
-              },
-              {
-                id: modRole,
-                allow: [
-                  Permissions.FLAGS.VIEW_CHANNEL,
-                  Permissions.FLAGS.SEND_MESSAGES,
-                  Permissions.FLAGS.READ_MESSAGE_HISTORY,
-                ],
-              },
-              {
-                id: interaction.user,
-                allow: [
-                  Permissions.FLAGS.VIEW_CHANNEL,
-                  Permissions.FLAGS.SEND_MESSAGES,
-                  Permissions.FLAGS.READ_MESSAGE_HISTORY,
-                ],
-              },
-              {
-                id: guild.me,
-                allow: [
-                  Permissions.FLAGS.VIEW_CHANNEL,
-                  Permissions.FLAGS.SEND_MESSAGES,
-                  Permissions.FLAGS.READ_MESSAGE_HISTORY,
-                ],
-              },
-            ],
-            reason: "Opening a ticket for a user.",
-          }
-        );
+        if (settings.parent == "") {
+          ticketChannel = await guild.channels.create(
+            `ticket-${guild.id}-${Guild.ticketsOpened + 1}`,
+            {
+              topic: `Opened by **${interaction.user.username}**. Powered by ${client.user.username}!`,
+              permissionOverwrites: [
+                {
+                  id: guild.roles.everyone,
+                  deny: [
+                    Permissions.FLAGS.VIEW_CHANNEL,
+                    Permissions.FLAGS.SEND_MESSAGES,
+                    Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                  ],
+                },
+                {
+                  id: modRole,
+                  allow: [
+                    Permissions.FLAGS.VIEW_CHANNEL,
+                    Permissions.FLAGS.SEND_MESSAGES,
+                    Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                  ],
+                },
+                {
+                  id: interaction.user,
+                  allow: [
+                    Permissions.FLAGS.VIEW_CHANNEL,
+                    Permissions.FLAGS.SEND_MESSAGES,
+                    Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                  ],
+                },
+                {
+                  id: guild.me,
+                  allow: [
+                    Permissions.FLAGS.VIEW_CHANNEL,
+                    Permissions.FLAGS.SEND_MESSAGES,
+                    Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                  ],
+                },
+              ],
+              reason: "Opening a ticket for a user.",
+            }
+          );
+        } else {
+          ticketChannel = await guild.channels.create(
+            `ticket-${guild.id}-${Guild.ticketsOpened + 1}`,
+            {
+              topic: `Opened by **${interaction.user.username}**. Powered by ${client.user.username}!`,
+              permissionOverwrites: [
+                {
+                  id: guild.roles.everyone,
+                  deny: [
+                    Permissions.FLAGS.VIEW_CHANNEL,
+                    Permissions.FLAGS.SEND_MESSAGES,
+                    Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                  ],
+                },
+                {
+                  id: modRole,
+                  allow: [
+                    Permissions.FLAGS.VIEW_CHANNEL,
+                    Permissions.FLAGS.SEND_MESSAGES,
+                    Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                  ],
+                },
+                {
+                  id: interaction.user,
+                  allow: [
+                    Permissions.FLAGS.VIEW_CHANNEL,
+                    Permissions.FLAGS.SEND_MESSAGES,
+                    Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                  ],
+                },
+                {
+                  id: guild.me,
+                  allow: [
+                    Permissions.FLAGS.VIEW_CHANNEL,
+                    Permissions.FLAGS.SEND_MESSAGES,
+                    Permissions.FLAGS.READ_MESSAGE_HISTORY,
+                  ],
+                },
+              ],
+              reason: "Opening a ticket for a user.",
+              parent: settings.parent,
+            }
+          );
+        }
         Guilds.findOneAndUpdate(
           {
             id: guild.id,
@@ -183,10 +230,11 @@ module.exports = {
         const transcript_link_embed = new MessageEmbed()
           .setColor(colors.cyan)
           .setDescription(
-            `You can view the partially done transcript **[here](https://${config.origin}/tickets/${guild.id}/${interaction.channel.id})**!`
+            `You can view the transcript logged to this point **[here](https://${config.origin}/tickets/${guild.id}/${interaction.channel.id})**!`
           );
         await interaction.reply({
           embeds: [transcript_link_embed],
+          ephemeral: true,
         });
       } else if (interaction.customId == "close-ticket") {
         var closedTimestamp = Date.now();
@@ -212,11 +260,6 @@ module.exports = {
         );
         setTimeout(async () => {
           await interaction.channel.delete("Ticket Closed.");
-          fs.unlink(`tickets/${guild.id}/${id}.txt`)
-            .then(() => console.log("Transcript file deleted!".green))
-            .catch(() =>
-              console.log("Failed to delete the transcript file.".red)
-            );
         }, 30000);
       }
     }

@@ -7,7 +7,7 @@ const guildSchema = Schema({
   },
   prefix: {
     type: String,
-    default: "rlc!",
+    default: "r!",
   },
   unknownCommandMessage: {
     type: Boolean,
@@ -79,6 +79,7 @@ const guildSchema = Schema({
     default: {
       modRole: "",
       msgChannel: "",
+      parent: "",
       message: "",
     },
   },

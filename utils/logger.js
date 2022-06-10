@@ -2,7 +2,14 @@ const mongoose = require("mongoose");
 
 const Guilds = require("../schemas/guildSchema");
 
-const { Client, Guild, MessageEmbed, GuildMember } = require("discord.js");
+const {
+  Client,
+  Guild,
+  MessageEmbed,
+  GuildMember,
+  DMChannel,
+  GuildChannel,
+} = require("discord.js");
 
 /**
  * The logger used for the bot.
@@ -16,6 +23,8 @@ const { Client, Guild, MessageEmbed, GuildMember } = require("discord.js");
  * @param {String} data.message - A message.
  * @param {String} data.oldMessage - The old message from the author
  * @param {String} data.newMessage - The new message from the author
+ * @param {DMChannel | GuildChannel} data.channel
+ * @param {Number} data.messages
  */
 module.exports = async (client, guild, action, data) => {
   const em = new MessageEmbed()
@@ -111,7 +120,7 @@ module.exports = async (client, guild, action, data) => {
         .addFields([
           {
             name: "Old Message",
-            value: `${data.oldMessage || "Undefined/Unknown Message"}`,
+            value: `${data.oldMessage || "*Undefined/Unknown Message*"}`,
             inline: true,
           },
           {
@@ -124,8 +133,42 @@ module.exports = async (client, guild, action, data) => {
       break;
     case Enum.Log.MessageDelete:
       em.setDescription(`A message from <@${data.member.user.id}> was deleted`)
-        .addField("Message", `${data.message}`, true)
+        .addField(
+          "Message",
+          `${data.message.length > 0 ? data.message : "*Unknown Message*"}`,
+          true
+        )
         .setColor(colors.red);
+      break;
+    case Enum.Log.ChannelCreate:
+      if (!(data.channel instanceof GuildChannel))
+        throw new TypeError(
+          `Expected data.channel to be a type of GuildChannel, got ${typeof data.channel} instead.`.red
+        );
+      em.setDescription(`A channel here in **${guild.name}** was created.`)
+        .addField("Channel", `<#${data.channel.id}>`, true)
+        .setColor(colors.cyan);
+      break;
+    case Enum.Log.ChannelDelete:
+      em.setDescription(`A channel here in **${guild.name}** was deleted.`)
+        .addField("Channel", `${data.channel.name}`, true)
+        .setColor(colors.red);
+      break;
+    case Enum.Log.Purge:
+      em.setDescription(`<#${data.channel.id}> had some messages purged.`)
+        .addFields([
+          {
+            name: "Purger",
+            value: `${data.moderator.user.tag} (<@${data.moderator.user.id}>)`,
+            inline: true,
+          },
+          {
+            name: "Amount Purged",
+            value: `\`${data.messages}\` messages`,
+            inline: true,
+          },
+        ])
+        .setColor(colors.dred);
       break;
   }
 

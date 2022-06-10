@@ -120,7 +120,7 @@ module.exports = {
 
     var collector = msg.createMessageComponentCollector({
       filter,
-      idle: 15 * 1000,
+      idle: 60 * 1000,
     });
 
     collector.on("collect", async (collected) => {
@@ -156,12 +156,8 @@ module.exports = {
           true
         )
       );
-      await msg.edit({
+      await collected.update({
         embeds: [help_embed],
-      });
-      await collected.reply({
-        content: "Embed Updated.",
-        ephemeral: true,
       });
     });
 

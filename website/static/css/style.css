@@ -519,9 +519,22 @@ p.review {
   color: #150578;
 }
 
-code.transcript {
+.transcript {
   background-color: #2a2a2a;
   font-family: "Source Code Pro", monospace;
   font-size: 15.5px;
-  color: #234894;
+  color: white;
+  width: 425px;
+  margin: 0 auto;
+  border: 2px solid #2a2a2a;
+  border-radius: 15px;
+}
+
+.path-text {
+  font-family: "Orbitron", monospace;
+}
+
+.button-text {
+  font-family: "Radio Canada", sans-serif;
+  color: black;
 }

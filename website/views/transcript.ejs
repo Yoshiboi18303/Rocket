@@ -10,12 +10,16 @@
     <h1>Ticket Transcript</h1>
     <h3 class="description">Here's the transcript for the ticket you requested!</h3>
     <br>
-    <code class="transcript">
-      <% for(var item of array) { %>
-        <%= item %>
-        <br>
-      <% } %>
-    </code>
+    <div class="transcript">
+      <br>
+      <code>
+        <% for(var item of array) { %>
+          <p class="transcript"><%= item %></p>
+          <br>
+        <% } %>
+      </code>
+    </div>
+    <br>
     <%- include("includes/footer") %>
   </body>
 </html>

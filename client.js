@@ -77,6 +77,9 @@ global.Enum = {
     Tempban: 6,
     MessageEdit: 7,
     MessageDelete: 8,
+    ChannelCreate: 9,
+    ChannelDelete: 10,
+    Purge: 11,
   },
   Actions: {
     None: 0,
