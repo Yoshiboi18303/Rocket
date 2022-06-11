@@ -6,6 +6,7 @@ module.exports = {
   aliases: [],
   usage: "{prefix}ping",
   type: "Information",
+  cooldown: ms("10s"),
   testing: false,
   ownerOnly: false,
   userPermissions: [],

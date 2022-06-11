@@ -6,6 +6,7 @@ module.exports = {
   description: "View or buy something from the shop!",
   usage: "{prefix}shop <action> [item]",
   type: "Economy",
+  cooldown: ms("5s"),
   testing: true,
   ownerOnly: false,
   execute: async (message, args) => {

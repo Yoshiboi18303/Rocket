@@ -7,6 +7,7 @@ module.exports = {
   aliases: ["warns"],
   usage: "{prefix}warnings [@user | userid]",
   type: "Moderation",
+  cooldown: ms("5s"),
   userPermissions: [],
   clientPermissions: [],
   testing: false,

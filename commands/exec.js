@@ -7,6 +7,7 @@ module.exports = {
   aliases: [],
   usage: "{prefix}exec <command>",
   type: "Owner",
+  cooldown: ms("12s"),
   userPermissions: [],
   clientPermissions: [],
   testing: false,

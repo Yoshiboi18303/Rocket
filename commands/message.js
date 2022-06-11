@@ -8,6 +8,7 @@ module.exports = {
   aliases: ["log", "devnote"],
   usage: "{prefix}message <message>",
   type: "Owner",
+  cooldown: ms("20s"),
   testing: false,
   ownerOnly: true,
   nsfw: false,

@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["end"],
   usage: "{prefix}stop",
   type: "Music",
+  cooldown: ms("5s"),
   testing: false,
   ownerOnly: false,
   execute: async (message, args) => {

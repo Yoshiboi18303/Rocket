@@ -12,6 +12,7 @@ module.exports = {
   aliases: [],
   usage: "{prefix}warn <@user | userid> <severity> [reason]",
   type: "Moderation",
+  cooldown: ms("5s"),
   userPermissions: [Permissions.FLAGS.MANAGE_MESSAGES],
   clientPermissions: [],
   testing: false,
@@ -62,6 +63,14 @@ module.exports = {
       return await message.reply({
         embeds: [cant_warn_client_embed],
       });
+    }
+    if (user.id == message.guild.ownerId) {
+      const cant_warn_owner_embed = new MessageEmbed()
+        .setColor(colors.red)
+        .setDescription("❌ I'm sorry, who gave you permission to warn the owner of this server? ❌")
+      return await message.reply({
+        embeds: [cant_warn_owner_embed]
+      })
     }
     var User = await Users.findOne({ id: user.id });
     if (!User) {

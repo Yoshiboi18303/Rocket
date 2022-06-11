@@ -13,6 +13,7 @@ module.exports = {
   usage: "{prefix}quiz",
   aliases: [],
   type: "Economy",
+  cooldown: ms("1m") + ms("30s"),
   userPermissions: [],
   clientPermissions: [],
   testing: true,

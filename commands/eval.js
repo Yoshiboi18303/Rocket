@@ -11,6 +11,7 @@ module.exports = {
   description: "Evaluates JavaScript code (dangerous)",
   usage: "{prefix}eval <code>",
   type: "Owner",
+  cooldown: ms("5s"),
   testing: false,
   ownerOnly: true,
   execute: async (message, args) => {

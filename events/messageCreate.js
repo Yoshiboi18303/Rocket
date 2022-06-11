@@ -2,6 +2,8 @@ const Guilds = require("../schemas/guildSchema");
 const Users = require("../schemas/userSchema");
 const { Permissions, MessageEmbed, Message } = require("discord.js");
 const fs = require("fs/promises");
+const cooldowns = [];
+const wait = require("util").promisify(setTimeout)
 
 module.exports = {
   name: "messageCreate",
@@ -9,6 +11,7 @@ module.exports = {
    * @param {Message} message
    */
   async execute(message) {
+    const parser = await import("parse-ms")
     if (!message.guild) return;
     if (message.channel.name.includes(`ticket-${message.guild.id}-`)) {
       if (message.author.id == client.user.id) return;
@@ -69,6 +72,22 @@ module.exports = {
         embeds: [unknown_command_embed],
       });
     } else if (!cmd && !Guild.unknownCommandMessage) return;
+    var cooldown = command.cooldown;
+    if(cooldowns.some((cd) => cd.user == message.author.id)) {
+      var timedOut = cooldowns.find(cd => cd.user == message.author.id)
+      var formula = cooldown - (new Date().getTime() - timedOut.startedAt)
+      var parsed = parser.default(formula);
+      const cooldownMessages = ["Out Of Fuel", "Low Fuel", "Calm It", "Way Too Salty"];
+      const cooldownMessage = cooldownMessages[Math.floor(Math.random() * cooldownMessages.length)]
+      const onCooldownEmbed = new MessageEmbed()
+        .setColor(colors.orange)
+        .setTitle(`${cooldownMessage}`)
+        .setDescription(`You're still on cooldown, you can run this command in \`${parsed.minutes}\` minutes and \`${parsed.seconds}\` seconds`)
+        .setTimestamp(Date.now() + cooldown)
+      return await message.reply({
+        embeds: [onCooldownEmbed]
+      })
+    }
     var Testing = cmd.testing;
     if (!Testing) Testing = false;
     if (Testing) {
@@ -155,5 +174,12 @@ module.exports = {
     data.save();
     statcord.postCommand(cmd.name, message.author.id);
     await cmd.execute(message, args);
+    const cooldownObject = {
+      user: message.author.id,
+      startedAt: new Date().getTime()
+    }
+    cooldowns.push(cooldownObject)
+    wait(cooldown)
+      .then(() => cooldowns.splice(cooldowns.indexOf(message.author.id), 1))
   },
 };

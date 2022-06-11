@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["loop"],
   usage: "{prefix}repeat [repeat mode]",
   type: "Music",
+  cooldown: ms("5s"),
   testing: false,
   ownerOnly: false,
   execute: async (message, args) => {

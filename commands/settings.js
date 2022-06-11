@@ -8,7 +8,8 @@ module.exports = {
   usage:
     "{prefix}settings <action> <setting> [value (required for changing a setting)]",
   aliases: [],
-  type: "Utility",
+  type: "Economy",
+  cooldown: ms("5s"),
   userPermissions: [],
   clientPermissions: [],
   testing: true,

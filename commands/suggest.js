@@ -3,6 +3,7 @@ module.exports = {
   description: "Gives you info on how to suggest a feature for the bot!",
   usage: "{prefix}suggest",
   type: "Other",
+  cooldown: ms("5s"),
   execute: async (message) => {
     const embed = new MessageEmbed()
       .setColor(colors.cyan)

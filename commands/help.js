@@ -12,6 +12,7 @@ module.exports = {
   description: "Get info on all the commands of the bot!",
   usage: "{prefix}help",
   type: "Information",
+  cooldown: ms("5s"),
   userPermissions: [],
   clientPermissions: [],
   /**

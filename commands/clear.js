@@ -7,6 +7,7 @@ module.exports = {
   usage: "{prefix}clear <message amount>",
   aliases: ["purge"],
   type: "Moderation",
+  cooldown: ms("5s"),
   testing: false,
   voteOnly: false,
   ownerOnly: false,

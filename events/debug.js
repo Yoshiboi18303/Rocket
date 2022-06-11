@@ -1,6 +1,6 @@
 module.exports = {
   name: "debug",
   execute: (info) => {
-    console.log("RLC-DEBUGGER: ".yellow + `${info}`.blue);
+    console.log("ROCKET-DEBUGGER: ".yellow.bold + `${info}`.blue);
   },
 };

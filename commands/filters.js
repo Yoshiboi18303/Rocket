@@ -15,6 +15,7 @@ module.exports = {
   usage: "{prefix}filters",
   aliases: ["modfilters"],
   type: "Moderation",
+  cooldown: ms("5s"),
   userPermissions: [Permissions.FLAGS.MANAGE_GUILD],
   clientPermissions: [],
   testing: false,

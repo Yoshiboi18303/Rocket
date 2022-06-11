@@ -25,6 +25,7 @@ module.exports = (client) => {
             .blue
         } `.red + "doesn't have a type!".red
       );
+    if(!command.cooldown) throw new Error(`Command ${command.name.replace(command.name[0], command.name[0].toUpperCase()).blue} `.red + "doesn't have a cooldown!".red)
 
     client.commands.set(command.name, command);
     if (command.aliases) {

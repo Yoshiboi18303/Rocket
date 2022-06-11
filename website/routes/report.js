@@ -7,10 +7,9 @@ const Reviews = require("../../schemas/reviewSchema");
 /**
  * Checks if a user is blacklisted.
  * @param {express.Request} req
- * @param {express.Response} res
  * @param {express.NextFunction} next
  */
-const isBlacklisted = async (req, res, next) => {
+const isBlacklisted = (req, next) => {
   if (!req.isAuthenticated()) return next();
   if (req.user.blacklisted) return true;
   else return false;
@@ -24,7 +23,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/:type", (req, res, next) => {
-  // if(isBlacklisted(req, res, next)) return res.redirect("/blacklisted?referral=report")
+  if(isBlacklisted(req, next)) return res.redirect("/blacklisted?referral=report")
+  if(!ready) return res.send("<h1>The client is offline!</h1>")
   var type = req.params.type;
   if (!["bug", "suggestion", "user", "review"].includes(type))
     return res.redirect("/report");

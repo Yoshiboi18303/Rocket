@@ -9,6 +9,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/:guild", (req, res) => {
+  if(!ready) return res.send("<h1>The client is offline!</h1>")
   var guild = client.guilds.cache.get(req.params.guild);
   if (!guild) return res.redirect("/");
   var i = 1;
@@ -27,6 +28,7 @@ app.get("/:guild", (req, res) => {
 });
 
 app.get("/:guild/:channel", (req, res) => {
+  if(!ready) return res.send("<h1>The client is offline!</h1>")
   var guild = client.guilds.cache.get(req.params.guild);
   if (!guild) return res.redirect("/");
   var channel = req.params.channel;

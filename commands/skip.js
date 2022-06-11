@@ -4,6 +4,7 @@ module.exports = {
   aliases: [],
   usage: "{prefix}skip",
   type: "Music",
+  cooldown: ms("5s"),
   userPermissions: [],
   clientPermissions: [],
   testing: false,

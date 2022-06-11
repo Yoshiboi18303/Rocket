@@ -7,6 +7,7 @@ module.exports = {
   usage:
     "{prefix}config <action> <setting> [value (required for changing an option)]",
   type: "Utility",
+  cooldown: ms("5s"),
   testing: false,
   ownerOnly: false,
   userPermissions: [Permissions.FLAGS.MANAGE_GUILD],

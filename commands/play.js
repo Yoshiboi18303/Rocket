@@ -17,6 +17,7 @@ module.exports = {
   aliases: ["work"],
   usage: "{prefix}play [type] [difficulty]",
   type: "Economy",
+  cooldown: ms("5m"),
   execute: async (message, args) => {
     var type = args[0]?.toLowerCase();
     var difficulty = args[1]?.toLowerCase();

@@ -6,6 +6,7 @@ module.exports = {
   aliases: ["servers"],
   usage: "{prefix}guilds",
   type: "Owner",
+  cooldown: ms("5s"),
   testing: false,
   ownerOnly: true,
   nsfw: false,

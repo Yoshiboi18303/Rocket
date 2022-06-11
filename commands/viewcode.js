@@ -6,6 +6,7 @@ module.exports = {
   usage: "{prefix}viewcode <path>",
   aliases: [],
   type: "Owner",
+  cooldown: ms("8s"),
   testing: false,
   ownerOnly: true,
   userPermissions: [],

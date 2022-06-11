@@ -7,6 +7,7 @@ module.exports = {
   usage: "{prefix}review <stars> <review>",
   aliases: [],
   type: "Other",
+  cooldown: ms("5s"),
   userPermissions: [],
   clientPermissions: [],
   testing: false,

@@ -5,6 +5,7 @@ module.exports = {
   description: "View your profile (or one of another user)!",
   usage: "{prefix}profile [@user/user id]",
   type: "Economy",
+  cooldown: ms("5s"),
   execute: async (message, args) => {
     var user =
       message.mentions.users.first() ||

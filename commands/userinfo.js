@@ -25,6 +25,7 @@ module.exports = {
   aliases: ["ui", "user"],
   usage: "{prefix}userinfo [@user/user id]",
   type: "Information",
+  cooldown: ms("5s"),
   testing: false,
   ownerOnly: false,
   userPermissions: [],

@@ -9,6 +9,7 @@ module.exports = {
    * @param {Client} client
    */
   execute: async (client) => {
+    global.ready = true;
     console.log("The client is ready!".green);
     var body = {
       servers: client.guilds.cache.size,

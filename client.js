@@ -91,6 +91,7 @@ global.Enum = {
   },
 };
 global.statcord = statcord;
+global.ready = false;
 
 client.commands = new Collection();
 client.aliases = new Collection();

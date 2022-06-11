@@ -7,6 +7,7 @@ module.exports = {
   usage: "{prefix}vote",
   aliases: [],
   type: "Other",
+  cooldown: ms("5s"),
   testing: false,
   ownerOnly: false,
   userPermissions: [],

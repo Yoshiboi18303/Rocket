@@ -13,6 +13,7 @@ module.exports = {
     '{prefix}setuptickets <channel mention | channel id> <modrole> [category id ("none" if you don\'t want this)] [message]',
   aliases: ["tickets", "setupticket", "ticketsetup"],
   type: "Utility",
+  cooldown: ms("5s"),
   userPermissions: [Permissions.FLAGS.MANAGE_CHANNELS],
   clientPermissions: [Permissions.FLAGS.MANAGE_CHANNELS],
   testing: false,
