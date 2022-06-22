@@ -10,6 +10,8 @@ const mainWebhook = new WebhookClient({
   token: process.env.MAIN_WEBHOOK_TOKEN,
 });
 const { utc } = require("moment");
+const Users = require("../../schemas/userSchema");
+const ms = require("ms");
 
 app.get("/", async (req, res) => {
   return res
@@ -47,6 +49,30 @@ app.post("/infinity", async (req, res) => {
       });
       break;
     case "vote":
+      var User = await Users.findOne({
+        id: body.userID,
+      });
+      if (!User) {
+        User = new Users({
+          id: body.userID,
+          voted: true,
+          voteExpiration: Date.now() + ms("1d"),
+        });
+        User.save();
+      }
+      if (!User.voted) {
+        Users.findOneAndUpdate(
+          {
+            id: body.userID,
+          },
+          {
+            $set: {
+              voted: true,
+              voteExpiration: Date.now() + ms("1d"),
+            },
+          }
+        );
+      }
       const vote_embed = new MessageEmbed()
         .setColor(colors.green)
         .setTitle("New Vote!")
@@ -155,6 +181,30 @@ app.post("/fates", async (req, res) => {
       embeds: [test_webhook_embed],
     });
   } else {
+    var User = await Users.findOne({
+      id: body.id,
+    });
+    if (!User) {
+      User = new Users({
+        id: body.id,
+        voted: true,
+        voteExpiration: Date.now() + ms("1d"),
+      });
+      User.save();
+    }
+    if (!User.voted) {
+      Users.findOneAndUpdate(
+        {
+          id: body.id,
+        },
+        {
+          $set: {
+            voted: true,
+            voteExpiration: Date.now() + ms("1d"),
+          },
+        }
+      );
+    }
     const vote_embed = new MessageEmbed()
       .setColor(colors.green)
       .setTitle("New Vote!")

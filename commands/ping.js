@@ -1,3 +1,4 @@
+const { Message, MessageEmbed } = require("discord.js");
 const wait = require("util").promisify(setTimeout);
 
 module.exports = {
@@ -11,10 +12,17 @@ module.exports = {
   ownerOnly: false,
   userPermissions: [],
   clientPermissions: [],
+  /**
+   * @param {Message} message
+   */
   execute: (message) => {
+    const pingingEmbed = new MessageEmbed()
+      .setColor(colors.yellow)
+      .setTitle("Please Wait...")
+      .setDescription("Pinging the API...");
     message
       .reply({
-        content: "Pinging API...",
+        embeds: [pingingEmbed],
       })
       .then(async (msg) => {
         var clientPing = msg.createdTimestamp - message.createdTimestamp;
@@ -22,7 +30,7 @@ module.exports = {
         await wait(5000);
         const ping_embed = new MessageEmbed()
           .setColor(colors.cyan)
-          .setTitle(`${client.user.username} Ping`)
+          .setTitle(`\`${client.user.username}\` Ping`)
           .addFields([
             {
               name: "Client Ping",
@@ -37,7 +45,6 @@ module.exports = {
           ]);
         await msg.edit({
           embeds: [ping_embed],
-          content: "Ping recieved! Check the embed!",
         });
       });
   },

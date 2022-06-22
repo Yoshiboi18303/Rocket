@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 module.exports = (client) => {
   const commandFiles = fs
     .readdirSync("./commands/")
@@ -25,12 +27,18 @@ module.exports = (client) => {
             .blue
         } `.red + "doesn't have a type!".red
       );
-    if(!command.cooldown) throw new Error(`Command ${command.name.replace(command.name[0], command.name[0].toUpperCase()).blue} `.red + "doesn't have a cooldown!".red)
+    if (!command.cooldown)
+      throw new Error(
+        `Command ${
+          command.name.replace(command.name[0], command.name[0].toUpperCase())
+            .blue
+        } `.red + "doesn't have a cooldown!".red
+      );
 
     client.commands.set(command.name, command);
     if (command.aliases) {
       if (typeof command.aliases == "string" && command.aliases.includes(","))
-        command.aliases = command.aliases.split(",");
+        command.aliases = command.aliases.trim().split(",");
       if (!Array.isArray(command.aliases))
         command.aliases = [`${command.aliases}`];
       for (var alias of command.aliases) {

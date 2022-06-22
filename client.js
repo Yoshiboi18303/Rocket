@@ -45,6 +45,7 @@ const distube = new DisTube(client, {
 });
 const Radar = require("radarbots.js");
 const radar = new Radar(client, process.env.RADAR_KEY);
+module.exports.radar = radar;
 const { Client: StatcordClient } = require("statcord.js");
 const statcord = new StatcordClient({
   client,
@@ -58,6 +59,7 @@ global.Discord = require("discord.js");
 global.client = client;
 global.MessageEmbed = require("discord.js").MessageEmbed;
 global.ranks = ranks;
+global.cooldowns = [];
 global.status = (queue) =>
   `Volume: \`${queue.volume}%\` | Filter: \`${
     queue.filters.join(", ") || "Off"
@@ -92,6 +94,7 @@ global.Enum = {
 };
 global.statcord = statcord;
 global.ready = false;
+global.fightsStarted = 0;
 
 client.commands = new Collection();
 client.aliases = new Collection();

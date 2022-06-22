@@ -1,5 +1,6 @@
 console.clear();
 require("colors");
+require("dotenv").config();
 
 global.fs = require("fs");
 global.mongoose = require("mongoose");

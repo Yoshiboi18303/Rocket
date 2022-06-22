@@ -87,6 +87,14 @@ const guildSchema = Schema({
     type: Number,
     default: 0,
   },
+  fights: {
+    type: Array,
+    default: [],
+  },
+  fightsStarted: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = model("guilds", guildSchema);

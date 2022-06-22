@@ -1,5 +1,5 @@
 const Users = require("../schemas/userSchema");
-const { MessageActionRow, MessageButton } = require("discord.js");
+const { Message, MessageActionRow, MessageButton } = require("discord.js");
 const rankUpWins = {
   silver: 10,
   gold: 20,
@@ -18,6 +18,10 @@ module.exports = {
   usage: "{prefix}play [type] [difficulty]",
   type: "Economy",
   cooldown: ms("5m"),
+  /**
+   * @param {Message} message
+   * @param {Array<String>} args
+   */
   execute: async (message, args) => {
     var type = args[0]?.toLowerCase();
     var difficulty = args[1]?.toLowerCase();
@@ -90,9 +94,10 @@ module.exports = {
           `Congratulations! You have ranked up from **\`${User.rank}\`** to **\`${rank}\`**!`
         )
         .setTimestamp();
-      await message.reply({
+      var msg = await message.reply({
         embeds: [rank_up_embed],
       });
+      setTimeout(async () => await msg.delete());
     }
     var defensivePositions = ["left", "middle", "right"];
     switch (type) {

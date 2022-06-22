@@ -23,8 +23,9 @@ app.get("/", (req, res) => {
 });
 
 app.get("/:type", (req, res, next) => {
-  if(isBlacklisted(req, next)) return res.redirect("/blacklisted?referral=report")
-  if(!ready) return res.send("<h1>The client is offline!</h1>")
+  if (isBlacklisted(req, next))
+    return res.redirect("/blacklisted?referral=report");
+  if (!ready) return res.send("<h1>The client is offline!</h1>");
   var type = req.params.type;
   if (!["bug", "suggestion", "user", "review"].includes(type))
     return res.redirect("/report");

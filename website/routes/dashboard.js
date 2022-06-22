@@ -15,8 +15,9 @@ const isBlacklisted = (req, res) => {
 };
 
 app.get("/", (req, res) => {
-  if(isBlacklisted(req, res) == true) return res.redirect("/blacklisted?referral=dashboard")
-  if(!ready) return res.send("<h1>The client is offline!</h1>")
+  if (isBlacklisted(req, res) == true)
+    return res.redirect("/blacklisted?referral=dashboard");
+  if (!ready) return res.send("<h1>The client is offline!</h1>");
   // if(isBlacklisted(req, res, next) == true) return res.redirect("/blacklisted?referral=dashboard")
   res.status(200).render("dashboardcards", {
     req,
@@ -27,8 +28,9 @@ app.get("/", (req, res) => {
 });
 
 app.get("/:id", (req, res) => {
-  if(isBlacklisted(req, res) == true) return res.redirect("/blacklisted?referral=dashboard")
-  if(!ready) return res.send("<h1>The client is offline!</h1>")
+  if (isBlacklisted(req, res) == true)
+    return res.redirect("/blacklisted?referral=dashboard");
+  if (!ready) return res.send("<h1>The client is offline!</h1>");
   var id = req.params.id;
   if (!client.guilds.cache.has(id))
     return res.redirect(

@@ -112,7 +112,7 @@ app.get("/owner", (req, res) => {
 });
 
 app.get("/stats", async (req, res) => {
-  if(!ready) return res.send("<h1>The client is offline!</h1>")
+  if (!ready) return res.send("<h1>The client is offline!</h1>");
   res.status(200).render("stats", {
     req,
     client,

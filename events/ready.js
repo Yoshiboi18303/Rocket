@@ -2,6 +2,8 @@ const fetch = require("node-fetch");
 const { Client } = require("discord.js");
 const Guilds = require("../schemas/guildSchema");
 const Users = require("../schemas/userSchema");
+const { radar } = require("../client");
+const Table = require("ascii-table");
 
 module.exports = {
   name: "ready",
@@ -9,8 +11,14 @@ module.exports = {
    * @param {Client} client
    */
   execute: async (client) => {
+    var i = 1;
     global.ready = true;
+    const table = new Table("Commands").setHeading("", "Name", "Description");
     console.log("The client is ready!".green);
+    client.commands.each((cmd) => {
+      table.addRow(i, cmd.name, cmd.description);
+      i++;
+    });
     var body = {
       servers: client.guilds.cache.size,
       shards: 1,
@@ -26,7 +34,7 @@ module.exports = {
         body: JSON.stringify(body),
       }
     );
-    var data = await req.json();
+    var data = await req.json().catch(() => {});
     console.log(data);
     body = {
       server_count: client.guilds.cache.size,
@@ -43,7 +51,7 @@ module.exports = {
         body: JSON.stringify(body),
       }
     );
-    data = await req.json();
+    data = await req.json().catch(() => {});
     console.log(data);
 
     body = {
@@ -61,7 +69,7 @@ module.exports = {
         body: JSON.stringify(body),
       }
     );
-    data = await req.json();
+    data = await req.json().catch(() => {});
     console.log(data);
 
     var cmds = [];
@@ -83,15 +91,11 @@ module.exports = {
         body: cmds,
       }
     );
-    data = await req.json();
+    data = await req.json().catch(() => {});
     console.log(data);
 
-    setInterval(() => {
-      client.radar
-        .stats(client.guilds.cache.size, 1)
-        .then((data) => console.log(data))
-        .catch((e) => console.error(e));
-    }, ms("2m"));
+    var data = await radar.stats(client.guilds.cache.size, 1, true);
+    console.log(data);
 
     statcord.autopost();
 
@@ -101,6 +105,8 @@ module.exports = {
       .then((data) => console.log(data))
       .catch((e) => console.error(e));
     */
+
+    console.log(table.toString());
 
     var originVc = client.channels.cache.get("982507708634763294");
 

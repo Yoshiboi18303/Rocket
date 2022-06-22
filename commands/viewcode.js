@@ -1,18 +1,22 @@
-const { MessageAttachment } = require("discord.js");
+const { Message, MessageAttachment } = require("discord.js");
 
 module.exports = {
   name: "viewcode",
   description: "View the code of a file (owner only)",
   usage: "{prefix}viewcode <path>",
-  aliases: [],
+  aliases: "code",
   type: "Owner",
   cooldown: ms("8s"),
   testing: false,
   ownerOnly: true,
   userPermissions: [],
   clientPermissions: [],
+  /**
+   * @param {Message} message
+   * @param {Array<String>} args
+   */
   execute: async (message, args) => {
-    var path = args.join(" ");
+    var path = args[0];
     if (!path) {
       const no_path_embed = new MessageEmbed()
         .setColor(colors.red)
@@ -32,7 +36,7 @@ module.exports = {
           `${
             path.endsWith(".js") || path.endsWith(".json")
               ? "code.js"
-              : "code.html"
+              : path.endsWith(".md") ? "code.md" : "code.html"
           }`
         );
         return await message.reply({
@@ -46,7 +50,11 @@ module.exports = {
         .setTitle("File code")
         .setDescription(
           `\`\`\`${
-            path.endsWith(".js") || path.endsWith(".json") ? "js" : "html"
+            path.endsWith(".js") || path.endsWith(".json")
+              ? "js"
+              : path.endsWith(".md")
+              ? "md"
+              : "html"
           }\n${code}\n\`\`\``
         )
         .setTimestamp();

@@ -7,3 +7,5 @@ replit.nix
 .prettierignore
 node_modules/
 tickets/
+.env
+fights/

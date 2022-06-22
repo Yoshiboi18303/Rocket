@@ -5,26 +5,122 @@ const {
   MessageSelectMenu,
   Interaction,
   Message,
+  MessageEmbed,
+  Permissions,
 } = require("discord.js");
+const config = require("../config.json");
+const colors = require("../colors.json");
 
 module.exports = {
   name: "help",
   description: "Get info on all the commands of the bot!",
-  usage: "{prefix}help",
+  usage: "{prefix}help [command]",
   type: "Information",
   cooldown: ms("5s"),
   userPermissions: [],
   clientPermissions: [],
   /**
    * @param {Message} message
+   * @param {Array<String>} args
    */
-  execute: async (message) => {
+  execute: async (message, args) => {
     var Guild = await Guilds.findOne({ id: message.guild.id });
     if (!Guild) {
       Guild = new Guilds({
         id: message.guild.id,
       });
       Guild.save();
+    }
+    var argument = args[0] || null;
+    if (argument != null) {
+      var cmd = client.commands.find(
+        (cmd) => cmd.name == argument || cmd.aliases?.includes(argument)
+      );
+      if (!cmd) {
+        const invalidCommandEmbed = new MessageEmbed()
+          .setColor(colors.red)
+          .setDescription("❌ That's not a valid command of the bot! ❌");
+        return await message.reply({
+          embeds: [invalidCommandEmbed],
+        });
+      }
+      const commandHelpEmbed = new MessageEmbed()
+        .setColor(colors.cyan)
+        .setTitle(
+          `\`${cmd.name.replace(cmd.name[0], cmd.name[0].toUpperCase())}\` Help`
+        )
+        .setDescription(`${cmd.description}`)
+        .addFields([
+          {
+            name: "Usage",
+            value: `\`\`\`\n${
+              cmd.usage?.replace("{prefix}", Guild.prefix) || "None"
+            }\n\`\`\``,
+            inline: true,
+          },
+          {
+            name: "Aliases",
+            value: `\`\`\`\n${cmd.aliases?.join(", ") || "None"}\n\`\`\``,
+            inline: true,
+          },
+          {
+            name: "In Testing?",
+            value: `\`\`\`\n${cmd.testing ? "Yes" : "No"}\n\`\`\``,
+            inline: true,
+          },
+          {
+            name: "Required To Vote?",
+            value: `\`\`\`\n${cmd.voteOnly ? "Yes" : "No"}\n\`\`\``,
+            inline: true,
+          },
+          {
+            name: "Owner Only?",
+            value: `\`\`\`\n${cmd.ownerOnly ? "Yes" : "No"}\n\`\`\``,
+            inline: true,
+          },
+        ]);
+      var bigIntArray = [];
+      for (var permission of cmd.userPermissions) {
+        bigIntArray.push(permission);
+      }
+      var cmdUserPermissions = new Permissions();
+      for (var bigInt of bigIntArray) {
+        cmdUserPermissions = cmdUserPermissions.add(bigInt);
+      }
+      cmdUserPermissions = cmdUserPermissions.toArray();
+      bigIntArray = [];
+      for (var permission of cmd.clientPermissions) {
+        bigIntArray.push(permission);
+      }
+      var cmdClientPermissions = new Permissions();
+      for (var bigInt of bigIntArray) {
+        cmdClientPermissions.add(bigInt);
+      }
+      cmdClientPermissions = cmdClientPermissions.toArray();
+
+      commandHelpEmbed.addFields(
+        {
+          name: "User Requires",
+          value: `${
+            cmdUserPermissions?.length > 0
+              ? `\`\`\`\n${cmdUserPermissions.join(", ")}\n\`\`\``
+              : "No required permissions"
+          }`,
+          inline: true,
+        },
+        {
+          name: "Client Requires",
+          value: `${
+            cmdClientPermissions?.length > 0
+              ? `\`\`\`\n${cmdClientPermissions.join(", ")}\n\`\`\``
+              : "No required permissions"
+          }`,
+          inline: true,
+        }
+      );
+      return await message.reply({
+        embeds: [commandHelpEmbed],
+      });
     }
     var help_embed = new MessageEmbed()
       .setColor(message.member.displayHexColor)
@@ -62,6 +158,12 @@ module.exports = {
             value: "economy",
             description: "Make some cash while having fun!",
             emoji: "💵",
+          },
+          {
+            label: "Fun",
+            value: "fun",
+            description: "Have some laughs with your friends!",
+            emoji: "😂",
           },
           {
             label: "Information",
@@ -120,6 +222,7 @@ module.exports = {
     };
 
     var collector = msg.createMessageComponentCollector({
+      componentType: "SELECT_MENU",
       filter,
       idle: 60 * 1000,
     });
@@ -134,6 +237,11 @@ module.exports = {
       var commands = client.commands.filter(
         (command) => command.type.toLowerCase() == type
       );
+      if (commands.size <= 0)
+        return await collected.reply({
+          content: "There's no commands of this type (yet)!",
+          ephemeral: true,
+        });
       help_embed = new MessageEmbed()
         .setColor(message.member.displayHexColor)
         .setTitle("Help Command")

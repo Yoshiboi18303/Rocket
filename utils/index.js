@@ -1,4 +1,5 @@
 const { GuildMember } = require("discord.js");
+const { Canvas } = require("canvas");
 
 /**
  * Returns the lowercase verion of a string
@@ -101,10 +102,32 @@ function emojifyText(text) {
   return final;
 }
 
+/**
+ * Makes text fit into a canvas.
+ * @param {Canvas} canvas
+ * @param {String} text
+ */
+const applyText = (canvas, text) => {
+  if (!(canvas instanceof Canvas))
+    throw new TypeError("The canvas needs to be a type of Canvas!".red);
+  if (!(canvas instanceof String)) text = `${text}`;
+  const context = canvas.getContext("2d");
+
+  var fontSize = 70;
+
+  do {
+    context.font = `${(fontSize -= 10)}px sans-serif`;
+  } while (context.measureText(text).width > canvas.width - 300);
+
+  // Return the result to use in the actual canvas
+  return context.font;
+};
+
 module.exports = {
   convertToLowerCase,
   convertToUpperCase,
   reverseString,
   returnUserStatusText,
   emojifyText,
+  applyText,
 };

@@ -10,7 +10,7 @@ module.exports = {
   name: "setuptickets",
   description: "Setup the ticket system!",
   usage:
-    '{prefix}setuptickets <channel mention | channel id> <modrole> [category id ("none" if you don\'t want this)] [message]',
+    "{prefix}setuptickets <channel mention | channel id> <modrole> [message]",
   aliases: ["tickets", "setupticket", "ticketsetup"],
   type: "Utility",
   cooldown: ms("5s"),
@@ -29,14 +29,14 @@ module.exports = {
       message.guild.channels.cache.get(args[0]);
     var modrole =
       message.mentions.roles.first() || message.guild.roles.cache.get(args[1]);
-    var parent = args[2];
-    if (!parent || parent.toLowerCase() == "none") parent = "";
     var msg =
-      args.slice(3).join(" ") || "Click the button below to open a ticket!";
+      args.slice(2).join(" ") || "Click the button below to open a ticket!";
     if (!channel) {
       const invalid_channel_embed = new MessageEmbed()
         .setColor(colors.red)
-        .setDescription("❌ That's not a valid channel in this server! ❌");
+        .setDescription(
+          "❌ That's not a valid channel in this server (please make sure it's in this server)! ❌"
+        );
       return await message.reply({
         embeds: [invalid_channel_embed],
       });
@@ -55,25 +55,6 @@ module.exports = {
         .setDescription("❌ Sorry, that's not a text channel! ❌");
       return await message.reply({
         embeds: [bad_type_embed],
-      });
-    }
-    var parentExists = false;
-    if (parent == "") parentExists = true;
-    if (parent != "") {
-      message.guild.channels.cache
-        .filter((channel) => channel.type == "GUILD_TEXT")
-        .each((channel) => {
-          if (channel.parentId == parent) return (parentExists = true);
-        });
-    }
-    if (!parentExists) {
-      const invalidParentEmbed = new MessageEmbed()
-        .setColor(colors.red)
-        .setDescription(
-          "❌ That's not a valid category! ❌\n\n**ℹ️ Pro tip: This argument works by checking every text channel and reading its parent, if you haven't already, please create a text channel in that category then try again (also make sure you gave me the ID of that category). ℹ️**"
-        );
-      return await message.reply({
-        embeds: [invalidParentEmbed],
       });
     }
     if (
@@ -125,7 +106,7 @@ module.exports = {
           ticketSettings: {
             modRole: modrole.id,
             msgChannel: channel.id,
-            parent,
+            parent: "",
             message: ticketMessage.id,
           },
         },

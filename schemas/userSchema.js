@@ -24,7 +24,11 @@ const userSchema = Schema({
   },
   items: {
     type: Object,
-    default: {},
+    default: {
+      padlocks: 0,
+      boosters: 0,
+      gun: "",
+    },
   },
   commandsUsed: {
     type: Number,
@@ -53,6 +57,10 @@ const userSchema = Schema({
   bugHunterLevel: {
     type: Number,
     default: 0,
+  },
+  wakaTimeAccessToken: {
+    type: String,
+    default: "",
   },
 });
 

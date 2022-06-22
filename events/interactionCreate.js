@@ -261,6 +261,8 @@ module.exports = {
         setTimeout(async () => {
           await interaction.channel.delete("Ticket Closed.");
         }, 30000);
+      } else if (interaction.customId.includes("fight-")) {
+        var fight;
       }
     }
   },

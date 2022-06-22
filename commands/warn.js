@@ -67,10 +67,12 @@ module.exports = {
     if (user.id == message.guild.ownerId) {
       const cant_warn_owner_embed = new MessageEmbed()
         .setColor(colors.red)
-        .setDescription("❌ I'm sorry, who gave you permission to warn the owner of this server? ❌")
+        .setDescription(
+          "❌ I'm sorry, who gave you permission to warn the owner of this server? ❌"
+        );
       return await message.reply({
-        embeds: [cant_warn_owner_embed]
-      })
+        embeds: [cant_warn_owner_embed],
+      });
     }
     var User = await Users.findOne({ id: user.id });
     if (!User) {

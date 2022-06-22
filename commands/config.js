@@ -1,5 +1,17 @@
 const Guilds = require("../schemas/guildSchema");
 const { Permissions, MessageAttachment, Message } = require("discord.js");
+const types = {
+  GUILD_TEXT: "Text Channel",
+  GUILD_VOICE: "Voice Channel",
+  GUILD_CATEGORY: "Category",
+  GUILD_NEWS: "News Channel",
+  GUILD_STORE: "Store Channel",
+  GUILD_NEWS_THREAD: "News Thread",
+  GUILD_PUBLIC_THREAD: "Public Thread",
+  GUILD_PRIVATE_THREAD: "Private Thread",
+  GUILD_STAGE_VOICE: "Stage Channel",
+  UNKNOWN: "Unknown Channel",
+};
 
 module.exports = {
   name: "config",
@@ -51,12 +63,13 @@ module.exports = {
         "warn3",
         "logs",
         "lmessage",
+        "starboard",
       ].includes(setting)
     ) {
       const invalid_setting_embed = new MessageEmbed()
         .setColor(colors.red)
         .setDescription(
-          "❌ Please provide a valid setting! ❌\n\nℹ️ **Valid settings are:** `welcome`, `member`, `memberJoinDms`, `wmessage`, `warn1`, `warn2`, `warn3`, `logs` and `lmessage` ℹ️"
+          "❌ Please provide a valid setting! ❌\n\nℹ️ **Valid settings are:** `welcome`, `member`, `memberJoinDms`, `wmessage`, `warn1`, `warn2`, `warn3`, `logs`, `lmessage` and `starboard` ℹ️"
         );
       return await message.reply({
         embeds: [invalid_setting_embed],
@@ -716,6 +729,76 @@ module.exports = {
               {
                 name: "New Value",
                 value: `\`\`\`\n${value}\n\`\`\``,
+                inline: true,
+              },
+            ]);
+            await message.reply({
+              embeds: [new_value_embed],
+            });
+            break;
+          case "starboard":
+            var channel = message.guild.channels.cache.get(value);
+            if (!channel) {
+              const invalid_channel_embed = new MessageEmbed()
+                .setColor(colors.red)
+                .setDescription(
+                  "❌ That's not a valid channel in this guild! ❌"
+                );
+              return await message.reply({
+                embeds: [invalid_channel_embed],
+              });
+            }
+            if (channel.type != "GUILD_TEXT") {
+              const wrong_type_embed = new MessageEmbed()
+                .setColor(colors.red)
+                .setDescription(
+                  `❌ Expected a text channel, got a ${
+                    types[channel.type]
+                  } instead. ❌`
+                );
+              return await message.reply({
+                embeds: [wrong_type_embed],
+              });
+            }
+            if (
+              !message.guild.me
+                .permissionsIn(channel)
+                .has([
+                  Permissions.FLAGS.VIEW_CHANNEL,
+                  Permissions.FLAGS.SEND_MESSAGES,
+                ])
+            ) {
+              const bad_permissions_embed = new MessageEmbed()
+                .setColor(colors.red)
+                .setDescription(
+                  `❌ I don't have the correct permissions for this channel. Please make sure you have given me the send messages and view channel permissions in <#${channel.id}>. ❌`
+                );
+              return await message.reply({
+                embeds: [bad_permissions_embed],
+              });
+            }
+            Guilds.findOneAndUpdate(
+              {
+                id: message.guild.id,
+              },
+              {
+                $set: {
+                  starboard: value,
+                },
+              }
+            ).then((data) => data.save());
+            new_value_embed.addFields([
+              {
+                name: "Old Value",
+                value: `\`\`\`\n${
+                  message.guild.channels.cache.get(Guild.starboard)?.name ||
+                  "None/Unknown"
+                }\n\`\`\``,
+                inline: true,
+              },
+              {
+                name: "New Value",
+                value: `\`\`\`\n${channel.name}\n\`\`\``,
                 inline: true,
               },
             ]);

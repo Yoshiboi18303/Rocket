@@ -1,9 +1,10 @@
 const { Permissions } = require("discord.js");
+const ms = require("ms");
 
 module.exports = {
   name: "playsong",
   description: "Start playing a song!",
-  aliases: [],
+  aliases: ["ps"],
   usage: "{prefix}playsong <song/query/file>",
   type: "Music",
   cooldown: ms("5s"),

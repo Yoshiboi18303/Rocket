@@ -1,9 +1,9 @@
 const Guilds = require("../schemas/guildSchema");
 const Users = require("../schemas/userSchema");
+const Warnings = require("../schemas/warningSchema");
 const { Permissions, MessageEmbed, Message } = require("discord.js");
 const fs = require("fs/promises");
-const cooldowns = [];
-const wait = require("util").promisify(setTimeout)
+const wait = require("util").promisify(setTimeout);
 
 module.exports = {
   name: "messageCreate",
@@ -11,7 +11,7 @@ module.exports = {
    * @param {Message} message
    */
   async execute(message) {
-    const parser = await import("parse-ms")
+    const parser = await import("parse-ms");
     if (!message.guild) return;
     if (message.channel.name.includes(`ticket-${message.guild.id}-`)) {
       if (message.author.id == client.user.id) return;
@@ -30,6 +30,117 @@ module.exports = {
       });
       Guild.save();
     }
+    var User = await Users.findOne({ id: message.author.id });
+    if (!User) {
+      User = new Users({
+        id: message.author.id,
+      });
+      User.save();
+    }
+    if (
+      (message.content.startsWith("http") ||
+        message.content.startsWith("https") ||
+        message.content.includes("http") ||
+        message.content.includes("https")) &&
+      Guild.filters.links.on &&
+      !message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])
+    ) {
+      switch (Guild.filters.links.action) {
+        case 1:
+          message.delete().catch(async () => {
+            const deleteFailedEmbed = new MessageEmbed()
+              .setColor(colors.red)
+              .setDescription(
+                "❌ I couldn't delete the message, do I have the Manage Messages permission in this channel? ❌"
+              );
+            await message.channel
+              .send({
+                embeds: [deleteFailedEmbed],
+              })
+              .catch(() => {});
+          });
+          break;
+        case 2:
+          message
+            .delete()
+            .then(async (msg) => {
+              var Data = await Warnings.findOne({
+                user: msg.author.id,
+                guild: msg.guild.id,
+              });
+              if (!Data) {
+                Data = new Warnings({
+                  user: msg.author.id,
+                  guild: msg.guild.id,
+                  context: [
+                    {
+                      moderator: client.user.id,
+                      reason: "Posted a link",
+                      severity: "LOW",
+                    },
+                  ],
+                });
+              } else {
+                Data.context.push({
+                  moderator: client.user.id,
+                  reason: "Posted a link",
+                  severity: "LOW",
+                });
+              }
+              Data.save();
+            })
+            .catch(async () => {
+              const deleteFailedEmbed = new MessageEmbed()
+                .setColor(colors.red)
+                .setDescription(
+                  "❌ I couldn't delete the message, do I have the Manage Messages permission in this channel? ❌"
+                );
+              await message.channel
+                .send({
+                  embeds: [deleteFailedEmbed],
+                })
+                .catch(() => {});
+            });
+          break;
+      }
+      await message.channel.send({
+        content: `<@${message.author.id}> Don't send links!`,
+      });
+    } else if (message.mentions && Guild.filters.mentions.on) {
+      switch (Guild.filters.mentions.action) {
+        case 1:
+          message.delete().catch(async () => {
+            const deleteFailedEmbed = new MessageEmbed()
+              .setColor(colors.red)
+              .setDescription(
+                "❌ I couldn't delete the message, do I have the Manage Messages permission in this channel? ❌"
+              );
+            await message.channel
+              .send({
+                embeds: [deleteFailedEmbed],
+              })
+              .catch(() => {});
+          });
+          break;
+        case 2:
+          message
+            .delete()
+            .then(async (msg) => {})
+            .catch(async () => {
+              const deleteFailedEmbed = new MessageEmbed()
+                .setColor(colors.red)
+                .setDescription(
+                  "❌ I couldn't delete the message, do I have the Manage Messages permission in this channel? ❌"
+                );
+              await message.channel
+                .send({
+                  embeds: [deleteFailedEmbed],
+                })
+                .catch(() => {});
+            });
+          break;
+      }
+    }
     var prefix = Guild.prefix;
     if (message.content == `<@${client.user.id}>`) {
       const pinged_embed = new MessageEmbed()
@@ -42,9 +153,10 @@ module.exports = {
         embeds: [pinged_embed],
       });
     }
-    if (!message.content.startsWith(prefix)) return;
-    const args = message.content.slice(prefix.length).trim().split(/ +/g);
-    const command = args.shift();
+    var content = message.content;
+    if (!content.startsWith(prefix)) return;
+    const args = content.slice(prefix.length).trim().split(/ +/g);
+    const command = args.shift().toLowerCase();
 
     if (
       !message.guild.me.permissions.has([
@@ -73,20 +185,28 @@ module.exports = {
       });
     } else if (!cmd && !Guild.unknownCommandMessage) return;
     var cooldown = command.cooldown;
-    if(cooldowns.some((cd) => cd.user == message.author.id)) {
-      var timedOut = cooldowns.find(cd => cd.user == message.author.id)
-      var formula = cooldown - (new Date().getTime() - timedOut.startedAt)
+    if (cooldowns.some((cd) => cd.user == message.author.id)) {
+      var timedOut = cooldowns.find((cd) => cd.user == message.author.id);
+      var formula = cooldown - (new Date().getTime() - timedOut.startedAt);
       var parsed = parser.default(formula);
-      const cooldownMessages = ["Out Of Fuel", "Low Fuel", "Calm It", "Way Too Salty"];
-      const cooldownMessage = cooldownMessages[Math.floor(Math.random() * cooldownMessages.length)]
+      const cooldownMessages = [
+        "Out Of Fuel",
+        "Low Fuel",
+        "Calm It",
+        "Way Too Salty",
+      ];
+      const cooldownMessage =
+        cooldownMessages[Math.floor(Math.random() * cooldownMessages.length)];
       const onCooldownEmbed = new MessageEmbed()
         .setColor(colors.orange)
         .setTitle(`${cooldownMessage}`)
-        .setDescription(`You're still on cooldown, you can run this command in \`${parsed.minutes}\` minutes and \`${parsed.seconds}\` seconds`)
-        .setTimestamp(Date.now() + cooldown)
+        .setDescription(
+          `You're still on cooldown, you can run this command in \`${parsed.minutes}\` minutes and \`${parsed.seconds}\` seconds`
+        )
+        .setTimestamp(Date.now() + cooldown);
       return await message.reply({
-        embeds: [onCooldownEmbed]
-      })
+        embeds: [onCooldownEmbed],
+      });
     }
     var Testing = cmd.testing;
     if (!Testing) Testing = false;
@@ -134,13 +254,6 @@ module.exports = {
             "I don't have the required permissions to be able to run this command!",
         });
     }
-    var User = await Users.findOne({ id: message.author.id });
-    if (!User) {
-      User = new Users({
-        id: message.author.id,
-      });
-      User.save();
-    }
     if (User.blacklisted == true) {
       const blacklisted_embed = new MessageEmbed()
         .setColor(colors.red)
@@ -176,10 +289,11 @@ module.exports = {
     await cmd.execute(message, args);
     const cooldownObject = {
       user: message.author.id,
-      startedAt: new Date().getTime()
-    }
-    cooldowns.push(cooldownObject)
-    wait(cooldown)
-      .then(() => cooldowns.splice(cooldowns.indexOf(message.author.id), 1))
+      startedAt: new Date().getTime(),
+    };
+    cooldowns.push(cooldownObject);
+    wait(cooldown).then(() =>
+      cooldowns.splice(cooldowns.indexOf(message.author.id), 1)
+    );
   },
 };
