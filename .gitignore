@@ -9,3 +9,7 @@ node_modules/
 tickets/
 .env
 fights/
+fights.json
+removeBotUsers.js
+classes/
+checkMongoDB.js

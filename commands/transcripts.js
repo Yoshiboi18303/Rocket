@@ -56,7 +56,8 @@ module.exports = {
       })
       .catch(async () => {
         return await message.reply({
-          content: "Your guild doesn't have any open tickets at this time!",
+          content:
+            "This guild doesn't have any saved transcripts at this time!",
         });
       });
   },

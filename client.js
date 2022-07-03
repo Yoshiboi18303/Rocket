@@ -59,7 +59,6 @@ global.Discord = require("discord.js");
 global.client = client;
 global.MessageEmbed = require("discord.js").MessageEmbed;
 global.ranks = ranks;
-global.cooldowns = [];
 global.status = (queue) =>
   `Volume: \`${queue.volume}%\` | Filter: \`${
     queue.filters.join(", ") || "Off"
@@ -93,7 +92,6 @@ global.Enum = {
   },
 };
 global.statcord = statcord;
-global.ready = false;
 global.fightsStarted = 0;
 
 client.commands = new Collection();

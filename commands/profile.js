@@ -28,6 +28,11 @@ module.exports = {
           inline: true,
         },
         {
+          name: "Amount In Bank",
+          value: `${User.bank}`,
+          inline: true,
+        },
+        {
           name: "Wins",
           value: `${User.wins}`,
           inline: true,

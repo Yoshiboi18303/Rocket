@@ -11,6 +11,9 @@ const utc = require("moment").utc;
 // const Twitter = require("../schemas/twitterSchema");
 const key = process.env.GOOGLE_ANALYTICS_ID;
 const Reviews = require("../schemas/reviewSchema");
+const LoggerClass = require("../classes/Logger");
+const Logger = new LoggerClass();
+const { sortCommands } = require("../utils/");
 
 app.use(
   require("express-session")({
@@ -82,6 +85,7 @@ app.use("/dashboard", require("./routes/dashboard"));
 app.use("/webhooks", require("./routes/webhooks"));
 app.use("/report", require("./routes/report"));
 app.use("/tickets", require("./routes/tickets"));
+app.use("/shortlinks", require("./routes/shortlinks"));
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -131,6 +135,15 @@ app.get("/blacklisted", (req, res) => {
   });
 });
 
+app.get(["/commands", "/cmds"], (req, res) => {
+  var commands = sortCommands()
+  res.status(200).render("commands", {
+    req,
+    key,
+    commands,
+  })
+})
+
 app.all("*", (req, res) => {
   res.status(404).render("notfound", {
     req,
@@ -140,8 +153,8 @@ app.all("*", (req, res) => {
 });
 
 app.listen(port);
-console.log(
-  `The website for ${"Rocket".blue}`.green +
-    ` is now listening on port ${`${port}`.blue}`.green +
-    "!".green
+Logger.success(
+  `The website for ${"Rocket".bold}` +
+    ` is now listening on port ${`${port}`.bold}` +
+    "!"
 );

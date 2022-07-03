@@ -1,10 +1,12 @@
-const { MessageAttachment } = require("discord.js");
+const { Message, MessageAttachment, MessageEmbed } = require("discord.js");
 const shell = require("shelljs");
+const colors = require("../colors.json");
+const Guilds = require("../schemas/guildSchema");
 
 module.exports = {
   name: "exec",
   description: "Execute a shell command (owner only)",
-  aliases: [],
+  aliases: ["execute"],
   usage: "{prefix}exec <command>",
   type: "Owner",
   cooldown: ms("12s"),
@@ -12,6 +14,10 @@ module.exports = {
   clientPermissions: [],
   testing: false,
   ownerOnly: true,
+  /**
+   * @param {Message} message
+   * @param {Array<String>} args
+   */
   execute: async (message, args) => {
     const cmd = args.join(" ");
     if (!cmd) {
@@ -20,6 +26,26 @@ module.exports = {
         .setDescription("❌ Please provide a shell command to execute! ❌");
       return await message.reply({
         embeds: [no_cmd_embed],
+      });
+    }
+    if (cmd == "speedtest") {
+      var Guild = await Guilds.findOne({
+        id: message.guild.id,
+      });
+      if (!Guild) {
+        Guild = new Guilds({
+          id: message.guild.id,
+        });
+        Guild.save();
+      }
+      const cmd_already_made_embed = new MessageEmbed()
+        .setColor(colors.yellow)
+        .setTitle("Attention")
+        .setDescription(
+          `There's already a command for this, please run \`${Guild.prefix}speedtest\` instead of this command for this!`
+        );
+      return await message.reply({
+        embeds: [cmd_already_made_embed],
       });
     }
     const executing_embed = new MessageEmbed()

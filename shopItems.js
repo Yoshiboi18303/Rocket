@@ -1,3 +1,5 @@
+const emojis = require("./emojis.json");
+
 module.exports = [
   {
     name: "XP Booster",
@@ -11,8 +13,8 @@ module.exports = [
   {
     name: "Padlock",
     id: "padlock",
-    desc: "An item used to prevent a shifty car from taking your precious tokens",
-    emojis: emojis.padlock,
+    desc: "An item used to prevent a shifty person from taking your precious tokens",
+    emoji: emojis.padlock,
     image: "https://cdn.discordapp.com/emojis/927438274287501342.png",
     type: "powerup",
     price: 350,

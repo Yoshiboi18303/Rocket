@@ -1,5 +1,5 @@
 const Guilds = require("../schemas/guildSchema");
-const { Permissions } = require("discord.js");
+const { Message, MessageEmbed, Permissions } = require("discord.js");
 
 module.exports = {
   name: "prefix",
@@ -7,6 +7,10 @@ module.exports = {
   usage: "{prefix}prefix [new prefix]",
   type: "Utility",
   cooldown: ms("5s"),
+  /**
+   * @param {Message} message
+   * @param {Array<String>} args
+   */
   execute: async (message, args) => {
     var Guild = await Guilds.findOne({
       id: message.guild.id,

@@ -5,6 +5,8 @@ const util = require("util");
 const utils = require("../utils/");
 const Warnings = require("../schemas/warningSchema");
 const Reviews = require("../schemas/reviewSchema");
+const LoggerClass = require("../classes/Logger");
+const Logger = new LoggerClass();
 
 module.exports = {
   name: "eval",

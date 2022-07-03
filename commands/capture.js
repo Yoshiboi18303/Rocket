@@ -41,12 +41,15 @@ module.exports = {
     const browser = await puppeteer.launch();
     var page = await browser.newPage();
     page
-      .goto(url)
+      .goto(url, {
+        timeout: 0,
+      })
       .then(async () => {
         var buffer = await page.screenshot();
         if (buffer instanceof String || typeof buffer == "string")
           buffer = Buffer.from(buffer);
         var attachment = new MessageAttachment(buffer, "screenshot.png");
+        await browser.close();
         const screenshotEmbed = new MessageEmbed()
           .setColor(colors.black)
           .setTitle("Screenshot")
@@ -58,6 +61,7 @@ module.exports = {
         });
       })
       .catch(async (e) => {
+        await browser.close();
         return await msg.edit({
           content: `An error occurred: \`${`${e}`.slice(0, 2000)}\``,
           embeds: [],

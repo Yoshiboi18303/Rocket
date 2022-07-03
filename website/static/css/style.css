@@ -299,8 +299,8 @@ input.submit:hover {
 
 .success-message {
   background-color: #22b013;
-  width: 310px;
-  height: 100px;
+  width: 350px;
+  height: 115px;
   margin: 0 auto;
   border: 2px solid #22b013;
   border-radius: 8px;
@@ -469,9 +469,9 @@ footer {
 }
 
 .reviews > .review {
-  display: block;
-  background-color: #123bc1;
-  border: 2px solid #123bc1;
+  display: inline-block;
+  background-color: #22c28f;
+  border: 2px solid #22c28f;
   border-radius: 8px;
   width: 250px;
   margin: 0 auto;
@@ -497,7 +497,7 @@ footer {
   height: 56px;
   margin-left: auto;
   margin-right: auto;
-  border: 4px solid #0955e8;
+  border: 4px solid #25dba2;
   border-radius: 100%;
   -webkit-transform: -webkit-transform 0.8s ease-in-out;
   transition: transform 0.75s ease-in-out;
@@ -516,7 +516,8 @@ footer {
 
 p.review {
   font-family: "Josefin Sans", sans-serif;
-  color: #150578;
+  color: #3516fd;
+  top: 5px;
 }
 
 .transcript {
@@ -537,4 +538,20 @@ p.review {
 .button-text {
   font-family: "Radio Canada", sans-serif;
   color: black;
+}
+
+.review-star {
+  width: 28px;
+  height: 28px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h4.notice {
+  font-family: "Orbitron", sans-serif;
+  color: white;
+}
+
+code#ip {
+  color: white;
 }

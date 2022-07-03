@@ -1,5 +1,6 @@
 const Users = require("../schemas/userSchema");
 const ShopItems = require("../shopItems");
+const { Message } = require("discord.js");
 
 module.exports = {
   name: "shop",
@@ -9,6 +10,10 @@ module.exports = {
   cooldown: ms("5s"),
   testing: true,
   ownerOnly: false,
+  /**
+   * @param {Message} message
+   * @param {Array<String>} args
+   */
   execute: async (message, args) => {
     var action = args[0]?.toLowerCase();
     if (!["view", "buy"].includes(action)) {
@@ -23,25 +28,37 @@ module.exports = {
     }
     switch (action) {
       case "view":
-        const shop_embed = new MessageEmbed()
-          .setColor(colors.cyan)
-          .setTitle("Shop")
-          .setDescription("Welcome to the shop! Have a look around!");
+        var item = ShopItems.find(
+          (item) => item.name == args[1] || item.id == args[1]
+        );
+        if (!item) {
+          const shop_embed = new MessageEmbed()
+            .setColor(colors.cyan)
+            .setTitle("Shop")
+            .setDescription("Welcome to the shop! Have a look around!");
 
-        for (const item of ShopItems) {
-          shop_embed.addField(
-            `${item.emoji} ${item.name}`,
-            `**ID:** \`${item.id}\`,\n**Description:** **\`${item.desc}\`**,\n**Price:** \`${item.price} Tokens\``
-          );
+          for (const item of ShopItems) {
+            shop_embed.addField(
+              `${item.emoji} ${item.name}`,
+              `**ID:** \`${item.id}\`,\n**Description:** **\`${item.desc}\`**,\n**Price:** \`${item.price} Tokens\``
+            );
+          }
+
+          await message.reply({
+            embeds: [shop_embed],
+          });
+        } else {
+          console.log(item);
+          await message.reply({
+            content: "A valid item was entered!",
+          });
         }
-
-        await message.reply({
-          embeds: [shop_embed],
-        });
         break;
       case "buy":
-        return await message.reply({
-          content: "Coming soon!",
+        var item = ShopItems.find((i) => i.name == args[1] || i.id == args[1]);
+        console.log(item);
+        await message.reply({
+          content: "Check the console!",
         });
         break;
     }

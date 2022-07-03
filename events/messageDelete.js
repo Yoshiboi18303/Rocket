@@ -8,7 +8,6 @@ module.exports = {
    * @param {Message} message
    */
   execute: async (message) => {
-    if (message.author.bot) return;
     Log(client, message.guild, Enum.Log.MessageDelete, {
       member: message.member,
       message: message.content,

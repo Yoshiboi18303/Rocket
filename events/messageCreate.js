@@ -4,6 +4,10 @@ const Warnings = require("../schemas/warningSchema");
 const { Permissions, MessageEmbed, Message } = require("discord.js");
 const fs = require("fs/promises");
 const wait = require("util").promisify(setTimeout);
+var cooldowns = [];
+const colors = require("../colors.json");
+const LoggerClass = require("../classes/Logger");
+const Logger = new LoggerClass();
 
 module.exports = {
   name: "messageCreate",
@@ -155,7 +159,7 @@ module.exports = {
     }
     var content = message.content;
     if (!content.startsWith(prefix)) return;
-    const args = content.slice(prefix.length).trim().split(/ +/g);
+    const args = content.slice(prefix.length).split(/ +/g);
     const command = args.shift().toLowerCase();
 
     if (
@@ -185,6 +189,7 @@ module.exports = {
       });
     } else if (!cmd && !Guild.unknownCommandMessage) return;
     var cooldown = command.cooldown;
+    var supportServer = client.guilds.cache.get("977632347862216764");
     if (cooldowns.some((cd) => cd.user == message.author.id)) {
       var timedOut = cooldowns.find((cd) => cd.user == message.author.id);
       var formula = cooldown - (new Date().getTime() - timedOut.startedAt);
@@ -274,7 +279,7 @@ module.exports = {
         });
       }
     }
-    var data = await Users.findOneAndUpdate(
+    await Users.findOneAndUpdate(
       {
         id: message.author.id,
       },
@@ -283,17 +288,47 @@ module.exports = {
           commandsUsed: 1,
         },
       }
-    );
-    data.save();
+    ).then((data) => data.save());
     statcord.postCommand(cmd.name, message.author.id);
-    await cmd.execute(message, args);
+    try {
+      await cmd.execute(message, args);
+      Logger.success(
+        `Command ${cmd.name.replace(
+          cmd.name[0],
+          cmd.name[0].toUpperCase()
+        )} executed!`
+      );
+    } catch (e) {
+      Logger.error(e, false);
+      var logChannel = supportServer.channels.cache.get("981617877092298853");
+      const errorEmbed = new MessageEmbed()
+        .setColor(colors.red)
+        .setTitle("An Error Occurred")
+        .setDescription(
+          `An error occurred in **${message.guild.name}** with the \`${cmd.name}\` command.`
+        )
+        .addField(`Error`, `\`\`\`\n${`${e}`.slice(0, 1024)}\n\`\`\``);
+      logChannel.send({
+        content: `<@${config.owner}>`,
+        embeds: [errorEmbed],
+      });
+      return await message.reply({
+        content: `Sorry, this command ran into an error. This has been sent to the developers.\n\n**Error:** ||${`${e}`.slice(
+          0,
+          2000
+        )}||`,
+      });
+    }
     const cooldownObject = {
       user: message.author.id,
       startedAt: new Date().getTime(),
     };
     cooldowns.push(cooldownObject);
     wait(cooldown).then(() =>
-      cooldowns.splice(cooldowns.indexOf(message.author.id), 1)
+      cooldowns.splice(
+        cooldowns.findIndex((c) => c.user == message.author.id),
+        1
+      )
     );
   },
 };

@@ -16,13 +16,13 @@ const flags = {
   TEAM_USER: "Team User",
   SYSTEM: "System",
   VERIFIED_BOT: "Verified Bot",
-  VERIFIED_DEVELOPER: "Verified Bot Developer",
+  EARLY_VERIFIED_BOT_DEVELOPER: "Verified Bot Developer",
 };
 
 module.exports = {
   name: "userinfo",
   description: "View info on a user (or yourself)!",
-  aliases: ["ui", "user"],
+  aliases: ["ui", "user", "whois"],
   usage: "{prefix}userinfo [@user/user id]",
   type: "Information",
   cooldown: ms("5s"),
@@ -79,14 +79,18 @@ module.exports = {
       .map((role) => role.toString())
       .slice(0, -1);
     var role_array = [];
-    member.roles.cache.forEach((r) => role_array.push(`<@&${r.id}>`));
+    member.roles.cache.forEach((r) => {
+      /*
+      if(role_array.length < 15) {
+        role_array.push(`<@&${r.id}>`)
+      }
+      */
+      role_array.push(`<@&${r.id}>`);
+    });
     role_array.splice(member.roles.cache.size - 1, 1);
-    var t = `**❯ Roles${
-      role_array.length > 15 ? " ||First 15||" : ""
-    } (except everyone):**`;
-    if (role_array.length > 15)
-      role_array.splice(15, member.roles.cache.size - 15);
+    var t = `**❯ Roles (except everyone):**`;
     const userFlags = user.flags.toArray();
+    var flagMap = userFlags?.map((flag) => flags[flag]) || null;
     const userArray = [
       `**❯ Username:** ${user.username}`,
       `**❯ Discriminator:** ${user.discriminator}`,
@@ -95,8 +99,10 @@ module.exports = {
       `**❯ Is Bot?** ${user.bot ? "Yes" : "No"}`,
       `**❯ Is Blacklisted?** ${User.blacklisted ? "Yes" : "No"}`,
       `**❯ Flags:** ${
-        userFlags.length
-          ? userFlags.map((flag) => flags[flag]).join(", ")
+        flagMap != null
+          ? flagMap.length == 1
+            ? flagMap[0]
+            : flagMap.join(", ")
           : "None"
       }`,
       `**❯ Time Created:** ${utc(user.createdTimestamp).format("LT")} - ${utc(
@@ -108,7 +114,13 @@ module.exports = {
     ];
     const memberArray = [
       `**❯ Nickname:** ${member.nickname != null ? member.nickname : "None"}`,
-      `${t} ${role_array.length > 1 ? role_array.join(", ") : "None"}`,
+      `${t} ${
+        role_array.length > 1
+          ? role_array.length == 1
+            ? role_array[0]
+            : role_array.join(", ")
+          : "None"
+      }`,
       `**❯ Highest Role:** ${
         member.roles.highest.id === message.guild.id
           ? "None"

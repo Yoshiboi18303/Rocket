@@ -1,6 +1,9 @@
+const LoggerClass = require("../classes/Logger");
+const Logger = new LoggerClass();
+
 module.exports = {
   name: "debug",
   execute: (info) => {
-    console.log("ROCKET-DEBUGGER: ".yellow.bold + `${info}`.blue);
+    Logger.debug(info);
   },
 };

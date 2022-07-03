@@ -17,6 +17,7 @@ module.exports = {
   usage: "{prefix}help [command]",
   type: "Information",
   cooldown: ms("5s"),
+  aliases: "h",
   userPermissions: [],
   clientPermissions: [],
   /**
@@ -80,44 +81,50 @@ module.exports = {
           },
         ]);
       var bigIntArray = [];
-      for (var permission of cmd.userPermissions) {
-        bigIntArray.push(permission);
+      if (cmd.userPermissions) {
+        for (var permission of cmd.userPermissions) {
+          bigIntArray.push(permission);
+        }
+        var cmdUserPermissions = new Permissions();
+        for (var bigInt of bigIntArray) {
+          cmdUserPermissions.add(bigInt);
+        }
+        cmdUserPermissions = cmdUserPermissions.toArray();
       }
-      var cmdUserPermissions = new Permissions();
-      for (var bigInt of bigIntArray) {
-        cmdUserPermissions = cmdUserPermissions.add(bigInt);
-      }
-      cmdUserPermissions = cmdUserPermissions.toArray();
       bigIntArray = [];
-      for (var permission of cmd.clientPermissions) {
-        bigIntArray.push(permission);
+      if (cmd.clientPermissions) {
+        for (var permission of cmd.clientPermissions) {
+          bigIntArray.push(permission);
+        }
+        var cmdClientPermissions = new Permissions();
+        for (var bigInt of bigIntArray) {
+          cmdClientPermissions.add(bigInt);
+        }
+        cmdClientPermissions = cmdClientPermissions.toArray();
       }
-      var cmdClientPermissions = new Permissions();
-      for (var bigInt of bigIntArray) {
-        cmdClientPermissions.add(bigInt);
-      }
-      cmdClientPermissions = cmdClientPermissions.toArray();
 
-      commandHelpEmbed.addFields(
-        {
-          name: "User Requires",
-          value: `${
+      if (cmdUserPermissions) {
+        commandHelpEmbed.addField(
+          "User Requires",
+          `${
             cmdUserPermissions?.length > 0
               ? `\`\`\`\n${cmdUserPermissions.join(", ")}\n\`\`\``
               : "No required permissions"
           }`,
-          inline: true,
-        },
-        {
-          name: "Client Requires",
-          value: `${
+          true
+        );
+      }
+      if (cmdClientPermissions) {
+        commandHelpEmbed.addField(
+          "Client Requires",
+          `${
             cmdClientPermissions?.length > 0
               ? `\`\`\`\n${cmdClientPermissions.join(", ")}\n\`\`\``
               : "No required permissions"
           }`,
-          inline: true,
-        }
-      );
+          true
+        );
+      }
       return await message.reply({
         embeds: [commandHelpEmbed],
       });
@@ -126,7 +133,7 @@ module.exports = {
       .setColor(message.member.displayHexColor)
       .setTitle("Help Command")
       .setDescription(
-        `Hello and welcome to \`${client.user.username}\`, you have executed the help command which has been reworked to filter types.\n\n**Please use the newly implemented context menu below to select a type.**`
+        `Hello and welcome to \`${client.user.username}\`, you have executed the help command which has been made to filter command types.\n\n**Please use the context menu below to select a type.**`
       )
       .setURL(`https://${config.origin}`);
 
@@ -272,10 +279,14 @@ module.exports = {
 
     collector.on("end", async () => {
       typesRow.components.forEach((component) => component.setDisabled(true));
-      await msg.edit({
-        content: "This help command has now expired.",
-        components: [linkRow, typesRow],
-      });
+      await msg
+        .edit({
+          content: "This help command has now expired.",
+          components: [linkRow, typesRow],
+        })
+        .catch(() => {
+          return;
+        });
     });
   },
 };

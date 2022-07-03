@@ -23,14 +23,14 @@ app.get("/", (req, res) => {
 });
 
 app.get("/:type", (req, res, next) => {
-  if (isBlacklisted(req, next))
-    return res.redirect("/blacklisted?referral=report");
   if (!ready) return res.send("<h1>The client is offline!</h1>");
   var type = req.params.type;
-  if (!["bug", "suggestion", "user", "review"].includes(type))
-    return res.redirect("/report");
   var msg = req.query.message || "";
   var error = req.query.error?.toLowerCase() == "true" ? true : false;
+  if (!["bug", "suggestion", "report", "review"].includes(type))
+    return res
+      .status(404)
+      .send({ code: 404, message: "That's not a valid report type!" });
   switch (type) {
     case "bug":
       res.render("bugreport", {

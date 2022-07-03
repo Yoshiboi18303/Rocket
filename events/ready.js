@@ -88,7 +88,7 @@ module.exports = {
         headers: {
           Authorization: process.env.SERVICES_KEY,
         },
-        body: cmds,
+        body: JSON.stringify(cmds),
       }
     );
     data = await req.json().catch(() => {});

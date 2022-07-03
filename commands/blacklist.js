@@ -28,19 +28,21 @@ module.exports = {
     if (!User) {
       User = new Users({
         id,
+        blacklisted: true,
       });
       User.save();
-    }
-    Users.findOneAndUpdate(
-      {
-        id,
-      },
-      {
-        $set: {
-          blacklisted: true,
+    } else {
+      Users.findOneAndUpdate(
+        {
+          id,
         },
-      }
-    ).then((data) => data.save());
+        {
+          $set: {
+            blacklisted: true,
+          },
+        }
+      ).then((data) => data.save());
+    }
     const blacklisted_embed = new MessageEmbed()
       .setColor(colors.green)
       .setDescription(

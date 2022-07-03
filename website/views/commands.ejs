@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <%- include("includes/head", { title: "Commands", key, }) %>
+    </head>
+    <body>
+        <%- include("includes/header", { req }) %>
+        <br>
+        <h1>Commands</h1>
+        <h3 class="description">Here are all the commands for Rocket</h3>
+        <br>
+        <br>
+        <% var keys = Object.keys(commands) %>
+        <% for(var value of Object.values(commands)) { %>
+            <% for(var cmd of value) { %>
+                <h2 class="cmd-type"><%= cmd.type %></h2>
+            <% } %>
+        <% } %>
+        <br>
+        <br>
+        <%- include("includes/footer") %>
+    </body>
+</html>

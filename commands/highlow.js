@@ -14,7 +14,7 @@ module.exports = {
   description:
     "Guess whether a number is higher or lower, if you're right, you'll earn some money!",
   usage: "{prefix}highlow [optional bet]",
-  cooldown: ms("15s"),
+  cooldown: ms("45s"),
   type: "Economy",
   userPermissions: [],
   clientPermissions: [],
@@ -29,8 +29,9 @@ module.exports = {
   execute: async (message, args) => {
     var bet = parseInt(args[0]);
     var number = Math.floor(Math.random() * 101);
-    if (number == 0) number = 1;
+    if (number <= 0) number = 1;
     var hint = Math.floor(Math.random() * 101 - Math.random());
+    if (hint <= 0) hint = Math.floor(Math.random() * 101 - Math.random());
     var User = await Users.findOne({
       id: message.author.id,
     });
@@ -46,6 +47,8 @@ module.exports = {
       // console.log(bet);
       if (bet == "max" || bet == "maximum" || bet == "all") {
         bet = User.tokens;
+      } else if (bet == "half") {
+        bet = User.tokens / 2;
       } else if (bet == "min" || bet == "minimum") {
         bet = minimumAmount;
       } else {
@@ -69,6 +72,11 @@ module.exports = {
         });
       }
     }
+    if (bet > User.highestBet)
+      Users.findOneAndUpdate(
+        { id: message.author.id },
+        { $set: { highestBet: bet } }
+      ).then((data) => data.save());
     var hasVoted = User.voted;
     var earnedMoney =
       bet != null
@@ -116,7 +124,10 @@ module.exports = {
      */
     const filter = async (btnInt) => {
       if (btnInt.user.id != message.author.id)
-        return await message.reply({ content: "This isn't yours!" });
+        return await btnInt.reply({
+          content: "This isn't yours!",
+          ephemeral: true,
+        });
       return true;
     };
 
@@ -146,11 +157,11 @@ module.exports = {
       } else if (User.voted) {
         if (bet != null) {
           correctEmbed.setFooter({
-            text: "Thanks for voting for Rocket, you've earned triple your bet!",
+            text: `Thanks for voting for ${client.user.username}, you've earned triple your bet!`,
           });
         } else {
           correctEmbed.setFooter({
-            text: "Thanks for voting for Rocket, you've earned double the normal amount of cash!",
+            text: `Thanks for voting for ${client.user.username}, you've earned double the normal amount of cash!`,
           });
         }
       }

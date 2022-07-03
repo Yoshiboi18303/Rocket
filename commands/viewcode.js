@@ -1,4 +1,5 @@
 const { Message, MessageAttachment } = require("discord.js");
+const fs = require("fs");
 
 module.exports = {
   name: "viewcode",
@@ -36,7 +37,11 @@ module.exports = {
           `${
             path.endsWith(".js") || path.endsWith(".json")
               ? "code.js"
-              : path.endsWith(".md") ? "code.md" : "code.html"
+              : path.endsWith(".md")
+              ? "code.md"
+              : path.endsWith(".ejs") || path.endsWith(".html")
+              ? "code.html"
+              : "code.txt"
           }`
         );
         return await message.reply({

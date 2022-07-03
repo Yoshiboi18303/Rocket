@@ -1,5 +1,7 @@
 const { GuildMember } = require("discord.js");
 const { Canvas } = require("canvas");
+const fs = require("fs");
+const path = require("path")
 
 /**
  * Returns the lowercase verion of a string
@@ -123,6 +125,35 @@ const applyText = (canvas, text) => {
   return context.font;
 };
 
+/**
+ * Returns all the commands sorted by type.
+ * @returns An `Object` with all the command types.
+ */
+function sortCommands() {
+  var commands = fs.readdirSync(path.join(__dirname, "..", "commands"));
+
+  var object = {}
+
+  for(var command of commands) {
+    var cmd = require(`../commands/${command}`);
+    var type = cmd.type;
+
+    if(!Object.keys(object).includes(type)) {
+      // console.log(object)
+      object[type] = [
+        cmd
+      ]
+    } else {
+      object[type].push(cmd)
+      // console.log(object)
+    }
+  }
+
+  // console.log(object);
+
+  return object;
+}
+
 module.exports = {
   convertToLowerCase,
   convertToUpperCase,
@@ -130,4 +161,5 @@ module.exports = {
   returnUserStatusText,
   emojifyText,
   applyText,
+  sortCommands,
 };

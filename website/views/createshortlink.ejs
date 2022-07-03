@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <%- include("includes/head", { title: "Create Short Link", key }) %>
+    </head>
+    <body>
+        <%- include("includes/header", { req }) %>
+        <br>
+        <br>
+        <% if(msg != "") { %>
+            <% if(error == true) { %>
+                <div class="error-message">
+                    <br>
+                    <br>
+                    <h4 class="message"><%= msg %></h4>
+                    <a class="remove" href="/shortlinks" rel="noreferrer">X</a>
+                </div>
+            <% } else { %>
+                <div class="success-message">
+                    <br>
+                    <br>
+                    <h4 class="message"><%= msg %></h4>
+                    <a class="link" href="/shortlinks/<%= id %>" rel="noreferrer">Go to link</a>
+                    <a class="remove" href="/shortlinks" rel="noreferrer">X</a>
+                </div>
+            <% } %>
+            <br>
+            <br>
+        <% } %>
+        <h1>Create Short Link</h1>
+        <h3 class="description">Here you can create a short link!</h3>
+        <br>
+        <br>
+        <form id="shortlink">
+            <br>
+            <br>
+            <label for="link">Long Link:</label>
+            <input type="text" placeholder="https://yoshiboi18303.tk" id="link" required>
+            <br>
+            <br>
+            <input type="submit" class="submit">
+            <br>
+        </form>
+        <br>
+        <br>
+        <br>
+        <% var string = `${req.headers["x-forwarded-for"] || req.connection.remoteAddress}` %>
+        <h4 class="notice"><small>To ensure these links are safe, your current IP of <code id="ip"><%= string.includes("::ffff:") ? string.slice(7) : string %></code> is being saved to the database when you create a link. <a href="https://github.com/Yoshiboi18303/Rocket/blob/main/PRIVACY.md" class="link" target="_blank">Privacy Policy</a></small></h4>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <%- include("includes/footer") %>
+    </body>
+    <script>
+        var form = $("#shortlink");
+
+        form.submit(async (e) => {
+            var link = $("#link").val();
+            var ip = document.getElementById("ip").innerText;
+            
+            function generateID() {
+                var idLetters = "abcdefghijklmnopqrstuvwxyz"
+                idLetters += idLetters.toUpperCase()
+                idLetters += "-1234567890_."
+                var i = 0;
+                var id = ""
+
+                while(i < 11) {
+                    id += idLetters[Math.floor(Math.random() * idLetters.length)]
+                    i++
+                }
+
+                return id;
+            }
+
+            var id = generateID();
+
+            /**
+             * @param {String} id
+             */
+            async function validateID(id) {
+                var Check = await ShortLinks.findOne({
+                    id,
+                })
+
+                if(Check) return false;
+                else return true;
+            }
+
+            /*
+            var isGood = await validateID(id);
+
+            while(!isGood) {
+                id = generateID()
+                isGood = await validateID(id)
+            };
+            */
+
+            e.preventDefault()
+            var req = await fetch("https://yoshiboi18303-rocket-g4x4w565rfw5xp-5420.githubpreview.dev/shortlinks", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id,
+                    link,
+                    ip,
+                })
+            })
+            var successMessage = `Short Link Created with an ID of ${id}`
+            if(req.status == 200) location.href = `/shortlinks?message=${successMessage}&error=false&id=${id}`
+            else {
+                var data = await req.json()
+                location.href = `/shortlinks?message=${data.code}%20-%20${data.message}&error=true`
+            }
+        })
+    </script>
+</html>

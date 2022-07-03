@@ -9,11 +9,13 @@ module.exports = {
    * @param {Message} newMsg
    */
   execute: async (oldMsg, newMsg) => {
-    if (oldMsg.author.bot || newMsg.author.bot) return;
+    if (oldMsg.author.id == client.user.id) return;
     Log(client, newMsg.guild, Enum.Log.MessageEdit, {
       member: oldMsg.member,
-      oldMessage: oldMsg.content,
-      newMessage: newMsg.content,
+      oldMessage:
+        oldMsg.content.length <= 0 ? "*empty message*" : oldMsg.content,
+      newMessage:
+        newMsg.content.length <= 0 ? "*empty message*" : newMsg.content,
     });
   },
 };

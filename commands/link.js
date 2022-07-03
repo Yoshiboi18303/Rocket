@@ -142,7 +142,7 @@ module.exports = {
       }
     });
 
-    collector.on("end", async (collected) => {
+    collector.on("end", async () => {
       for (var component of row.components) {
         component.setDisabled(true);
       }

@@ -2,6 +2,10 @@ const { GuildMember, MessageAttachment } = require("discord.js");
 const Guilds = require("../schemas/guildSchema");
 const fetch = require("node-fetch");
 // const { isHexColor } = require("ishex");
+const LoggerClass = require("../classes/Logger");
+const Logger = new LoggerClass();
+require("colors");
+const Log = require("../utils/logger");
 
 module.exports = {
   name: "guildMemberAdd",
@@ -15,6 +19,45 @@ module.exports = {
         id: member.guild.id,
       });
       Guild.save();
+    }
+    if (Guild.antiJoin) {
+      member
+        .kick("Anti-Join is enabled.")
+        .then(() => {
+          Logger.success(
+            `${`${member.user.username}`.bold} kicked due to Anti-Join in ${
+              `${member.guild.name}`.bold
+            }`
+          );
+        })
+        .catch((e) => {
+          Log(client, member.guild, Enum.Log.Error, {
+            message: `${e}`,
+          });
+          return Logger.error(
+            `Couldn't kick ${`${member.user.username}`.bold} due to ${
+              `${e}`.bold
+            }`,
+            false
+          );
+        });
+      return member.user
+        .send({
+          content: `Sorry man, Anti-Join is enabled in **${member.guild.name}** so you've been kicked, check back later!`,
+        })
+        .then(() => {
+          Logger.success(`Message sent to ${`${member.user.username}`.bold}`);
+          return;
+        })
+        .catch((e) => {
+          Logger.error(
+            `Couldn't send a message to ${member.user.username} due to ${
+              `${e}`.bold
+            }`,
+            false
+          );
+          return;
+        });
     }
     if (Guild.memberRole != "") {
       if (member.guild.verificationLevel == "HIGH") {

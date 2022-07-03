@@ -5,6 +5,9 @@ module.exports = {
   type: "Other",
   cooldown: ms("5s"),
   execute: async (message) => {
+    return await message.reply({
+      content: "The website is bugged so you can't send suggestions for now.",
+    });
     const embed = new MessageEmbed()
       .setColor(colors.cyan)
       .setDescription(

@@ -12,6 +12,10 @@ const userSchema = Schema({
   },
   tokens: {
     type: Number,
+    default: 250,
+  },
+  bank: {
+    type: Number,
     default: 0,
   },
   wins: {
@@ -61,6 +65,17 @@ const userSchema = Schema({
   wakaTimeAccessToken: {
     type: String,
     default: "",
+  },
+  stolen: {
+    type: Object,
+    default: {
+      fromSelf: 0,
+      fromOthers: 0,
+    },
+  },
+  highestBet: {
+    type: Number,
+    default: 0,
   },
 });
 

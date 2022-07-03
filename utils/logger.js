@@ -1,7 +1,6 @@
-const mongoose = require("mongoose");
-
+const LoggerClass = require("../classes/Logger");
 const Guilds = require("../schemas/guildSchema");
-
+const Logger = new LoggerClass();
 const {
   Client,
   Guild,
@@ -116,11 +115,17 @@ module.exports = async (client, guild, action, data) => {
         .setColor(colors.yellow);
       break;
     case Enum.Log.MessageEdit:
-      em.setDescription(`A message from <@${data.member.user.id}> was edited.`)
+      em.setDescription(
+        `A message from ${data?.member?.user || "Unknown User"} was edited.`
+      )
         .addFields([
           {
             name: "Old Message",
-            value: `${data.oldMessage || "*Undefined/Unknown Message*"}`,
+            value: `${
+              data.oldMessage?.length > 1024
+                ? data.oldMessage.slice(0, 1021) + "..."
+                : data.oldMessage || "*Undefined/Unknown Message*"
+            }`,
             inline: true,
           },
           {
@@ -174,6 +179,12 @@ module.exports = async (client, guild, action, data) => {
 
   var queue = [];
 
+  if (action == Enum.Log.Error) {
+    var supportServer = client.guilds.cache.get("977632347862216764");
+    supportServer.channels.cache.get("981617877092298853").send({
+      embeds: [em],
+    });
+  }
   if (action != Enum.Log.Info) {
     var Guild = await Guilds.findOne({ id: guild.id });
     if (!Guild) {
@@ -191,11 +202,11 @@ module.exports = async (client, guild, action, data) => {
   }
   var guilds = await Guilds.find({});
   guilds = guilds.filter((guild) => guild.logChannel != "");
-  for (var guild of guilds) {
-    var newLength = queue.push(client.channels.cache.get(guild.logChannel));
-    console.log(`Item number ${newLength} added to the array.`.blue);
+  for (var g of guilds) {
+    var newLength = queue.push(client.channels.cache.get(g.logChannel));
+    Logger.success(`Item number ${newLength} added to the array.`);
   }
-  console.log("Sending first message...".yellow);
+  Logger.log("Sending first message...");
   await queue[0].send({
     embeds: [em],
   });

@@ -42,36 +42,47 @@
       <button class="btn" onclick="location.href='/features'"><h5>Features</h5></button>
       <button class="btn" onclick="location.href='/owner'"><h5>Owner</h5></button>
       <button class="btn" onclick="location.href='/report'"><h5>Report</h5></button>
+      <button class="btn" onclick="location.href='/shortlinks'"><h5>Create Short Link</h5></button>
     </div>
     <br>
     <br>
     <h2>Our Reviews</h2>
     <br>
-    <% var callbackRuns = 1; %>
+    <% var callbackRuns = 0; %>
+    <% var array = []; %>
     <% if(count > 0) { %>
       <div class="reviews">
-        <% while(callbackRuns < 3) { %>
-          <% reviews.forEach((review) => { %>
-            <div class="review">
-              <% var reviewUser = review.user %>
-              <% var user = client.users.cache.get(reviewUser) %>
-              
-              <img class="reviewer-avatar" src="<%= user.displayAvatarURL({ size: 512 }) %>">
-              <br>
-              <h3 class="reviewer-username"><%= user.username %></h3>
-              <br>
-              <%= review.formattedStars %>
-              <br>
-              <br>
-              <p class="review">"<%= review.review.slice(0, 200) %>"</p>
-            </div>
-          <% }) %>
+        <% while(callbackRuns < 3 && callbackRuns <= count) { %>
+          <% var chosenReview = reviews[Math.floor(Math.random() * reviews.length)]; %>
+          <% array.push(chosenReview) %>
+          <% reviews.splice(reviews.findIndex((item) => item == chosenReview), 1) %>
           <% callbackRuns++ %>
         <% } %>
+        <% array.forEach((review) => { %>
+          <div class="review">
+            <% var reviewUser = review.user %>
+            <% var user = client.users.cache.get(reviewUser) %>
+            <% var starCallbacks = 0; %>
+            <% var stars = review.starCount %>
+            
+            <img class="reviewer-avatar" alt="Reviewers' Avatar" src="<%= user.displayAvatarURL({ size: 512 }) %>">
+            <br>
+            <h3 class="reviewer-username"><%= user.username %></h3>
+            <br>
+            <% while(starCallbacks < stars) { %>
+              <img src="/static/img/star.png" alt="Star Icon" class="review-star">
+              <% starCallbacks++ %>
+            <% } %>
+            <br>
+            <p class="review">"<%= review.review.slice(0, 200) %><%= review.review.length >= 200 ? review.review += "..." : "" %>"</p>
+          </div>
+        <% }) %>
       </div>
     <% } else { %>
       <h3 class="no-reviews fade-red"><span>No Reviews Yet... <img src="/static/img/failure.png" class="failure-image"></span></h3>
     <% } %>
+    <br>
+    <br>
     <br>
     <footer>
       <h2 class="copyright-info">
@@ -79,6 +90,7 @@
           © 2022 <span class="fade-green">Yoshiboi18303</span> <span class="black">|</span> <span class="fade-blue">Rocket</span> is licensed under the <a href="https://github.com/Yoshiboi18303/Rocket/blob/main/LICENSE" class="link black">GNU General Public License</a>.
         </small>
       </h2>
+      <br>
       <br>
       <div class="links">
         <a href="/" class="link" rel="noreferrer">Back To Home</a>

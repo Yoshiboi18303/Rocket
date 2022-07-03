@@ -10,6 +10,8 @@ const {
 const moment = require("moment");
 const fs = require("fs/promises");
 const shell = require("shelljs");
+const LoggerClass = require("../classes/Logger");
+const Logger = new LoggerClass();
 
 module.exports = {
   name: "interactionCreate",
@@ -171,15 +173,22 @@ module.exports = {
           embeds: [openedEmbed],
           components: [ticketActionsRow],
         });
+        Logger.log("Attempting to insert file...");
         fs.appendFile(
           `tickets/${guild.id}/${ticketChannel.id}.txt`,
           `The ticket was opened at ${moment(openedMsg.createdTimestamp).format(
             "HH:MM:SS"
           )} on ${moment(openedMsg.createdTimestamp).format("MM/DD/YYYY")}\n`
         )
-          .then(() => console.log("File created.".green))
+          .then(() => Logger.success("File created."))
           .catch(async () => {
+            Logger.warn(
+              "Couldn't create file, attempting directory creation..."
+            );
             shell.exec(`cd tickets && mkdir ${guild.id}`);
+            Logger.warn(
+              "Continuing repairs, attempting file insertion again..."
+            );
             await fs.appendFile(
               `tickets/${guild.id}/${ticketChannel.id}.txt`,
               `The ticket was opened at ${moment(
@@ -188,7 +197,9 @@ module.exports = {
                 openedMsg.createdTimestamp
               ).format("MM/DD/YYYY")}\n`
             );
-            console.log("Directory and file created.".green);
+            Logger.success(
+              "New directory and file inserted into the tickets folder."
+            );
           });
         await interaction.reply({
           content: `Your ticket was opened in <#${ticketChannel.id}>!`,

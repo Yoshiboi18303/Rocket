@@ -12,19 +12,17 @@ app.get("/:guild", (req, res) => {
   if (!ready) return res.send("<h1>The client is offline!</h1>");
   var guild = client.guilds.cache.get(req.params.guild);
   if (!guild) return res.redirect("/");
-  var i = 1;
-  var string = "";
+  var transcripts = [];
   for (var folder of ticketFolders) {
     if (folder == guild.id) {
       var ticketFiles = fs.readdirSync(`tickets/${folder}`);
-      for (var file of ticketFiles) {
-        var buffer = fs.readFileSync(`tickets/${folder}/${file}`);
-        string += `${i != 1 ? "\n" : ""}${buffer.toString()}`;
-        i++;
-      }
+      var toPush = ticketFiles.map(
+        (v, i) => `${i + 1} - ${v.split("\n").join("\n")}`
+      );
+      transcripts.push(toPush);
     }
   }
-  return res.status(200).send(string);
+  return res.status(200).send(transcripts.join("\n\n"));
 });
 
 app.get("/:guild/:channel", (req, res) => {
