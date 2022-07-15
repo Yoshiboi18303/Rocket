@@ -19,7 +19,7 @@ module.exports = {
   cooldown: ms("10s"),
   userPermissions: [Permissions.FLAGS.MANAGE_GUILD],
   clientPermissions: [],
-  testOnly: true,
+  testOnly: false,
   /**
    * @param {Message} message
    */
