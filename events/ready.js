@@ -4,6 +4,7 @@ const Guilds = require("../schemas/guildSchema");
 const Users = require("../schemas/userSchema");
 const { radar } = require("../client");
 const Table = require("ascii-table");
+const config = require("../config.json");
 
 module.exports = {
   name: "ready",
@@ -94,8 +95,10 @@ module.exports = {
     data = await req.json().catch(() => {});
     console.log(data);
 
-    var data = await radar.stats(client.guilds.cache.size, 1, true);
-    console.log(data);
+    radar
+      .stats(client.guilds.cache.size)
+      .then((data) => console.log(data))
+      .catch((e) => console.error(e));
 
     statcord.autopost();
 

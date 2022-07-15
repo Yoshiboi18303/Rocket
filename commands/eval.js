@@ -14,6 +14,7 @@ module.exports = {
   usage: "{prefix}eval <code>",
   type: "Owner",
   cooldown: ms("5s"),
+  aliases: "e, evaluation, evaluate",
   testing: false,
   ownerOnly: true,
   execute: async (message, args) => {

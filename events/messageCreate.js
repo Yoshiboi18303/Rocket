@@ -8,6 +8,7 @@ var cooldowns = [];
 const colors = require("../colors.json");
 const LoggerClass = require("../classes/Logger");
 const Logger = new LoggerClass();
+const config = require("../config.json");
 
 module.exports = {
   name: "messageCreate",
@@ -40,6 +41,21 @@ module.exports = {
         id: message.author.id,
       });
       User.save();
+    }
+    var currentDate = new Date(Date.now());
+    // console.log(message.guild.id == config.thirdTestServer + "\n" + message.content == "@someone")
+    if (currentDate.getMonth() == 3 && currentDate.getDate() == 1) {
+      if (message.content == "@someone") {
+        var members = [];
+        message.guild.members.cache.forEach((member) => {
+          if (member.user.id != message.author.id) members.push(member);
+        });
+        var member = members[Math.floor(Math.random() * members.length)];
+        await message.channel.send({
+          content: `<@${member.user.id}> ||(blame ${message.member.displayName}, not me)||`,
+        });
+        return await message.delete();
+      }
     }
     if (
       (message.content.startsWith("http") ||
@@ -246,18 +262,30 @@ module.exports = {
         });
     }
     if (cmd.userPermissions?.length > 0) {
-      if (!message.member.permissions.has(cmd.userPermissions))
+      if (!message.member.permissions.has(cmd.userPermissions)) {
+        var userPermissions = new Permissions();
+        for (var bigint of cmd.userPermissions) {
+          userPermissions.add(bigint);
+        }
         return await message.reply({
-          content:
-            "You don't have the required permissions to use this command!",
+          content: `You don't have the required permissions to use this command!\n\n**Required Permissions:**\n\`\`\`\n${userPermissions
+            .toArray()
+            .join(", ")}\n\`\`\``,
         });
+      }
     }
     if (cmd.clientPermissions?.length > 0) {
-      if (!message.guild.me.permissions.has(cmd.clientPermissions))
+      if (!message.guild.me.permissions.has(cmd.clientPermissions)) {
+        var clientPermissions = new Permissions();
+        for (var bigint of cmd.clientPermissions) {
+          clientPermissions.add(bigint);
+        }
         return await message.reply({
-          content:
-            "I don't have the required permissions to be able to run this command!",
+          content: `I don't have the required permissions to be able to run this command!\n\n**Required Permissions:**\n\`\`\`\n${clientPermissions
+            .toArray()
+            .join(", ")}\n\`\`\``,
         });
+      }
     }
     if (User.blacklisted == true) {
       const blacklisted_embed = new MessageEmbed()

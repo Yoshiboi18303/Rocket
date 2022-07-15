@@ -11,5 +11,4 @@ tickets/
 fights/
 fights.json
 removeBotUsers.js
-classes/
 checkMongoDB.js

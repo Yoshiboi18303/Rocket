@@ -26,6 +26,11 @@ module.exports = {
         embeds: [no_path_embed],
       });
     }
+    if (path.includes(".env"))
+      return await message.reply({
+        content:
+          "This file is unviewable due to the large amount of private info that shouldn't be shared.",
+      });
     try {
       var dirfile = fs.readFileSync(path);
       // console.log(dirfile);
@@ -44,9 +49,11 @@ module.exports = {
               : "code.txt"
           }`
         );
+        var array = path.split(".");
         return await message.reply({
-          content:
-            "The code for this file is too long for an embed, so here's a file with the **EXACT SAME** code.",
+          content: `The code in that ${array[
+            array.length - 1
+          ].toUpperCase()} file is too long for an embed, so here's a file with the **EXACT SAME** code.`,
           files: [cmdfile],
         });
       }

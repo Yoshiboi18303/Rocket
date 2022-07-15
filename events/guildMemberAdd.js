@@ -21,6 +21,11 @@ module.exports = {
       Guild.save();
     }
     if (Guild.antiJoin) {
+      if (!member.kickable) {
+        return Log(client, member.guild, Enum.Log.Error, {
+          message: `${member.user.username} is not kickable for the client!`,
+        });
+      }
       member
         .kick("Anti-Join is enabled.")
         .then(() => {
@@ -95,7 +100,8 @@ module.exports = {
       .replace("{usertag}", `${member.user.tag}`)
       .replace("{membercount}", `${member.guild.members.cache.size}`)
       .replace("{username}", `${member.user.username}`)
-      .replace("{userid}", `${member.user.id}`);
+      .replace("{userid}", `${member.user.id}`)
+      .replace("{userdisc}", `${member.user.discriminator}`);
 
     var channel = client.channels.cache.get(Guild.welcomeChannel);
     await channel.send({

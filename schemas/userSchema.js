@@ -77,6 +77,10 @@ const userSchema = Schema({
     type: Number,
     default: 0,
   },
+  googleUser: {
+    type: Object,
+    default: {},
+  },
 });
 
 module.exports = model("users", userSchema);

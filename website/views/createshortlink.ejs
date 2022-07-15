@@ -44,7 +44,7 @@
         <br>
         <br>
         <br>
-        <% var string = `${req.headers["x-forwarded-for"] || req.connection.remoteAddress}` %>
+        <% var string = `${req.headers["x-forwarded-for"] || req.socket.remoteAddress}` %>
         <h4 class="notice"><small>To ensure these links are safe, your current IP of <code id="ip"><%= string.includes("::ffff:") ? string.slice(7) : string %></code> is being saved to the database when you create a link. <a href="https://github.com/Yoshiboi18303/Rocket/blob/main/PRIVACY.md" class="link" target="_blank">Privacy Policy</a></small></h4>
         <br>
         <br>

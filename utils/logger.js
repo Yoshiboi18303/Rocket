@@ -198,7 +198,7 @@ module.exports = async (client, guild, action, data) => {
     await logChannel.send({
       embeds: [em],
     });
-    return console.log("Guild-specific log sent!".green);
+    return Logger.success("Guild-specific log sent!");
   }
   var guilds = await Guilds.find({});
   guilds = guilds.filter((guild) => guild.logChannel != "");
@@ -213,7 +213,7 @@ module.exports = async (client, guild, action, data) => {
   queue.shift();
   setInterval(async () => {
     if (queue.length <= 0) return;
-    console.log("Sending next message...".yellow);
+    Logger.log("Sending next message...");
     await queue[0].send({
       embeds: [em],
     });

@@ -7,8 +7,8 @@ const puppeteer = require("puppeteer");
 const fetch = require("node-fetch");
 
 app.get("/", async (req, res) => {
-  var auth = req.query.auth;
   /*
+  var auth = req.query.auth;
   if (auth != process.env.SHORT_LINK_CREATION_AUTH)
     return res
       .status(403)
@@ -17,6 +17,18 @@ app.get("/", async (req, res) => {
   var msg = req.query.message || "";
   var error = req.query.error == "true" ? true : false;
   var id = req.query.id;
+  if (
+    (req.headers["x-forwarded-for"] || req.socket.remoteAddress) in
+    process.env.BANNED_IPS
+  ) {
+    // I did this for readability
+    var message = "Creating Short Links!".toLowerCase();
+    return res.render("blacklisted", {
+      req,
+      key,
+      message,
+    });
+  }
   res.render("createshortlink", {
     req,
     key,

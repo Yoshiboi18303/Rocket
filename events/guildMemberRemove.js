@@ -28,39 +28,33 @@ module.exports = {
     )
       return;
 
-    if (member.guild.id != config.testServerId) {
-      var leaveMessage = Guild.leaveMessage
+    if (member.guild.bans.cache.has(member.user.id)) {
+      var ban = member.guild.bans.cache.get(member.user.id);
+      var banMessage = Guild.banMessage
+        .replace("{username}", `${member.user.username}`)
         .replace("{usertag}", `${member.user.tag}`)
-        .replace("{userid}", `${member.user.id}`)
         .replace("{guild}", `${member.guild.name}`)
-        .replace("{username}", `${member.user.username}`);
+        .replace("{userdisc}", `${member.user.discriminator}`)
+        .replace("{membercount}", `${member.guild.members.cache.size}`)
+        .replace(
+          "{reason}",
+          `${ban.reason != null ? ban.reason : "Unknown Reason"}`
+        );
 
-      await welcomeChannel.send({
-        content: `${leaveMessage}`,
+      return await welcomeChannel.send({
+        content: `${banMessage}`,
       });
     }
-    const canvas = createCanvas(1100, 500);
-    const ctx = canvas.getContext("2d");
-
-    var background = await loadImage(process.env.BACKGROUND_URL);
-    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-
-    var avatar = await loadImage(
-      member.user.displayAvatarURL({ format: "png", size: 512 })
-    );
-    ctx.drawImage(avatar, 50, -200, 512, 512);
-
-    var attachment = new MessageAttachment(canvas.toBuffer(), "goodbye.png");
 
     var leaveMessage = Guild.leaveMessage
       .replace("{usertag}", `${member.user.tag}`)
       .replace("{userid}", `${member.user.id}`)
       .replace("{guild}", `${member.guild.name}`)
-      .replace("{username}", `${member.user.username}`);
+      .replace("{username}", `${member.user.username}`)
+      .replace("{userdisc}", `${member.user.discriminator}`);
 
     await welcomeChannel.send({
       content: `${leaveMessage}`,
-      files: [attachment],
     });
   },
 };

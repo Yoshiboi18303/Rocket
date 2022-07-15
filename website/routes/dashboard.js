@@ -16,7 +16,9 @@ const isBlacklisted = (req, res) => {
 
 app.get("/", (req, res) => {
   if (isBlacklisted(req, res) == true)
-    return res.redirect("/blacklisted?referral=dashboard");
+    return res.redirect(
+      "/blacklisted?referral=dashboard&message=The bot and the website!"
+    );
   if (!ready) return res.send("<h1>The client is offline!</h1>");
   // if(isBlacklisted(req, res, next) == true) return res.redirect("/blacklisted?referral=dashboard")
   res.status(200).render("dashboardcards", {

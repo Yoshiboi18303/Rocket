@@ -1,9 +1,4 @@
-const {
-  Message,
-  MessageActionRow,
-  MessageButton,
-  Permissions,
-} = require("discord.js");
+const { Message, Permissions, MessageEmbed } = require("discord.js");
 const Log = require("../utils/logger");
 
 module.exports = {
@@ -34,7 +29,7 @@ module.exports = {
     if (!user) {
       const invalid_user_embed = new MessageEmbed()
         .setColor(colors.red)
-        .setDescription("❌ That's not a valid user in this server! ❌");
+        .setDescription("❌ That's not a valid user of the bot! ❌");
       return await message.reply({
         embeds: [invalid_user_embed],
       });

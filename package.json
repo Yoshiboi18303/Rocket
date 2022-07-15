@@ -1,7 +1,13 @@
 {
+  "name": "rocket",
+  "description": "A Discord Bot",
+  "version": "1.0.0",
+  "scripts": {
+    "main": "node run.js",
+    "dev": "nodemon run.js"
+  },
   "devDependencies": {
-    "ejs-lint": "1.2.2",
-    "node": "^16.6.1"
+    "ejs-lint": "1.2.2"
   },
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
@@ -31,6 +37,7 @@
     "parse-ms": "^3.0.0",
     "passport": "^0.5.3",
     "passport-discord": "^0.1.4",
+    "passport-google": "^0.3.0",
     "passport-twitch": "^1.0.3",
     "path": "^0.12.7",
     "puppeteer": "^14.3.0",

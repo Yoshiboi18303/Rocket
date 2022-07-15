@@ -59,6 +59,7 @@ passport.deserializeUser(async (user, done) => {
     discord: user,
     voted: User.voted,
     blacklisted: User.blacklisted,
+    google: User.googleUser,
   });
 });
 
@@ -128,21 +129,23 @@ app.get("/stats", async (req, res) => {
 });
 
 app.get("/blacklisted", (req, res) => {
-  if (!req.query.referral || !req.isAuthenticated()) return res.redirect("/");
+  if (!req.query.referral) return res.redirect("/");
+  var message = req.query.message;
   res.status(403).render("blacklisted", {
     req,
     key,
+    message,
   });
 });
 
 app.get(["/commands", "/cmds"], (req, res) => {
-  var commands = sortCommands()
+  var commands = sortCommands();
   res.status(200).render("commands", {
     req,
     key,
     commands,
-  })
-})
+  });
+});
 
 app.all("*", (req, res) => {
   res.status(404).render("notfound", {

@@ -37,6 +37,10 @@ const guildSchema = Schema({
     type: String,
     default: "Hello and welcome to **{guild}**!",
   },
+  banMessage: {
+    type: String,
+    default: "**{usertag}** was struck by the ban hammer.",
+  },
   warnRoles: {
     type: Object,
     default: {

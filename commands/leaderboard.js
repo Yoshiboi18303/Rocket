@@ -22,25 +22,52 @@ module.exports = {
    * @param {Array<String>} args
    */
   execute: async (message, args) => {
-    var wantsGlobal = args.includes("--global")
-    if(wantsGlobal) {
-      args.splice(args.findIndex((arg) => arg == "--global"), 1)
+    var wantsGlobal = args.includes("--global");
+    if (wantsGlobal) {
+      args.splice(
+        args.findIndex((arg) => arg == "--global"),
+        1
+      );
     }
     var type = args[0]?.toLowerCase() || "tokens";
     var guild = message.guild;
     var BotUsers = await Users.find({});
 
-    if(!wantsGlobal) {
+    if (!wantsGlobal) {
       BotUsers = BotUsers.filter((u) => guild.members.cache.has(u.id));
     }
 
-    if(wantsGlobal) {
+    if (wantsGlobal) {
       guild = {
-        name: "Global"
-      }
+        name: "Global",
+      };
     }
 
-    if (!["tokens", "bank", "stolen", "bets"].includes(type)) {
+    var lbTypes = ["tokens", "bank", "stolen", "bets"];
+
+    if (type == "types") {
+      var array = [];
+      lbTypes.forEach((type, index) => {
+        var currentItem = index + 1;
+
+        if (currentItem == lbTypes.length && lbTypes.length > 1) {
+          array.push(`and \`${type}\``);
+        } else {
+          array.push(`\`${type}\``);
+        }
+      });
+      const leaderboardTypesEmbed = new MessageEmbed()
+        .setColor(colors.cyan)
+        .setTitle("Leaderboard Types")
+        .setDescription(
+          `These are all the current leaderboard types.\n\n${array.join(", ")}`
+        );
+      return await message.reply({
+        embeds: [leaderboardTypesEmbed],
+      });
+    }
+
+    if (!lbTypes.includes(type)) {
       const invalid_type_embed = new MessageEmbed()
         .setColor(colors.red)
         .setDescription(
@@ -76,7 +103,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
           .setColor(colors.cyan)
-          .setTitle(`${guild.name} Token Leaderboard`)
+          .setTitle(`\`${guild.name}\` Token Leaderboard`)
           .setDescription(`${final.join("\n")}`);
         await message.reply({
           embeds: [embed],
@@ -108,7 +135,7 @@ module.exports = {
 
         const bankLeaderboardEmbed = new MessageEmbed()
           .setColor(colors.cyan)
-          .setTitle(`${guild.name} Bank Leaderboard`)
+          .setTitle(`\`${guild.name}\` Bank Leaderboard`)
           .setDescription(`${final.join("\n")}`);
         await message.reply({
           embeds: [bankLeaderboardEmbed],
@@ -156,7 +183,7 @@ module.exports = {
 
         const stolenFromLB = new MessageEmbed()
           .setColor(colors.cyan)
-          .setTitle(`${guild.name} Stolen Leaderboard`)
+          .setTitle(`\`${guild.name}\` Stolen Leaderboard`)
           .addFields([
             {
               name: "Stolen From Self",
@@ -176,26 +203,33 @@ module.exports = {
       case "bets":
         var HighestBetsArray = [];
 
-        for(var User of BotUsers) {
+        for (var User of BotUsers) {
           var ob = {
             user: User.id,
-            highestBet: User.highestBet
-          }
+            highestBet: User.highestBet,
+          };
 
-          HighestBetsArray.push(ob)
+          HighestBetsArray.push(ob);
         }
 
-        HighestBetsArray.sort((a, b) => b.highestBet - a.highestBet)
+        HighestBetsArray.sort((a, b) => b.highestBet - a.highestBet);
 
-        var HighestBetsFinal = HighestBetsArray.map((v, i) => `\`${i + 1}\` - **${v.user == message.author.id ? `${client.users.cache.get(v.user).username} \`(You)\`` : client.users.cache.get(v.user).username}:** ${v.highestBet} Tokens`)
+        var HighestBetsFinal = HighestBetsArray.map(
+          (v, i) =>
+            `\`${i + 1}\` - **${
+              v.user == message.author.id
+                ? `${client.users.cache.get(v.user).username} \`(You)\``
+                : client.users.cache.get(v.user).username
+            }:** ${v.highestBet} Tokens`
+        );
 
         const em = new MessageEmbed()
           .setColor(colors.cyan)
-          .setTitle(`${message.guild.name} Highest Bets`)
-          .setDescription(`${HighestBetsFinal.join("\n")}`)
+          .setTitle(`\`${message.guild.name}\` Highest Bets`)
+          .setDescription(`${HighestBetsFinal.join("\n")}`);
         await message.reply({
-          embeds: [em]
-        })
+          embeds: [em],
+        });
         break;
     }
   },

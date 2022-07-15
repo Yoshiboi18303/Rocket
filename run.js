@@ -15,7 +15,7 @@ var i = 0;
 
 setInterval(() => {
   if (ready == false) {
-    console.log(i);
+    // console.log(i);
     if (i >= 60)
       return Logger.error(
         "The bot didn't start up within the first minute of the app being run, this may be due to an error preventing the bot from starting or a 429 while trying to connect. Exiting the process immediately.",
