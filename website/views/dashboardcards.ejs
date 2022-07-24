@@ -26,7 +26,7 @@
     <% if(!req.isAuthenticated()) { %>
       <button class="btn login" onclick="location.href='/login'">Login</button>
     <% } else { %>
-      <img src="https://cdn.discordapp.com/avatars/<%= req.user.id %>/<%= req.user.discord.avatar %>.png" alt="User Avatar" class="user-avatar">
+      <img src="https://cdn.discordapp.com/avatars/<%= req.user.id %>/<%= req.user.discord.avatar %>.gif" alt="User Avatar" class="user-avatar">
       <h3 class="user-username"><%= req.user.discord.username %></h3>
       <button class="logout" onclick="location.href='/logout'">Logout</button>
     <% } %>
@@ -45,7 +45,7 @@
       <br>
       <% for(const guild of req.user.discord.guilds) { %>
           <div class="crd">
-            <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.png" alt="Guild Icon" class="guild-icon">
+            <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.gif" alt="Guild Icon" class="guild-icon">
             <h3 class="guild-name"><%= guild.name %></h3>
             <br>
             <% if(!client.guilds.cache.has(guild.id)) { %>

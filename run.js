@@ -1,6 +1,6 @@
 console.clear();
 require("colors");
-require("dotenv").config();
+require("dotenv").config({ debug: true });
 const LoggerClass = require("./classes/Logger");
 
 global.fs = require("fs");

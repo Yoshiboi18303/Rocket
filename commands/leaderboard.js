@@ -43,6 +43,8 @@ module.exports = {
       };
     }
 
+    BotUsers = BotUsers.filter((u) => !u.blacklisted);
+
     var lbTypes = ["tokens", "bank", "stolen", "bets"];
 
     if (type == "types") {

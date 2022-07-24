@@ -1,4 +1,6 @@
 const fs = require("fs");
+const LoggerClass = require("../classes/Logger");
+const Logger = new LoggerClass();
 
 module.exports = (client) => {
   const commandFiles = fs
@@ -8,44 +10,30 @@ module.exports = (client) => {
     const command = require(`../commands/${file}`);
 
     if (!command.name)
-      throw new Error(
-        `Command ${
-          file.replace(".js", "").replace(file[0], file[0].toUpperCase()).blue
-        } `.red + "doesn't have a name!".red
-      );
+      Logger.error(`Command ${
+        file.replace(".js", "").replace(file[0], file[0].toUpperCase())
+      } ` + "doesn't have a name!", true)
     if (!command.description)
-      throw new Error(
-        `Command ${
-          command.name.replace(command.name[0], command.name[0].toUpperCase())
-            .blue
-        } `.red + "doesn't have a description!".red
-      );
+      Logger.error(`Command ${
+        command.name.replace(command.name[0], command.name[0].toUpperCase())
+      } ` + "doesn't have a description!", true)
     if (!command.type)
-      throw new Error(
-        `Command ${
-          command.name.replace(command.name[0], command.name[0].toUpperCase())
-            .blue
-        } `.red + "doesn't have a type!".red
-      );
+      Logger.error(`Command ${
+        command.name.replace(command.name[0], command.name[0].toUpperCase())
+      } ` + "doesn't have a type!", true)
     if (!command.cooldown)
-      throw new Error(
-        `Command ${
-          command.name.replace(command.name[0], command.name[0].toUpperCase())
-            .blue
-        } `.red + "doesn't have a cooldown!".red
-      );
+      Logger.error(`Command ${
+        command.name.replace(command.name[0], command.name[0].toUpperCase())
+      } ` + "doesn't have a cooldown!", true)
     if (!command.execute || !(command.execute instanceof Function))
-      throw new Error(
-        `Command ${
-          command.name.replace(command.name[0], command.name[0].toUpperCase())
-            .blue
-        }`.red +
-          `${
-            !command.execute
-              ? " doesn't have an execute function!"
-              : "'s execute property isn't a function!"
-          }`.red
-      );
+      Logger.error(`Command ${
+        command.name.replace(command.name[0], command.name[0].toUpperCase())
+      }` +
+        `${
+          !command.execute
+            ? " doesn't have an execute function!"
+            : "'s execute property isn't a function!"
+        }`, true)
 
     client.commands.set(command.name, command);
     if (command.aliases) {
@@ -67,5 +55,6 @@ module.exports = (client) => {
         client.aliases.set(alias, command);
       }
     }
+    Logger.success(`Command ${file.replace(".js", "")} loaded!`)
   }
 };

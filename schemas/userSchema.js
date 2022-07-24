@@ -5,7 +5,7 @@ const opBool = {
   default: false,
 };
 
-const userSchema = Schema({
+const userSchema = new Schema({
   id: {
     type: String,
     required: true,

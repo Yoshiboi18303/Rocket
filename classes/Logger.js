@@ -1,12 +1,11 @@
 require("colors");
-const wait = require("util").promisify(setTimeout);
 
 module.exports = class Logger {
   constructor() {}
 
   /**
    * Sends a normal log message to stdout
-   * @param {any} message
+   * @param {any} message - The message to log
    */
   log(message) {
     if (!message) throw new Error("Define a message!");
@@ -16,7 +15,7 @@ module.exports = class Logger {
 
   /**
    * Sends a warning to stdout
-   * @param {any} message
+   * @param {any} message - The warning message
    */
   warn(message) {
     if (!message) throw new Error("Define a message!");
@@ -26,8 +25,8 @@ module.exports = class Logger {
 
   /**
    * Prints an error message to stderr
-   * @param {any} error
-   * @param {Boolean} exit
+   * @param {any} error - The error message
+   * @param {Boolean} exit - Whether to exit the process
    * @returns `never` if exit is true, or `Logged` if exit is false.
    */
   async error(error, exit = false) {
@@ -35,7 +34,6 @@ module.exports = class Logger {
     if (!(exit instanceof Boolean) || typeof exit != "boolean") exit = !!exit;
     if (exit) {
       console.error("ROCKET [ERROR]: ".red.bold + `${error}`.red);
-      await wait(10000);
       return process.exit(1);
     } else {
       console.error("ROCKET [ERROR]: ".red.bold + `${error}`.red);
@@ -45,7 +43,7 @@ module.exports = class Logger {
 
   /**
    * Sends a success message to stdout
-   * @param {any} message
+   * @param {any} message - The success message
    */
   success(message) {
     if (!message) throw new Error("Define a message!");
@@ -55,7 +53,7 @@ module.exports = class Logger {
 
   /**
    * Sends a debug message to stdout
-   * @param {any} message
+   * @param {any} message - The debug message
    */
   debug(message) {
     if (!message) throw new Error("Define a message!");

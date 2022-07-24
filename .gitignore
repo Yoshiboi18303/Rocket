@@ -12,3 +12,4 @@ fights/
 fights.json
 removeBotUsers.js
 checkMongoDB.js
+bannedIps.json

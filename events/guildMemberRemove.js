@@ -1,7 +1,5 @@
 const { GuildMember, Permissions, MessageAttachment } = require("discord.js");
 const Guilds = require("../schemas/guildSchema");
-const { createCanvas, loadImage } = require("canvas");
-const { applyText } = require("../utils/");
 const config = require("../config.json");
 
 module.exports = {

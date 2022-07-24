@@ -20,7 +20,7 @@
                     <br>
                     <br>
                     <h4 class="message"><%= msg %></h4>
-                    <a class="link" href="/shortlinks/<%= id %>" rel="noreferrer">Go to link</a>
+                    <a class="link" href="/shortlinks/<%= id %>" rel="noreferrer" target="_blank">Go to link</a>
                     <a class="remove" href="/shortlinks" rel="noreferrer">X</a>
                 </div>
             <% } %>
@@ -107,7 +107,7 @@
             */
 
             e.preventDefault()
-            var req = await fetch("https://yoshiboi18303-rocket-g4x4w565rfw5xp-5420.githubpreview.dev/shortlinks", {
+            var req = await fetch("http://localhost:6969/shortlinks", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

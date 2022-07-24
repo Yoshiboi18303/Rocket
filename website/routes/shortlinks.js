@@ -5,6 +5,7 @@ const key = process.env.GOOGLE_ANALYTICS_KEY;
 const { MessageEmbed, MessageAttachment } = require("discord.js");
 const puppeteer = require("puppeteer");
 const fetch = require("node-fetch");
+const bannedIps = require("../../bannedIps.json");
 
 app.get("/", async (req, res) => {
   /*
@@ -19,7 +20,7 @@ app.get("/", async (req, res) => {
   var id = req.query.id;
   if (
     (req.headers["x-forwarded-for"] || req.socket.remoteAddress) in
-    process.env.BANNED_IPS
+    bannedIps
   ) {
     // I did this for readability
     var message = "Creating Short Links!".toLowerCase();

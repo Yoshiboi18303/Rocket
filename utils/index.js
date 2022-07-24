@@ -1,5 +1,4 @@
 const { GuildMember } = require("discord.js");
-const { Canvas } = require("canvas");
 const fs = require("fs");
 const path = require("path");
 
@@ -104,11 +103,7 @@ function emojifyText(text) {
   return final;
 }
 
-/**
- * Makes text fit into a canvas.
- * @param {Canvas} canvas
- * @param {String} text
- */
+/*
 const applyText = (canvas, text) => {
   if (!(canvas instanceof Canvas))
     throw new TypeError("The canvas needs to be a type of Canvas!".red);
@@ -124,6 +119,7 @@ const applyText = (canvas, text) => {
   // Return the result to use in the actual canvas
   return context.font;
 };
+*/
 
 /**
  * Returns all the commands sorted by type.
@@ -158,6 +154,6 @@ module.exports = {
   reverseString,
   returnUserStatusText,
   emojifyText,
-  applyText,
+  // applyText,
   sortCommands,
 };

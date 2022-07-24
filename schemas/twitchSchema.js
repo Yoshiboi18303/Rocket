@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const twitchSchema = Schema({
+const twitchSchema = new Schema({
   id: {
     type: String,
     required: true,

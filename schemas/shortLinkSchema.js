@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const shortLinkSchema = Schema({
+const shortLinkSchema = new Schema({
   id: {
     type: String,
     required: true,

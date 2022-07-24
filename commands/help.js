@@ -173,6 +173,12 @@ module.exports = {
             emoji: "😂",
           },
           {
+            label: "Games",
+            value: "games",
+            description: "Have some fun with your friends!",
+            emoji: "🎮",
+          },
+          {
             label: "Information",
             value: "information",
             description: "Get all the information you'll need!",
@@ -183,12 +189,6 @@ module.exports = {
             value: "moderation",
             description: "Keep your server safe with these commands!",
             emoji: "🔨",
-          },
-          {
-            label: "Music",
-            value: "music",
-            description: "Make your speakers blast with these commands!",
-            emoji: "🎶",
           },
           {
             label: "Other",

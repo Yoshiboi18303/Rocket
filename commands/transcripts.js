@@ -37,7 +37,7 @@ module.exports = {
           transcriptLines.push(lines);
         }
         var transcripts = dir.map(
-          (transcript, i) =>
+          (t, i) =>
             `\`${i + 1}\` - **Entire File Length:** \`${
               transcriptCharacters[i]
             }\` characters & \`${
