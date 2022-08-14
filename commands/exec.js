@@ -19,6 +19,11 @@ module.exports = {
    * @param {Array<String>} args
    */
   execute: async (message, args) => {
+    if (message.author.id == "381710555096023061") {
+      return await message.reply({
+        content: "You aren't authorized to run this command (yet)!"
+      })
+    }
     const cmd = args.join(" ");
     if (!cmd) {
       const no_cmd_embed = new MessageEmbed()

@@ -247,6 +247,7 @@ module.exports = {
           embeds: [transcript_link_embed],
           ephemeral: true,
         });
+        await fs.appendFile(`tickets/${guild.id}/${interaction.channel.id}.txt`, `${interaction.user.tag} requested to read the transcript of this ticket at ${moment(Date.now()).format("HH:MM:SS")} on ${moment(Date.now()).format("MM/DD/YYYY")}.\n`)
       } else if (interaction.customId == "close-ticket") {
         var closedTimestamp = Date.now();
         const closedEmbed = new MessageEmbed()

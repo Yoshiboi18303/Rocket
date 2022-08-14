@@ -8,6 +8,7 @@ const {
   GuildMember,
   DMChannel,
   GuildChannel,
+  Permissions,
 } = require("discord.js");
 
 /**
@@ -24,6 +25,7 @@ const {
  * @param {String} data.newMessage - The new message from the author
  * @param {DMChannel | GuildChannel} data.channel
  * @param {Number} data.messages
+ * @param {User} data.user
  */
 module.exports = async (client, guild, action, data) => {
   const em = new MessageEmbed()
@@ -43,10 +45,9 @@ module.exports = async (client, guild, action, data) => {
 
     case Enum.Log.Error:
       em.setDescription(
-        `An error has occurred while using ${
-          client.user.username != undefined && client.user.username != null
-            ? client.user.username
-            : "Rocket"
+        `An error has occurred while using ${client.user.username != undefined && client.user.username != null
+          ? client.user.username
+          : "Rocket"
         } in **${guild.name}**.`
       )
         .addField(`Error`, `**${data.message}**`)
@@ -121,11 +122,10 @@ module.exports = async (client, guild, action, data) => {
         .addFields([
           {
             name: "Old Message",
-            value: `${
-              data.oldMessage?.length > 1024
-                ? data.oldMessage.slice(0, 1021) + "..."
-                : data.oldMessage || "*Undefined/Unknown Message*"
-            }`,
+            value: `${data.oldMessage?.length > 1024
+              ? data.oldMessage.slice(0, 1021) + "..."
+              : data.oldMessage || "*Undefined/Unknown Message*"
+              }`,
             inline: true,
           },
           {
@@ -175,6 +175,26 @@ module.exports = async (client, guild, action, data) => {
         ])
         .setColor(colors.dred);
       break;
+    case Enum.Log.BanLog:
+      em.setDescription(`A member has been banned from **${guild.name}**.`).addFields([
+        {
+          name: "Member",
+          value: `${data.user.tag} (<@${data.user.id}>)`,
+          inline: true
+        },
+        {
+          name: "Reason",
+          value: `${data.reason}`,
+          inline: true
+        }
+      ]).setColor(colors.red)
+      break;
+    case Enum.Log.UnbanLog:
+      em
+        .setDescription(`A member has been unbanned from **${guild.name}**.`)
+        .addField("Member", `${data.user.tag} (<@${data.user.id}>)`, true)
+        .setColor(colors.green)
+      break;
   }
 
   var queue = [];
@@ -195,6 +215,7 @@ module.exports = async (client, guild, action, data) => {
     }
     var logChannel = client.channels.cache.get(Guild.logChannel);
     if (!logChannel) return;
+    if (!guild.me.permissionsIn(logChannel).has([Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES])) return;
     await logChannel.send({
       embeds: [em],
     });

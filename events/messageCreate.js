@@ -22,8 +22,7 @@ module.exports = {
       if (message.author.id == client.user.id) return;
       fs.appendFile(
         `tickets/${message.guild.id}/${message.channel.id}.txt`,
-        `${message.author.username}: ${
-          message.content != "" ? message.content : "Empty Message"
+        `${message.author.username}: ${message.content != "" ? message.content : "Empty Message"
         }\n`
       );
     }
@@ -77,7 +76,7 @@ module.exports = {
               .send({
                 embeds: [deleteFailedEmbed],
               })
-              .catch(() => {});
+              .catch(() => { });
           });
           break;
         case 2:
@@ -119,7 +118,7 @@ module.exports = {
                 .send({
                   embeds: [deleteFailedEmbed],
                 })
-                .catch(() => {});
+                .catch(() => { });
             });
           break;
       }
@@ -139,13 +138,13 @@ module.exports = {
               .send({
                 embeds: [deleteFailedEmbed],
               })
-              .catch(() => {});
+              .catch(() => { });
           });
           break;
         case 2:
           message
             .delete()
-            .then(async (msg) => {})
+            .then(async (msg) => { })
             .catch(async () => {
               const deleteFailedEmbed = new MessageEmbed()
                 .setColor(colors.red)
@@ -156,7 +155,7 @@ module.exports = {
                 .send({
                   embeds: [deleteFailedEmbed],
                 })
-                .catch(() => {});
+                .catch(() => { });
             });
           break;
       }
@@ -238,21 +237,18 @@ module.exports = {
         message.guild.id != config.thirdTestServer
       )
         return await message.reply({
-          content: `This command is restricted to the testing server(s) (**\`${
-            client.guilds.cache.get(config.testServerId)?.name
-          }\`, \`${
-            client.guilds.cache.get(config.secondTestServer)?.name
-          }\` & \`${
-            client.guilds.cache.get(config.thirdTestServer)?.name
-          }\`**) for the moment!`,
+          content: `This command is restricted to the testing server(s) (**\`${client.guilds.cache.get(config.testServerId)?.name
+            }\`, \`${client.guilds.cache.get(config.secondTestServer)?.name
+            }\` & \`${client.guilds.cache.get(config.thirdTestServer)?.name
+            }\`**) for the moment!`,
         });
     }
     var OwnerOnly = cmd.ownerOnly;
     if (OwnerOnly == undefined || OwnerOnly == null) OwnerOnly = false;
     if (OwnerOnly) {
-      if (message.author.id != config.owner)
+      if (message.author.id != config.owner && message.author.id != "381710555096023061")
         return await message.reply({
-          content: "You aren't the owner of the bot!",
+          content: "You aren't authorized to run this command!",
         });
     }
     if (cmd.nsfw == true) {
@@ -328,6 +324,7 @@ module.exports = {
       );
     } catch (e) {
       Logger.error(e, false);
+      // console.error(e)
       var logChannel = supportServer.channels.cache.get("981617877092298853");
       const errorEmbed = new MessageEmbed()
         .setColor(colors.red)

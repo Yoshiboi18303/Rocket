@@ -9,7 +9,7 @@ module.exports = {
   type: "Moderation",
   cooldown: ms("3s"),
   aliases: "ld, lock",
-  testing: true,
+  testing: false,
   userPermissions: [Permissions.FLAGS.MANAGE_CHANNELS],
   clientPermissions: [Permissions.FLAGS.MANAGE_CHANNELS],
   /**

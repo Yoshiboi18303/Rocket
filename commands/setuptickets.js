@@ -109,6 +109,7 @@ module.exports = {
             parent: "",
             message: ticketMessage.id,
           },
+          ticketsSetup: true,
         },
       }
     ).then((data) => data.save());

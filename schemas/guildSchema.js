@@ -103,6 +103,14 @@ const guildSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  customCommands: {
+    type: Array,
+    default: [],
+  },
+  ticketsSetup: {
+    type: Boolean,
+    default: false
+  }
 });
 
 module.exports = model("guilds", guildSchema);

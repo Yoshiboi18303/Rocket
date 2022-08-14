@@ -38,7 +38,10 @@ module.exports = {
     var msg = await message.reply({
       embeds: [screenshottingEmbed],
     });
-    const browser = await puppeteer.launch();
+    if (!url.startsWith("http://") && !url.startsWith("https://")) url = `https://${url}`
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
     var page = await browser.newPage();
     page
       .goto(url, {

@@ -1,75 +1,113 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Guild Select - Rocket</title>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= key %>"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=<%= key %>"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', "G-NXL9764MWW");
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-NXL9764MWW");
     </script>
-    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
-    <link rel="shortcut icon" href="/static/img/icon.png" type="image/png">
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css" />
+    <link rel="shortcut icon" href="/static/img/icon.png" type="image/png" />
   </head>
   <body>
     <header>
-    <img src="/static/img/icon.png" alt="Rocket Icon" class="icon">
-    <br>
-    <h3 class="name">Rocket</h3>
-    <% if(!req.isAuthenticated()) { %>
+      <img src="/static/img/icon.png" alt="Rocket Icon" class="icon" />
+      <br />
+      <h3 class="name">Rocket</h3>
+      <% if(!req.isAuthenticated()) { %>
       <button class="btn login" onclick="location.href='/login'">Login</button>
-    <% } else { %>
-      <img src="https://cdn.discordapp.com/avatars/<%= req.user.id %>/<%= req.user.discord.avatar %>.gif" alt="User Avatar" class="user-avatar">
+      <% } else { %>
+      <img
+        src="https://cdn.discordapp.com/avatars/<%= req.user.id %>/<%= req.user.discord.avatar %>.png"
+        alt="User Avatar"
+        class="user-avatar"
+      />
       <h3 class="user-username"><%= req.user.discord.username %></h3>
       <button class="logout" onclick="location.href='/logout'">Logout</button>
-    <% } %>
-  </header>
-    <br>
+      <% } %>
+    </header>
+    <br />
     <% if(!req.isAuthenticated()) { %>
-      <div class="login-alert">
-        <h1>Not Authenticated!</h1>
-        <br>
-        <p>You must be logged in to view this page!</p>
-        <br>
-        <button class="btn" onclick="location.href='/login'">Login</button>
-      </div>
-    <% } else { %>
-      <h1>Choose A Server</h1>
-      <br>
-      <% for(const guild of req.user.discord.guilds) { %>
-          <div class="crd">
-            <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.gif" alt="Guild Icon" class="guild-icon">
-            <h3 class="guild-name"><%= guild.name %></h3>
-            <br>
-            <% if(!client.guilds.cache.has(guild.id)) { %>
-              <button class="btn" onclick="location.href='https://discord.com/oauth2/authorize?client_id=975450018360229908&permissions=412317244416&scope=bot&guild_id=<%= guild.id %>'">Invite Bot</button>
-            <% } else { %>
-              <button class="btn" onclick="location.href='/dashboard/<%= guild.id %>'">View Dashboard</button>
-            <% } %>
-          </div>
-        <% } %>
-        <br>
-    <% } %>
-    <br>
-    <footer>
-    <h2 class="copyright-info">
-      <small>
-        © 2022 <span class="fade-green">Yoshiboi18303</span> <span class="black">|</span> <span class="fade-blue">Rocket</span> is licensed under the <a href="https://github.com/Yoshiboi18303/Rocket/blob/main/LICENSE" class="link black">GNU General Public License</a>.
-      </small>
-    </h2>
-    <br>
-    <div class="links">
-      <a href="/" class="link" rel="noreferrer">Back To Home</a>
-      <a href="https://github.com/Yoshiboi18303/Rocket" class="link" rel="noreferrer">Source Code</a>
-      <a href="https://discord.gg/AC9FfKAxAa" class="link" rel="noreferrer">Support Server</a>
+    <div class="login-alert">
+      <h1>Not Authenticated!</h1>
+      <br />
+      <p>You must be logged in to view this page!</p>
+      <br />
+      <button class="btn" onclick="location.href='/login'">Login</button>
     </div>
-  </footer>
+    <% } else { %>
+    <h1>Choose A Server</h1>
+    <br />
+    <% let number = 0; %> <% for(const guild of servers) { %> <% if(number >= 3)
+    { %>
+    <br />
+    <br />
+    <% number = 0; %> <% } %>
+    <div class="crd">
+      <img
+        src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.png"
+        alt="Guild Icon"
+        class="guild-icon"
+      />
+      <h3 class="guild-name"><%= guild.name %></h3>
+      <br />
+      <% if(!client.guilds.cache.has(guild.id)) { %>
+      <button
+        class="btn"
+        onclick="location.href='https://discord.com/oauth2/authorize?client_id=975450018360229908&permissions=412317244416&scope=bot&guild_id=<%= guild.id %>'"
+      >
+        Invite Bot
+      </button>
+      <% } else { %>
+      <button class="btn" onclick="location.href='/dashboard/<%= guild.id %>'">
+        View Dashboard
+      </button>
+      <% } %>
+    </div>
+    <% number += 1; %> <% } %>
+    <br />
+    <% } %>
+    <br />
+    <footer>
+      <h2 class="copyright-info">
+        <small>
+          © 2022 <span class="fade-green">Yoshiboi18303</span>
+          <span class="black">|</span> <span class="fade-blue">Rocket</span> is
+          licensed under the
+          <a
+            href="https://github.com/Yoshiboi18303/Rocket/blob/main/LICENSE"
+            class="link black"
+            >GNU General Public License</a
+          >.
+        </small>
+      </h2>
+      <br />
+      <div class="links">
+        <a href="/" class="link" rel="noreferrer">Back To Home</a>
+        <a
+          href="https://github.com/Yoshiboi18303/Rocket"
+          class="link"
+          rel="noreferrer"
+          >Source Code</a
+        >
+        <a href="https://discord.gg/AC9FfKAxAa" class="link" rel="noreferrer"
+          >Support Server</a
+        >
+      </div>
+    </footer>
   </body>
 </html>

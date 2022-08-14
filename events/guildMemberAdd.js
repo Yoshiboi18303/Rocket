@@ -6,6 +6,8 @@ const LoggerClass = require("../classes/Logger");
 const Logger = new LoggerClass();
 require("colors");
 const Log = require("../utils/logger");
+const Users = require("../schemas/userSchema");
+const blacklistedIds = require("../blacklistedIds.json");
 
 module.exports = {
   name: "guildMemberAdd",
@@ -20,6 +22,19 @@ module.exports = {
       });
       Guild.save();
     }
+    var User = await Users.findOne({ id: member.user.id });
+    if (!User) {
+      if (blacklistedIds.includes(member.user.id)) {
+        new Users({
+          id: member.user.id,
+          blacklisted: true,
+        }).save()
+      } else {
+        new Users({
+          id: member.user.id,
+        }).save()
+      }
+    }
     if (Guild.antiJoin) {
       if (!member.kickable) {
         return Log(client, member.guild, Enum.Log.Error, {
@@ -30,8 +45,7 @@ module.exports = {
         .kick("Anti-Join is enabled.")
         .then(() => {
           Logger.success(
-            `${`${member.user.username}`.bold} kicked due to Anti-Join in ${
-              `${member.guild.name}`.bold
+            `${`${member.user.username}`.bold} kicked due to Anti-Join in ${`${member.guild.name}`.bold
             }`
           );
         })
@@ -40,8 +54,7 @@ module.exports = {
             message: `${e}`,
           });
           return Logger.error(
-            `Couldn't kick ${`${member.user.username}`.bold} due to ${
-              `${e}`.bold
+            `Couldn't kick ${`${member.user.username}`.bold} due to ${`${e}`.bold
             }`,
             false
           );
@@ -56,8 +69,7 @@ module.exports = {
         })
         .catch((e) => {
           Logger.error(
-            `Couldn't send a message to ${member.user.username} due to ${
-              `${e}`.bold
+            `Couldn't send a message to ${member.user.username} due to ${`${e}`.bold
             }`,
             false
           );
@@ -80,12 +92,9 @@ module.exports = {
         {
           format: "png",
         }
-      )}&background=${process.env.BACKGROUND_URL}&name=${
-        member.user.username
-      }&greet=New Member!&greetHex=118bb8&nameHex=5271ff&messageHex=ffffff&message=${
-        member.guild.name
-      }%20now%20has%20${
-        member.guild.members.cache.size
+      )}&background=${process.env.BACKGROUND_URL}&name=${member.user.username
+      }&greet=New Member!&greetHex=118bb8&nameHex=5271ff&messageHex=ffffff&message=${member.guild.name
+      }%20now%20has%20${member.guild.members.cache.size
       }%20members!&font=nexa&token=${process.env.WEEBY_KEY}`,
       {
         method: "GET",

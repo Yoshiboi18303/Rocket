@@ -1,7 +1,7 @@
 const Users = require("../schemas/userSchema");
 const { returnUserStatusText } = require("../utils/");
 const { utc } = require("moment");
-const { Message } = require("discord.js");
+const { GuildBan, Message } = require("discord.js");
 
 const flags = {
   DISCORD_EMPLOYEE: "Discord Employee",
@@ -37,7 +37,7 @@ module.exports = {
   execute: async (message, args) => {
     var user =
       message.mentions.users.first() ||
-      client.users.cache.get(args[0]) ||
+      message.client.users.cache.get(args[0]) ||
       message.author;
     var member =
       message.mentions.members.first() ||
@@ -74,6 +74,15 @@ module.exports = {
       return final;
     };
 
+    const supportServer = message.client.guilds.cache.get("977632347862216764");
+    const cachedBan = supportServer.bans.cache.get(user.id);
+    let banExists = false;
+
+    try {
+      const ban = await supportServer.bans.fetch(user.id)
+      banExists = true;
+    } catch (e) { }
+
     const roles = member.roles.cache
       .sort((a, b) => b.position - a.position)
       .map((role) => role.toString())
@@ -98,44 +107,40 @@ module.exports = {
       `**❯ ID:** ${user.id}`,
       `**❯ Is Bot?** ${user.bot ? "Yes" : "No"}`,
       `**❯ Is Blacklisted?** ${User.blacklisted ? "Yes" : "No"}`,
-      `**❯ Flags:** ${
-        flagMap != null
-          ? flagMap.length == 1
-            ? flagMap[0]
-            : flagMap.join(", ")
-          : "None"
+      `**❯ Flags:** ${flagMap != null
+        ? flagMap.length == 1
+          ? flagMap[0]
+          : flagMap.join(", ")
+        : "None"
       }`,
       `**❯ Time Created:** ${utc(user.createdTimestamp).format("LT")} - ${utc(
         user.createdTimestamp
       ).format("LL")} **|** ${utc(user.createdTimestamp).fromNow()}`,
       `**❯ Commands Used:** ${User.commandsUsed}`,
       `**❯ Global Warnings:** ${User.globalWarnings}`,
+      `**❯ Is Banned from Support Server:** ${cachedBan ? "Yes" : banExists ? "Yes" : "No"}`,
       "\u200b",
     ];
     const memberArray = [
       `**❯ Nickname:** ${member.nickname != null ? member.nickname : "None"}`,
-      `${t} ${
-        role_array.length > 1
-          ? role_array.length == 1
-            ? role_array[0]
-            : role_array.join(", ")
-          : "None"
+      `${t} ${role_array.length > 1
+        ? role_array.length == 1
+          ? role_array[0]
+          : role_array.join(", ")
+        : "None"
       }`,
-      `**❯ Highest Role:** ${
-        member.roles.highest.id === message.guild.id
-          ? "None"
-          : member.roles.highest.name
+      `**❯ Highest Role:** ${member.roles.highest.id === message.guild.id
+        ? "None"
+        : member.roles.highest.name
       }`,
       `**❯ Joined Server On:** ${utc(member.joinedAt).format(
         "LL - LTS"
       )} **|** ${utc(member.joinedAt).fromNow()}`,
-      `**❯ Hoisted Role:** ${
-        member.roles.hoist ? member.roles.hoist.name : "No hoisted role"
+      `**❯ Hoisted Role:** ${member.roles.hoist ? member.roles.hoist.name : "No hoisted role"
       }`,
-      `**❯ Status:** ${
-        member.presence != null
-          ? returnUserStatusText(member)
-          : `${emojis.offline} **-** Offline`
+      `**❯ Status:** ${member.presence != null
+        ? returnUserStatusText(member)
+        : `${emojis.offline} **-** Offline`
       }`,
       "\u200b",
     ];
@@ -150,10 +155,9 @@ module.exports = {
       .addField("Member", `${memberArray.join("\n")}`)
       .addField(
         "Acknowledgements",
-        `${
-          acksArray[0] != "\u2800" || acksArray[1] != "\u2800"
-            ? acksArray.join("\n")
-            : "None"
+        `${acksArray[0] != "\u2800" || acksArray[1] != "\u2800"
+          ? acksArray.join("\n")
+          : "None"
         }`
       )
       .setThumbnail(user.displayAvatarURL({ dynamic: true, size: 512 }));

@@ -116,8 +116,71 @@ module.exports = {
 
       if (interaction.customId == "agree") {
         var dividers = [3, 4, 5];
+        if (User1.items.gloves > 0) {
+          dividers.push(2.45);
+          var query = await Users.findOneAndUpdate(
+            {
+              id: message.author.id,
+            },
+            {
+              $set: {
+                "items.gloves": User1.items.gloves - 1,
+              },
+            }
+          );
+          query.save();
+        }
         var divider = dividers[Math.floor(Math.random() * dividers.length)];
         var random_amount = Math.ceil(Math.random() * (User2.tokens / divider));
+        if (User2.items.padlocks > 0) {
+          var random_amount = Math.ceil(
+            Math.random() * (User1.tokens / divider)
+          );
+          var query1 = await Users.findOneAndUpdate(
+            {
+              id: user.id,
+            },
+            {
+              $inc: {
+                tokens: random_amount,
+                "stolen.fromOthers": random_amount,
+              },
+              $set: {
+                "items.padlocks": User2.items.padlocks - 1,
+              },
+            }
+          );
+          var query2 = await Users.findOneAndUpdate(
+            {
+              id: message.author.id,
+            },
+            {
+              $inc: {
+                "stolen.fromSelf": random_amount,
+              },
+              $set: {
+                tokens: User1.tokens - random_amount,
+              },
+            }
+          );
+          query1.save();
+          query2.save();
+          const theft_blocked_embed = new MessageEmbed()
+            .setColor(colors.red)
+            .setTitle("Uh oh...")
+            .setDescription(
+              `Seems like **${
+                user.username
+              }** thought ahead and put a padlock on their wallet and you were caught by the police and had to cough up \`${random_amount}\` tokens as an apology.\n\n**Should've been more prepared...${
+                divider == 2.45
+                  ? " ||(oh by the way, your gloves betrayed you lmao.)||"
+                  : ""
+              }**`
+            );
+          return await interaction.update({
+            embeds: [theft_blocked_embed],
+          });
+        }
         if (chance) {
           Users.findOneAndUpdate(
             {

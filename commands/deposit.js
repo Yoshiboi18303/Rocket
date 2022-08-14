@@ -7,7 +7,7 @@ module.exports = {
   name: "deposit",
   description: "Deposit some money into your bank!",
   usage: "{prefix}deposit <amount>",
-  aliases: "dep, bankadd, addbank",
+  aliases: "dep, bankadd, addbank, dp",
   type: "Economy",
   cooldown: ms("5s"),
   testing: false,

@@ -59,7 +59,7 @@ module.exports = {
 
     var channels = await guild.channels.fetch();
     var hellChannel = channels.find(
-      (channel) => channel.name == "bot-hell" || channel.name.includes("hell")
+      (channel) => channel.name == "bot-hell" || channel.name.includes("hell") || channel.name == "bot-chaos" || channel.name.includes("chaos")
     );
     if (!hellChannel) return;
     if (
@@ -73,7 +73,7 @@ module.exports = {
       .setColor(colors.cyan)
       .setTitle("Hello!")
       .setDescription(
-        `Hello and thank you for adding **${client.user.username}**, I'm very happy to have been invited to your guild **${guild.name}**! Here's some helpful info to get your started using me!\n\nMy default prefix is: \`rlc!\`\nHow to see all my commands: \`rlc!help\`\n\nAre you ready to make your server a great place for all your members? Because I am!`
+        `Hello and thank you for adding **${client.user.username}**, I'm very happy to have been invited to your guild **${guild.name}**! Here's some helpful info to get your started using me!\n\nMy default prefix is: \`r!\`\nHow to see all my commands: \`r!help\`\n\nAre you ready to make your server a great place for all your members? Because I am!`
       )
       .setFooter({
         text: `Guild #${client.guilds.cache.size}`,
@@ -131,14 +131,14 @@ module.exports = {
 
     cachedVc.setName(
       `Cached: ${cachedGuilds + cachedUsers}`,
-      "New guild, ensuring the database cache count is up-to-date."
+      "New guild, ensuring the database cached count is up-to-date."
     );
 
     /**
      * @param {Interaction} btnInt
      */
     const filter = async (btnInt) => {
-      if (!btnInt.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD))
+      if (!btnInt.customId == "msg-remove" && btnInt.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD))
         return await btnInt.reply({
           content: "Seriously man? You can't do this!",
           ephemeral: true,

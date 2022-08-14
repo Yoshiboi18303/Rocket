@@ -1,4 +1,4 @@
-const { Message, MessageAttachment } = require("discord.js");
+const { Message, MessageAttachment, MessageEmbed } = require("discord.js");
 const fs = require("fs");
 
 module.exports = {
@@ -30,6 +30,11 @@ module.exports = {
       return await message.reply({
         content:
           "This file is unviewable due to the large amount of private info that shouldn't be shared.",
+      });
+    if (path.startsWith("/"))
+      return await message.reply({
+        content:
+          "Directories outside of the bot directory are not allowed to be viewed via this command.",
       });
     try {
       var dirfile = fs.readFileSync(path);
@@ -69,6 +74,11 @@ module.exports = {
               : "html"
           }\n${code}\n\`\`\``
         )
+        .setFooter({
+          text: `${code.split("\n").length.toLocaleString()} lines, ${code
+            .split("")
+            .length.toLocaleString()} characters`,
+        })
         .setTimestamp();
       await message.reply({
         embeds: [code_embed],

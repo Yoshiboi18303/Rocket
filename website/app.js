@@ -68,7 +68,7 @@ passport.use(
     {
       clientID: "975450018360229908",
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "/login/callback",
+      callbackURL: "https://rocket-galaxy.ga/login/callback",
       scope: ["identify", "guilds"],
     },
     (access, refresh, profile, done) => {

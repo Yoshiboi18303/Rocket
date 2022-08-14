@@ -42,6 +42,38 @@ module.exports = {
       "Outlook not so good",
       "Very doubtful",
     ];
+    const hurtfulWords = ["terrible", "horrible", "Horrid", "stupid", "garbage", "idiot", "retard", "dickhead"];
+    const niceWords = ["awesome", "great", "cool", "amazing", "nice"]
+    const lowerCaseQuestion = question.toLowerCase();
+    if (lowerCaseQuestion.includes("hecker")) {
+      for (const word of hurtfulWords) {
+        if (lowerCaseQuestion.includes(word.toLowerCase())) {
+          answers = [
+            "It is certain",
+            "It is decidedly so",
+            "Without a doubt",
+            "Yes, definitely",
+            "You may rely on it",
+            "As I see it, yes",
+            "Most likely",
+            "Outlook good",
+            "Yes",
+            "Signs point to yes",
+          ];
+        }
+      }
+      for (const word of niceWords) {
+        if (lowerCaseQuestion.includes(word.toLowerCase())) {
+          answers = [
+            "Don't count on it",
+            "My reply is no",
+            "My sources say no",
+            "Outlook not so good",
+            "Very doubtful",
+          ]
+        }
+      }
+    }
     var answer = answers[Math.floor(Math.random() * answers.length)];
     var msg = await message.reply({
       content: `You asked the magic eight ball **\`${question}\`** and shook it...`,

@@ -100,7 +100,7 @@ module.exports = {
               item.user == message.author.id
                 ? `${client.users.cache.get(item.user).username} \`(You)\``
                 : client.users.cache.get(item.user).username
-            }:** \`${item.tokens} tokens\``
+            }:** \`${item.tokens.toLocaleString()} tokens\``
         );
 
         const embed = new MessageEmbed()
@@ -130,7 +130,7 @@ module.exports = {
               item.user == message.author.id
                 ? `${client.users.cache.get(item.user).username} \`(You)\``
                 : client.users.cache.get(item.user).username
-            }:** \`${item.bank} ${
+            }:** \`${item.bank.toLocaleString()} ${
               item.bank == 1 ? "token" : "tokens"
             } in their bank\``
         );
@@ -172,7 +172,7 @@ module.exports = {
               v.user == message.author.id
                 ? `${client.users.cache.get(v.user).username} \`(You)\``
                 : client.users.cache.get(v.user).username
-            }:** ${v.stolenFromSelf} Tokens`
+            }:** ${v.stolenFromSelf.toLocaleString()} Tokens`
         );
         var StolenFromOthersFinal = StolenFromOthersArray.map(
           (v, i) =>
@@ -180,7 +180,7 @@ module.exports = {
               v.user == message.author.id
                 ? `${client.users.cache.get(v.user).username} \`(You)\``
                 : client.users.cache.get(v.user).username
-            }:** ${v.stolenFromOthers} Tokens`
+            }:** ${v.stolenFromOthers.toLocaleString()} Tokens`
         );
 
         const stolenFromLB = new MessageEmbed()
@@ -222,7 +222,7 @@ module.exports = {
               v.user == message.author.id
                 ? `${client.users.cache.get(v.user).username} \`(You)\``
                 : client.users.cache.get(v.user).username
-            }:** ${v.highestBet} Tokens`
+            }:** ${v.highestBet.toLocaleString()} Tokens`
         );
 
         const em = new MessageEmbed()

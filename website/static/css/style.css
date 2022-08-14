@@ -52,14 +52,13 @@ header {
   text-align: center;
 }
 
-.crd {
-  float: center;
-  text-align: center;
+div.crd {
+  display: inline-block inline-flex;
   border: 2px solid black;
   background-color: white;
   border-radius: 8px;
-  margin: 0 auto;
-  padding: 0;
+  margin: 5px auto;
+  padding: 3px;
   width: 175px;
   height: 200px;
 }

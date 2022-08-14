@@ -107,7 +107,7 @@
             */
 
             e.preventDefault()
-            var req = await fetch("http://localhost:6969/shortlinks", {
+            var req = await fetch("/shortlinks", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

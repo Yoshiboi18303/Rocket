@@ -17,12 +17,12 @@ app.get("/:guild", (req, res) => {
     if (folder == guild.id) {
       var ticketFiles = fs.readdirSync(`tickets/${folder}`);
       var toPush = ticketFiles.map(
-        (v, i) => `${i + 1} - ${v.split("\n").join("\n")}`
+        (v, i) => `${i + 1} - ${v.replace(".txt", "").split("\n").join("\n")}`
       );
       transcripts.push(toPush);
     }
   }
-  return res.status(200).send(transcripts.join("\n\n"));
+  return res.status(200).send(transcripts.join("\n"));
 });
 
 app.get("/:guild/:channel", (req, res) => {

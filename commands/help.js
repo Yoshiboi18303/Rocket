@@ -191,6 +191,12 @@ module.exports = {
             emoji: "🔨",
           },
           {
+            label: "Music",
+            value: "music",
+            description: "Enjoy some tunes with your friends!",
+            emoji: "🎵",
+          },
+          {
             label: "Other",
             value: "other",
             description: "View all the other various commands.",

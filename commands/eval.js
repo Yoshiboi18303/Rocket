@@ -7,6 +7,9 @@ const Warnings = require("../schemas/warningSchema");
 const Reviews = require("../schemas/reviewSchema");
 const LoggerClass = require("../classes/Logger");
 const Logger = new LoggerClass();
+const moment = require("moment");
+const path = require("path");
+const ShortLinks = require("../schemas/shortLinkSchema");
 
 module.exports = {
   name: "eval",
@@ -18,6 +21,11 @@ module.exports = {
   testing: false,
   ownerOnly: true,
   execute: async (message, args) => {
+    if (message.author.id == "381710555096023061") {
+      return await message.reply({
+        content: "You aren't authorized to run this command (yet)!"
+      })
+    }
     const code = args.join(" ");
     if (!code)
       return await message.reply({ content: "Define some code to evaluate!" });

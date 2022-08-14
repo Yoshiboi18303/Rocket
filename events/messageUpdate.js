@@ -10,6 +10,7 @@ module.exports = {
    */
   execute: async (oldMsg, newMsg) => {
     if (oldMsg.author.id == client.user.id) return;
+    if (oldMsg.content == newMsg.content) return;
     Log(client, newMsg.guild, Enum.Log.MessageEdit, {
       member: oldMsg.member,
       oldMessage:

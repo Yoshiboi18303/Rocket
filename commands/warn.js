@@ -101,6 +101,7 @@ module.exports = {
             moderator: message.author.id,
             reason,
             severity,
+            date: new Date(Date.now()),
           },
         ],
       });

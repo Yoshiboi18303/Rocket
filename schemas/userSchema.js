@@ -32,6 +32,8 @@ const userSchema = new Schema({
       padlocks: 0,
       boosters: 0,
       gun: "",
+      machetes: 0,
+      gloves: 0,
     },
   },
   commandsUsed: {
@@ -45,6 +47,7 @@ const userSchema = new Schema({
     type: Number,
     default: 0,
   },
+  hasVotedOnce: opBool,
   blacklisted: opBool,
   carColor: {
     type: String,

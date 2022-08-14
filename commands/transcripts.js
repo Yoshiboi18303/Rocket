@@ -3,6 +3,7 @@ const ms = require("ms");
 const { Message, MessageEmbed } = require("discord.js");
 const path = require("path");
 const config = require("../config.json");
+const Guilds = require("../schemas/guildSchema");
 
 module.exports = {
   name: "transcripts",
@@ -20,7 +21,20 @@ module.exports = {
   /**
    * @param {Message} message
    */
-  execute: (message) => {
+  execute: async (message) => {
+    var Guild = await Guilds.findOne({
+      id: message.guild.id,
+    });
+    if (!Guild) {
+      Guild = new Guilds({
+        id: message.guild.id,
+      });
+      Guild.save();
+    }
+    if (!Guild.ticketsSetup)
+      return await message.reply({
+        content: "The ticket system is not setup in this guild!",
+      });
     fs.readdir(path.join(__dirname, "..", "tickets", message.guild.id))
       .then(async (dir) => {
         var transcriptCharacters = [];

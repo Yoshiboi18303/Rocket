@@ -36,6 +36,28 @@ const statcord = new StatcordClient({
   postMemStatistics: true,
   postNetworkStatistics: true,
 });
+const SpotifyPlugin = require("erela.js-spotify");
+const { Manager } = require("erela.js");
+const manager = new Manager({
+  plugins: [
+    new SpotifyPlugin({
+      clientID: process.env.SPOTIFY_CLIENT_ID,
+      clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+    }),
+  ],
+  nodes: [
+    {
+      host: process.env.LAVALINK_ADDRESS,
+      port: parseInt(process.env.LAVALINK_PORT),
+      password: process.env.LAVALINK_PASSWORD,
+      secure: true,
+    },
+  ],
+  send(id, payload) {
+    var guild = client.guilds.cache.get(id);
+    if (guild) guild.shard.send(payload);
+  },
+});
 
 global.Discord = require("discord.js");
 global.client = client;
@@ -56,6 +78,9 @@ global.Enum = {
     ChannelCreate: 9,
     ChannelDelete: 10,
     Purge: 11,
+    UserPurge: 12,
+    BanLog: 13,
+    UnbanLog: 14,
   },
   Actions: {
     None: 0,
@@ -68,6 +93,7 @@ global.Enum = {
 };
 global.statcord = statcord;
 global.fightsStarted = 0;
+global.lavalink = manager;
 
 client.commands = new Collection();
 client.aliases = new Collection();

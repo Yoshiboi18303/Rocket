@@ -19,4 +19,22 @@ module.exports = [
     type: "powerup",
     price: 350,
   },
+  {
+    name: "Machete",
+    id: "machete",
+    desc: "Prevents whoever tries to steal from you and has a chance to take some extra money back from the thief!",
+    emoji: emojis.machete,
+    image: "https://cdn.discordapp.com/emojis/1001610911385124884.png",
+    type: "powerup",
+    price: 600,
+  },
+  {
+    name: "Gloves",
+    id: "gloves",
+    desc: "Adds another chance for you to steal more money from a user!",
+    emoji: emojis.gloves,
+    image: "https://cdn.discordapp.com/emojis/1001916487197536357.png",
+    type: "powerup",
+    price: 450,
+  },
 ];

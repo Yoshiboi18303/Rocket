@@ -1,5 +1,6 @@
 const Warnings = require("../schemas/warningSchema");
 const { Message } = require("discord.js");
+const moment = require("moment");
 
 module.exports = {
   name: "warnings",
@@ -41,7 +42,13 @@ module.exports = {
       (w, i) =>
         `\`${i + 1}\` - Moderator: **${
           client.users.cache.get(w.moderator)?.tag || "None/Unknown"
-        }** - Reason: \`${w.reason}\` - Severity: \`${w.severity}\``
+        }** - Reason: \`${w.reason}\` - Severity: \`${
+          w.severity
+        }\` - Date and Time of warn: \`${
+          !w.date
+            ? "Unknown Date"
+            : moment(w.date).format("MM/DD/YYYY - HH:MM:SS")
+        }\``
     );
     const warnings_embed = new MessageEmbed()
       .setColor(colors.yellow)

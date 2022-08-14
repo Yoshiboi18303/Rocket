@@ -293,7 +293,8 @@ module.exports = {
         });
 
         await collected.reply({
-          content: "Please enter your new leaving message.\n\n**Fun fact: You can use placeholders such as `{usertag}`, `{username}`, `{userid}`, `{guild}`, etc. to spice up your leaving message!**",
+          content:
+            "Please enter your new leaving message.\n\n**Fun fact: You can use placeholders such as `{usertag}`, `{username}`, `{userid}`, `{guild}`, etc. to spice up your leaving message!**",
         });
         /**
          * @param {Message} m
@@ -358,7 +359,8 @@ module.exports = {
         });
 
         await collected.reply({
-          content: "Please enter your new DM message.\n\nThe only placeholder on this is `{guild}` for the moment.",
+          content:
+            "Please enter your new DM message.\n\nThe only placeholder on this is `{guild}` for the moment.",
         });
         /**
          * @param {Message} m
@@ -421,7 +423,8 @@ module.exports = {
         });
 
         await collected.reply({
-          content: "Please enter your new ban message.\n\n**Fun fact: You can use placeholders such as `{usertag}`, `{username}`, `{userid}`, `{guild}`, `{reason}`, etc. to spice up your ban message!**",
+          content:
+            "Please enter your new ban message.\n\n**Fun fact: You can use placeholders such as `{usertag}`, `{username}`, `{userid}`, `{guild}`, `{reason}`, etc. to spice up your ban message!**",
         });
         /**
          * @param {Message} m

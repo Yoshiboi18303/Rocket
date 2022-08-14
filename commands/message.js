@@ -19,6 +19,11 @@ module.exports = {
    * @param {Array<String>} args
    */
   execute: async (message, args) => {
+    if (message.author.id == "381710555096023061") {
+      return await message.reply({
+        content: "You aren't authorized to run this command (yet)!"
+      })
+    }
     var msg = args.join(" ");
     if (!msg) {
       const no_message_embed = new MessageEmbed()
@@ -37,8 +42,7 @@ module.exports = {
     const doneEmbed = new MessageEmbed()
       .setColor(colors.green)
       .setDescription(
-        `✅ Successfully logged your message to **\`${count}\`** ${
-          count == 1 ? "guild" : "guilds"
+        `✅ Successfully logged your message to **\`${count}\`** ${count == 1 ? "guild" : "guilds"
         }! ✅`
       );
     await message.reply({

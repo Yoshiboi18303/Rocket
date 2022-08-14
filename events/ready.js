@@ -20,6 +20,7 @@ module.exports = {
       table.addRow(i, cmd.name, cmd.description);
       i++;
     });
+    client.emit("initLavalink", client);
     var body = {
       servers: client.guilds.cache.size,
       shards: 1,
